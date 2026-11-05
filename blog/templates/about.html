@@ -29,11 +29,6 @@ near to me
        overflow-hidden rounded-[40px]"
 >
 
-
-
-
-
-
 <!-- GRADIENT BACKGROUND -->
 <!-- GRADIENT BACKGROUND (CLIPPED PROPERLY) -->
 <div
@@ -212,7 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Line 2 (split separately to preserve color)
   const thingsLetters = splitLetters("Things ", thingsText);
-  const oneLetters = splitLetters("One", oneText);
+  const oneLetters = splitLetters("One ", oneText);
 
   const tl = gsap.timeline();
 
@@ -1629,150 +1624,347 @@ window.addEventListener("resize", () => {
 <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
 
 <script>
-function playAnimation() {
+// function playAnimation() {
 
-  const btn = document.getElementById("applyBtn");
+//   const btn = document.getElementById("applyBtn");
 
-  /* ================= RESET STATES ================= */
-  gsap.set("#backCard", { x: -220, y: 0, opacity: 0 });
+//   /* ================= RESET STATES ================= */
+//   gsap.set("#backCard", { x: -220, y: 0, opacity: 0 });
 
-  gsap.set("#frontCard", {
-    x: 220,
-    y: 0,
-    opacity: 0,
-    scale: 1,
-    backgroundColor: "rgba(255,255,255,0.7)"
-  });
+//   gsap.set("#frontCard", {
+//     x: 220,
+//     y: 0,
+//     opacity: 0,
+//     scale: 1,
+//     backgroundColor: "rgba(255,255,255,0.7)"
+//   });
 
-  gsap.set("#clickArrow", {
-    opacity: 0,
-    x: 0,
-    y: 90,
-    scale: 1
-  });
+//   gsap.set("#clickArrow", {
+//     opacity: 0,
+//     x: 0,
+//     y: 90,
+//     scale: 1
+//   });
 
-  /* ================= RESET BUTTON (FIXED) ================= */
-  btn.innerHTML = `
-    <span class="text-[5.35px] sm:text-[12px]
-                 leading-none
-                 whitespace-nowrap
-                 text-white">
-      Apply Now
-    </span>`;
-  btn.classList.remove("bg-green-500");
-  btn.classList.add("bg-[#3C49FF]");
+//   /* ================= RESET BUTTON (FIXED) ================= */
+//   btn.innerHTML = `
+//     <span class="text-[5.35px] sm:text-[12px]
+//                  leading-none
+//                  whitespace-nowrap
+//                  text-white">
+//       Apply Now
+//     </span>`;
+//   btn.classList.remove("bg-green-500");
+//   btn.classList.add("bg-[#3C49FF]");
 
-  const tl = gsap.timeline({
-    delay: 1,
-    onComplete: () => setTimeout(playAnimation, 100)
-  });
+//   const tl = gsap.timeline({
+//     delay: 1,
+//     onComplete: () => setTimeout(playAnimation, 100)
+//   });
 
-  /* ================= 1️⃣ CARDS ENTER ================= */
-  tl.to("#backCard", {
-    x: 0,
-    opacity: 1,
-    duration: 1.4,
-    ease: "power3.out"
-  })
-  .to("#frontCard", {
-    x: 0,
-    opacity: 1,
-    duration: 1.4,
-    ease: "power3.out"
-  }, "-=0.9")
+//   /* ================= 1️⃣ CARDS ENTER ================= */
+//   tl.to("#backCard", {
+//     x: 0,
+//     opacity: 1,
+//     duration: 1.4,
+//     ease: "power3.out"
+//   })
+//   .to("#frontCard", {
+//     x: 0,
+//     opacity: 1,
+//     duration: 1.4,
+//     ease: "power3.out"
+//   }, "-=0.9")
 
-  /* ================= 2️⃣ ARROW COMES ================= */
-  .to("#clickArrow", {
-    opacity: 1,
-    y: 0,
-    duration: 1.2,
-    ease: "power3.out"
-  })
+//   /* ================= 2️⃣ ARROW COMES ================= */
+//   .to("#clickArrow", {
+//     opacity: 1,
+//     y: 0,
+//     duration: 1.2,
+//     ease: "power3.out"
+//   })
 
-  /* ================= 3️⃣ CLICK FRONT CARD ================= */
-  .to("#clickArrow", {
-    x: -10,
-    y: 30,
-    duration: 1,
-    ease: "power2.inOut"
-  })
-  .to("#clickArrow", { scale: 0.85, duration: 0.25 })
-  .to("#clickArrow", { scale: 1, duration: 0.25 })
+//   /* ================= 3️⃣ CLICK FRONT CARD ================= */
+//   .to("#clickArrow", {
+//     x: -10,
+//     y: 30,
+//     duration: 1,
+//     ease: "power2.inOut"
+//   })
+//   .to("#clickArrow", { scale: 0.85, duration: 0.25 })
+//   .to("#clickArrow", { scale: 1, duration: 0.25 })
 
-  .to("#frontCard", {
-    backgroundColor: "#5A8EFF",
-    duration: 0.4,
-    ease: "power2.out"
-  }, "<")
+//   .to("#frontCard", {
+//     backgroundColor: "#5A8EFF",
+//     duration: 0.4,
+//     ease: "power2.out"
+//   }, "<")
 
-  .to("#frontCard", {
-    scale: 0.97,
-    duration: 0.3,
-    yoyo: true,
-    repeat: 1
-  }, "<")
+//   .to("#frontCard", {
+//     scale: 0.97,
+//     duration: 0.3,
+//     yoyo: true,
+//     repeat: 1
+//   }, "<")
 
-  /* ================= 4️⃣ CARDS ADJUST ================= */
-  .to("#backCard", {
-    x: 30,
-    duration: 0.8,
-    ease: "power2.out"
-  })
-  .to("#frontCard", {
-    x: -30,
-    duration: 0.8,
-    ease: "power2.out"
-  }, "<")
+//   /* ================= 4️⃣ CARDS ADJUST ================= */
+//   .to("#backCard", {
+//     x: 30,
+//     duration: 0.8,
+//     ease: "power2.out"
+//   })
+//   .to("#frontCard", {
+//     x: -30,
+//     duration: 0.8,
+//     ease: "power2.out"
+//   }, "<")
 
-  /* ================= 5️⃣ ARROW → APPLY BUTTON ================= */
-  .to("#clickArrow", {
-    x: 32,
-    y: 12,
-    duration: 0.9,
-    ease: "power2.inOut"
-  })
-  .to("#clickArrow", { scale: 0.85, duration: 0.25 })
-  .to("#clickArrow", { scale: 1, duration: 0.25 })
+//   /* ================= 5️⃣ ARROW → APPLY BUTTON ================= */
+//   .to("#clickArrow", {
+//     x: 32,
+//     y: 12,
+//     duration: 0.9,
+//     ease: "power2.inOut"
+//   })
+//   .to("#clickArrow", { scale: 0.85, duration: 0.25 })
+//   .to("#clickArrow", { scale: 1, duration: 0.25 })
 
-  .to("#applyBtn", {
-    scale: 0.95,
-    duration: 0.25,
-    yoyo: true,
-    repeat: 1
-  }, "<")
+//   .to("#applyBtn", {
+//     scale: 0.95,
+//     duration: 0.25,
+//     yoyo: true,
+//     repeat: 1
+//   }, "<")
 
-  /* ================= 6️⃣ APPLIED STATE (FIXED) ================= */
-  .call(() => {
-    btn.innerHTML = `
-      <span class="text-[5.35px] sm:text-[12px]
-                   leading-none
-                   whitespace-nowrap
-                   text-white">
-        Applied
-      </span>`;
-    btn.classList.remove("bg-[#3C49FF]");
-    btn.classList.add("bg-green-500");
-  })
+//   /* ================= 6️⃣ APPLIED STATE (FIXED) ================= */
+//   .call(() => {
+//     btn.innerHTML = `
+//       <span class="text-[5.35px] sm:text-[12px]
+//                    leading-none
+//                    whitespace-nowrap
+//                    text-white">
+//         Applied
+//       </span>`;
+//     btn.classList.remove("bg-[#3C49FF]");
+//     btn.classList.add("bg-green-500");
+//   })
 
-  /* ================= 7️⃣ EXIT ================= */
-  .to(["#frontCard", "#backCard"], {
-    y: 150,
-    opacity: 0,
-    duration: 1.4,
-    ease: "power3.in"
-  }, "+=0.6")
+//   /* ================= 7️⃣ EXIT ================= */
+//   .to(["#frontCard", "#backCard"], {
+//     y: 150,
+//     opacity: 0,
+//     duration: 1.4,
+//     ease: "power3.in"
+//   }, "+=0.6")
 
-  .to("#clickArrow", {
-    opacity: 0,
-    duration: 0.6
-  }, "-=0.8");
-}
+//   .to("#clickArrow", {
+//     opacity: 0,
+//     duration: 0.6
+//   }, "-=0.8");
+// }
 
-/* ================= START LOOP ================= */
-playAnimation();
+// /* ================= START LOOP ================= */
+// playAnimation();
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    if (typeof gsap === "undefined") {
+        console.error("GSAP is not loaded.");
+        return;
+    }
+
+    const backCard = document.getElementById("backCard");
+    const frontCard = document.getElementById("frontCard");
+    const clickArrow = document.getElementById("clickArrow");
+    const applyBtn = document.getElementById("applyBtn");
+
+    if (!backCard || !frontCard || !clickArrow || !applyBtn) {
+        console.error("Job animation elements are missing.");
+        return;
+    }
+
+    const animationArea = backCard.parentElement;
+
+    let animationTimer;
+
+    // Correct stacking order.
+    gsap.set(backCard, { zIndex: 1 });
+    gsap.set(frontCard, { zIndex: 3 });
+    gsap.set(clickArrow, { zIndex: 10 });
+
+    // function resetButton() {
+    //     applyBtn.textContent = "Apply Now";
+
+    //     applyBtn.classList.remove("bg-green-500");
+    //     applyBtn.classList.add("bg-[#3C49FF]");
+    // }
+    function resetButton() {
+      applyBtn.textContent = "Apply Now";
+
+      applyBtn.classList.remove("bg-green-500", "text-black");
+      applyBtn.classList.add("bg-[#3C49FF]", "text-white");
+
+      applyBtn.style.color = "#ffffff";
+      applyBtn.style.backgroundColor = "#3C49FF";
+  }
+
+    // Calculate arrow movement using actual button position.
+    function getArrowTarget() {
+
+        const buttonRect = applyBtn.getBoundingClientRect();
+        const areaRect = animationArea.getBoundingClientRect();
+
+        const arrowWidth = clickArrow.offsetWidth;
+        const arrowHeight = clickArrow.offsetHeight;
+
+        const arrowBaseX = clickArrow.offsetLeft + arrowWidth / 2;
+        const arrowBaseY = clickArrow.offsetTop + arrowHeight / 2;
+
+        const buttonCenterX =
+            buttonRect.left + buttonRect.width / 2 - areaRect.left;
+
+        const buttonCenterY =
+            buttonRect.top + buttonRect.height / 2 - areaRect.top;
+
+        return {
+            x: buttonCenterX - arrowBaseX,
+            y: buttonCenterY - arrowBaseY
+        };
+    }
+
+    function playAnimation() {
+
+        gsap.killTweensOf([
+            backCard,
+            frontCard,
+            clickArrow,
+            applyBtn
+        ]);
+
+        resetButton();
+
+        // Cook enters from left.
+        gsap.set(backCard, {
+            xPercent: -115,
+            y: 0,
+            opacity: 0
+        });
+
+        // Sales Man enters from right.
+        gsap.set(frontCard, {
+            xPercent: 115,
+            y: 0,
+            opacity: 0
+        });
+
+        // Arrow starting position.
+        gsap.set(clickArrow, {
+            x: 0,
+            y: 90,
+            opacity: 0,
+            scale: 1
+        });
+
+        const timeline = gsap.timeline({
+            delay: 0.5,
+            onComplete: function () {
+                animationTimer = setTimeout(playAnimation, 900);
+            }
+        });
+
+        // 1. Cook card enters.
+        timeline.to(backCard, {
+            xPercent: 0,
+            opacity: 1,
+            duration: 1.3,
+            ease: "power3.out"
+        });
+
+        // 2. Sales Man card enters over Cook.
+        timeline.to(frontCard, {
+            xPercent: 0,
+            opacity: 1,
+            duration: 1.3,
+            ease: "power3.out"
+        }, "-=0.85");
+
+        // 3. Arrow moves to the Sales Man Apply Now button.
+        timeline.to(clickArrow, {
+            x: function () {
+                return getArrowTarget().x;
+            },
+            y: function () {
+                return getArrowTarget().y;
+            },
+            opacity: 1,
+            duration: 1.2,
+            ease: "power2.inOut"
+        }, "+=0.3");
+
+        // 4. Simulate click.
+        timeline.to(clickArrow, {
+            scale: 0.8,
+            duration: 0.15,
+            yoyo: true,
+            repeat: 1
+        });
+
+        timeline.to(applyBtn, {
+            scale: 0.92,
+            duration: 0.15,
+            yoyo: true,
+            repeat: 1
+        }, "<");
+
+        // 5. Change button to Applied.
+        // timeline.call(function () {
+        //     applyBtn.textContent = "Applied";
+        //     applyBtn.classList.remove("bg-[#3C49FF]");
+        //     applyBtn.classList.add("bg-green-500");
+        // });
+        timeline.call(function () {
+        applyBtn.textContent = "Applied";
+
+        applyBtn.classList.remove("bg-[#3C49FF]", "text-black");
+        applyBtn.classList.add("bg-green-500", "text-white");
+
+        applyBtn.style.color = "#ffffff";
+        applyBtn.style.backgroundColor = "#22c55e";
+    });
+
+        // 6. Hold.
+        timeline.to({}, {
+            duration: 1.2
+        });
+
+        // 7. Both cards exit.
+        timeline.to([backCard, frontCard], {
+            y: 150,
+            opacity: 0,
+            duration: 1.1,
+            ease: "power3.in"
+        });
+
+        timeline.to(clickArrow, {
+            opacity: 0,
+            duration: 0.5
+        }, "<");
+    }
+
+    playAnimation();
+
+    // Recalculate layout after resizing.
+    window.addEventListener("resize", function () {
+        gsap.killTweensOf(clickArrow);
+        gsap.set(clickArrow, { opacity: 0, x: 0, y: 90 });
+    });
+
+});
+
 </script>
 
-<style>
+<!-- <style>
 /* =========================
    RESPONSIVE GRID
 ========================= */
@@ -1816,35 +2008,318 @@ playAnimation();
     font-size: 14px;
   }
 }
-</style>
+</style> -->
 
-<script>
-const container = document.getElementById("sectionsWrapper");
-const sectionHeight = 330; // height of each section
-const totalSections = 3;
 
-// Duplicate sections for smooth loop
-container.innerHTML += container.innerHTML;
 
-let index = 0;
+<style>
+/* =========================================
+   FEATURE CARDS — DESKTOP
+========================================= */
 
-function scrollStep() {
-  container.style.transition = "transform 0.8s ease-in-out";
-  container.style.transform = `translateY(-${index * sectionHeight}px)`;
-  index++;
-
-  // Reset seamlessly when reaching the original last section
-  if (index > totalSections) {
-    setTimeout(() => {
-      container.style.transition = "none";
-      container.style.transform = `translateY(0px)`;
-      index = 1;
-    }, 800); // match transition duration
-  }
+.cards-wrapper {
+    display: grid;
+    width: 100%;
+    max-width: 1318px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 16px;
+    padding-right: 16px;
+    box-sizing: border-box;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
 }
 
-// Scroll every 3 seconds
-setInterval(scrollStep, 2000);
+.cards-wrapper > .service-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    height: 421px;
+    margin: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.service-card {
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.service-card img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Prevent card content from forcing horizontal overflow */
+.cards-wrapper > .service-card h2,
+.cards-wrapper > .service-card h3,
+.cards-wrapper > .service-card p {
+    max-width: 100%;
+    overflow-wrap: break-word;
+}
+
+/* =========================================
+   SMART FILTERS & EASY AD PUBLISHING
+========================================= */
+
+.cards-wrapper ~ section > div.grid {
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    grid-template-columns: minmax(0, 1.53fr) minmax(0, 1fr);
+    gap: 24px;
+}
+
+.cards-wrapper ~ section > div.grid > div {
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    .cards-wrapper {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .cards-wrapper > .service-card {
+        height: auto;
+        min-height: 380px;
+    }
+
+    .cards-wrapper ~ section > div.grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+
+    /* Keep the hero inside the mobile viewport */
+    .hero-border {
+        width: calc(100% - 24px) !important;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        box-sizing: border-box;
+        border-radius: 28px;
+    }
+
+    /* Wrapper: one consistent column */
+    .cards-wrapper {
+        display: grid !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 16px !important;
+        box-sizing: border-box;
+    }
+
+    /* All service cards match the wrapper width */
+    .cards-wrapper > .service-card {
+        display: block;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 20px !important;
+        box-sizing: border-box !important;
+        border-radius: 24px !important;
+        overflow: hidden;
+    }
+
+    /* Keep existing Tailwind text sizes */
+    .cards-wrapper > .service-card h2,
+    .cards-wrapper > .service-card h3,
+    .cards-wrapper > .service-card p {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+
+    .cards-wrapper > .service-card img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+
+    /* Offers animation content must stay inside its card */
+    .cards-wrapper > .service-card:nth-child(3) .animate-scroll-y {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .cards-wrapper > .service-card:nth-child(3) .animate-scroll-y > div {
+        max-width: 100%;
+        gap: 8px;
+        box-sizing: border-box;
+    }
+
+    .cards-wrapper > .service-card:nth-child(3) .animate-scroll-y > div > div {
+        min-width: 0;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .cards-wrapper > .service-card:nth-child(3) .animate-scroll-y p {
+        font-size: clamp(10px, 3vw, 14px);
+        white-space: normal;
+        line-height: 1.2;
+        overflow-wrap: anywhere;
+    }
+
+    /* Smart Filters and Easy Ad Publishing */
+    .cards-wrapper ~ section > div.grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+        width: 100%;
+        gap: 16px;
+    }
+
+    .cards-wrapper ~ section > div.grid > div {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        height: auto;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 20px;
+        box-sizing: border-box;
+        border-radius: 24px;
+    }
+
+    /* Keep animation cards inside their parent */
+    #backCard,
+    #frontCard {
+        max-width: calc(100% - 16px);
+        box-sizing: border-box;
+    }
+
+    #saleBackCard,
+    #saleFrontCard {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* App download section images */
+    #saleBackCard img,
+    #saleFrontCard img {
+        max-width: 100%;
+        object-fit: contain;
+    }
+}
+
+/* =========================================
+   SMALL MOBILE — 380px AND BELOW
+========================================= */
+
+@media (max-width: 380px) {
+
+    .cards-wrapper {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        gap: 12px !important;
+    }
+
+    .cards-wrapper > .service-card {
+        padding: 14px !important;
+        border-radius: 22px !important;
+    }
+
+    .cards-wrapper > .service-card:nth-child(3)
+    .animate-scroll-y > div {
+        gap: 6px;
+    }
+}
+</style>
+
+
+<script>
+// const container = document.getElementById("sectionsWrapper");
+// const sectionHeight = 330; // height of each section
+// const totalSections = 3;
+
+// // Duplicate sections for smooth loop
+// container.innerHTML += container.innerHTML;
+
+// let index = 0;
+
+// function scrollStep() {
+//   container.style.transition = "transform 0.8s ease-in-out";
+//   container.style.transform = `translateY(-${index * sectionHeight}px)`;
+//   index++;
+
+//   // Reset seamlessly when reaching the original last section
+//   if (index > totalSections) {
+//     setTimeout(() => {
+//       container.style.transition = "none";
+//       container.style.transform = `translateY(0px)`;
+//       index = 1;
+//     }, 800); // match transition duration
+//   }
+// }
+
+// // Scroll every 3 seconds
+// setInterval(scrollStep, 2000);
+
+const container = document.getElementById("sectionsWrapper");
+
+if (container) {
+    const sectionHeight = 330;
+    const totalSections = 3;
+    const extraSpace = 20;
+
+    // Add top space inside the third section
+    const thirdSection = container.children[2];
+
+    if (thirdSection) {
+        thirdSection.style.paddingTop = "100px";
+        thirdSection.style.boxSizing = "border-box";
+    }
+
+    // Add space after the third section
+    if (thirdSection) {
+        thirdSection.style.marginBottom = `${extraSpace}px`;
+    }
+
+    // Duplicate sections for smooth looping
+    container.innerHTML += container.innerHTML;
+
+    let index = 0;
+
+    function scrollStep() {
+        container.style.transition = "transform 0.8s ease-in-out";
+        container.style.transform =
+            `translateY(-${index * sectionHeight}px)`;
+
+        index++;
+
+        if (index > totalSections) {
+            setTimeout(() => {
+                container.style.transition = "none";
+                container.style.transform = "translateY(0px)";
+                index = 1;
+            }, 800);
+        }
+    }
+
+    setInterval(scrollStep, 2000);
+}
 </script>
 <style>
 .icon {
@@ -2065,10 +2540,3824 @@ setInterval(runSearchAnimation, 6000);
     }, "-=0.4");
 </script>
 
+<script>
+  
+(function () {
+
+    function initializeHamburger() {
+
+        const menuBtn = document.getElementById("menuBtn");
+        const mobileMenu = document.getElementById("mobileMenu");
+
+        if (!menuBtn || !mobileMenu) {
+            console.warn("Hamburger or mobile menu element not found.");
+            return;
+        }
+
+        // Prevent duplicate initialization
+        if (menuBtn.dataset.menuInitialized === "true") {
+            return;
+        }
+
+        menuBtn.dataset.menuInitialized = "true";
+
+        const breakpoint = 1024;
+
+        // Get the three existing hamburger spans
+        const lines = menuBtn.querySelectorAll("span");
+
+        menuBtn.setAttribute("type", "button");
+        menuBtn.setAttribute("aria-controls", "mobileMenu");
+        menuBtn.setAttribute("aria-expanded", "false");
+
+        mobileMenu.setAttribute("aria-hidden", "true");
+
+        function isMobileOrTablet() {
+            return window.innerWidth < breakpoint;
+        }
+
+        function openMenu() {
+
+            if (!isMobileOrTablet()) return;
+
+            mobileMenu.classList.add("menu-open");
+            menuBtn.classList.add("active");
+
+            menuBtn.setAttribute("aria-expanded", "true");
+            mobileMenu.setAttribute("aria-hidden", "false");
+        }
+
+        function closeMenu() {
+
+            mobileMenu.classList.remove("menu-open");
+            menuBtn.classList.remove("active");
+
+            menuBtn.setAttribute("aria-expanded", "false");
+            mobileMenu.setAttribute("aria-hidden", "true");
+        }
+
+        // Hamburger click
+        menuBtn.addEventListener("click", function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (!isMobileOrTablet()) return;
+
+            if (mobileMenu.classList.contains("menu-open")) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+
+        });
+
+        // Close after selecting a menu link
+        mobileMenu.querySelectorAll("a").forEach(function (link) {
+
+            link.addEventListener("click", function () {
+                closeMenu();
+            });
+
+        });
+
+        // Close when clicking outside
+        document.addEventListener("click", function (event) {
+
+            if (!mobileMenu.classList.contains("menu-open")) {
+                return;
+            }
+
+            if (
+                !mobileMenu.contains(event.target) &&
+                !menuBtn.contains(event.target)
+            ) {
+                closeMenu();
+            }
+
+        });
+
+        // Close with Escape
+        document.addEventListener("keydown", function (event) {
+
+            if (event.key === "Escape") {
+                closeMenu();
+            }
+
+        });
+
+        // Handle screen resize
+        window.addEventListener("resize", function () {
+
+            if (!isMobileOrTablet()) {
+                closeMenu();
+            }
+
+        });
+
+        // Initial state
+        closeMenu();
+
+    }
+
+    if (document.readyState === "loading") {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            initializeHamburger,
+            { once: true }
+        );
+
+    } else {
+
+        initializeHamburger();
+
+    }
+
+})();
+
+</script>
+
+<style>
+  
+/* =====================================================
+   ABOUT HERO — RESPONSIVE FIX
+   HTML AND JAVASCRIPT REMAIN UNCHANGED
+===================================================== */
+/* =====================================================
+   GLOBAL HERO RESPONSIVE FIX
+===================================================== */
+
+.hero-border,
+.hero-border * {
+    box-sizing: border-box;
+}
+
+.hero-border {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+.hero-border nav {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.hero-border nav > a {
+    flex-shrink: 0;
+}
+
+.hero-border nav > a img {
+    display: block;
+    width: auto;
+    max-width: 150px;
+    height: 48px;
+    object-fit: contain;
+}
+
+.hero-border nav > div {
+    min-width: 0;
+}
+
+/* .hero-border nav ul {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+} */
+
+.hero-border nav ul li,
+.hero-border nav ul a {
+    white-space: nowrap;
+}
+
+/* =====================================================
+   MOBILE MENU
+===================================================== */
+
+#mobileMenu {
+    box-sizing: border-box;
+    width: min(335px, calc(100vw - 32px));
+    max-width: calc(100vw - 32px);
+    left: auto;
+    right: 0;
+    transform-origin: top right;
+    z-index: 100;
+}
+
+#mobileMenu a {
+    display: block;
+    white-space: nowrap;
+}
+
+#menuBtn {
+    flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+}
+
+/* =====================================================
+   HERO CONTENT WRAPPER
+===================================================== */
+
+.hero-border .relative.z-50.p-6 {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.hero-border .flex.flex-col.items-center.justify-center.text-center {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 12px;
+    padding-right: 12px;
+    overflow: visible;
+    align-items: center;
+    text-align: center;
+}
+
+/* =====================================================
+   MAIN HEADING
+===================================================== */
+
+.hero-border h2 {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center;
+    line-height: 1.25;
+    overflow: visible;
+}
+
+/* FIRST HEADING LINE */
+
+#line1 {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* =====================================================
+   SECOND HEADING LINE
+   THINGS + ONE + ANIMATED WORD
+===================================================== */
+
+.hero-border h2 > .flex.justify-center.items-center {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 0.12em;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 0;
+    white-space: nowrap;
+    overflow: visible;
+}
+
+/* THINGS ONE TEXT */
+
+#line2 {
+    display: flex;
+    flex: 0 0 auto;
+    min-width: 0;
+    white-space: nowrap;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+/* ANIMATED WORD SLOT */
+
+.hero-border h2 > .flex.justify-center.items-center > .relative {
+    position: relative;
+    flex: 0 1 auto;
+    width: clamp(115px, 27vw, 330px);
+    min-width: 0 !important;
+    max-width: 330px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    overflow: visible;
+}
+
+/* ANIMATED WORD */
+
+#swapWord {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: block;
+    width: max-content;
+    max-width: none;
+    white-space: nowrap;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+/* =====================================================
+   DESCRIPTION
+===================================================== */
+
+#heroPara {
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 12px;
+    padding-right: 12px;
+    text-align: center;
+    line-height: 1.6;
+    overflow-wrap: break-word;
+}
+
+/* =====================================================
+   LARGE DESKTOP — 1440px+
+===================================================== */
+
+@media (min-width: 1440px) {
+
+    .hero-border nav ul {
+        gap: 40px;
+    }
+
+    .hero-border .flex.flex-col.items-center.justify-center.text-center {
+        margin-top: 128px;
+    }
+
+    .hero-border h2 {
+        font-size: 48px;
+    }
+
+    .hero-border h2 > .flex.justify-center.items-center {
+        gap: 6px;
+    }
+
+    .hero-border h2 > .flex.justify-center.items-center > .relative {
+        width: 330px;
+    }
+
+    #heroPara {
+        font-size: 16px;
+    }
+}
+
+/* =====================================================
+   LAPTOP — 1025px TO 1439px
+===================================================== */
+
+@media (min-width: 1025px) and (max-width: 1439px) {
+
+    .hero-border nav ul {
+        gap: 22px;
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .hero-border nav ul a {
+        font-size: 14px;
+    }
+
+    .hero-border .flex.flex-col.items-center.justify-center.text-center {
+        margin-top: 110px;
+    }
+
+    .hero-border h2 {
+        font-size: clamp(36px, 3.6vw, 46px);
+    }
+
+    .hero-border h2 > .flex.justify-center.items-center > .relative {
+        width: clamp(220px, 25vw, 300px);
+    }
+
+    #heroPara {
+        max-width: 550px;
+    }
+}
+
+/* =====================================================
+   TABLET LANDSCAPE — 900px TO 1024px
+===================================================== */
+
+@media (min-width: 900px) and (max-width: 1024px) {
+
+    .hero-border nav {
+        gap: 8px;
+    }
+
+    .hero-border nav > a img {
+        height: 40px;
+        max-width: 115px;
+    }
+
+    .hero-border nav ul {
+        gap: 12px;
+        padding: 12px 14px;
+    }
+
+    .hero-border nav ul a {
+        font-size: 12px;
+    }
+
+    .hero-border .flex.flex-col.items-center.justify-center.text-center {
+        margin-top: 115px;
+    }
+
+    .hero-border h2 {
+        font-size: 38px;
+    }
+
+    .hero-border h2 > .flex.justify-center.items-center > .relative {
+        width: 230px;
+    }
+
+    #heroPara {
+        max-width: 500px;
+        font-size: 15px;
+    }
+}
+
+/* =====================================================
+   TABLET PORTRAIT — 768px TO 899px
+===================================================== */
+
+@media (min-width: 768px) and (max-width: 899px) {
+
+    .hero-border nav {
+        gap: 8px;
+    }
+
+    .hero-border nav > a img {
+        height: 38px;
+        max-width: 105px;
+    }
+
+    .hero-border nav ul {
+        gap: 9px;
+        padding: 11px 12px;
+    }
+
+    .hero-border nav ul a {
+        font-size: 11px;
+    }
+
+    .hero-border .flex.flex-col.items-center.justify-center.text-center {
+        margin-top: 110px;
+    }
+
+    .hero-border h2 {
+        font-size: 34px;
+        letter-spacing: -0.8px;
+    }
+
+    .hero-border h2 > .flex.justify-center.items-center {
+        gap: 3px;
+    }
+
+    .hero-border h2 > .flex.justify-center.items-center > .relative {
+        width: 190px;
+    }
+
+    #heroPara {
+        max-width: 460px;
+        font-size: 14px;
+    }
+}
+
+/* =====================================================
+   MOBILE AND SMALL TABLETS — BELOW 767px
+===================================================== */
+
+@media (max-width: 767px) {
+
+    .hero-border {
+        width: calc(100% - 20px) !important;
+        max-width: 100%;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        overflow: hidden;
+        border-radius: 26px;
+    }
+
+    /* NAVBAR */
+
+    .hero-border .relative.z-50.p-6 {
+        padding: 16px !important;
+    }
+
+    .hero-border nav {
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .hero-border nav > a img {
+        height: 38px;
+        max-width: 125px;
+    }
+
+    #menuBtn {
+        width: 42px;
+        height: 42px;
+    }
+
+    /* MOBILE MENU */
+
+    #mobileMenu {
+        position: absolute;
+        top: 60px;
+        right: 0;
+        left: auto;
+        width: min(300px, calc(100vw - 48px));
+        max-width: calc(100vw - 48px);
+        height: auto;
+        min-height: 0;
+        padding: 8px 0;
+        border-radius: 18px;
+    }
+
+    #mobileMenu a {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+
+    /* HERO CONTENT */
+
+    .hero-border .flex.flex-col.items-center.justify-center.text-center {
+        width: 100%;
+        max-width: 100%;
+        margin-top: clamp(75px, 13vh, 110px) !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        padding: 0 8px;
+        overflow: visible;
+    }
+
+    /* HEADING */
+
+    .hero-border h2 {
+        width: 100%;
+        max-width: 100%;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        font-size: clamp(23px, 5.2vw, 36px);
+        line-height: 1.3;
+        letter-spacing: -0.7px;
+    }
+
+    #line1 {
+        width: 100%;
+        margin: 0 !important;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    /* SECOND LINE */
+
+    .hero-border h2 > .flex.justify-center.items-center {
+        width: 100%;
+        justify-content: center;
+        gap: 3px;
+        margin: 0 auto;
+        overflow: visible;
+    }
+
+    #line2 {
+        flex-shrink: 0;
+        font-size: inherit;
+    }
+
+    .hero-border h2 > .flex.justify-center.items-center > .relative {
+        width: clamp(105px, 29vw, 200px);
+        min-width: 0 !important;
+        flex-shrink: 1;
+    }
+
+    #swapWord {
+        font-size: inherit;
+        white-space: nowrap;
+    }
+
+    /* PARAGRAPH */
+
+    #heroPara {
+        width: 100%;
+        max-width: 380px;
+        margin: 16px auto 0 !important;
+        padding: 0 8px;
+        font-size: 13px;
+        line-height: 1.65;
+        text-align: center;
+    }
+}
+
+/* =====================================================
+   MOBILE — 481px TO 767px
+===================================================== */
+
+@media (min-width: 481px) and (max-width: 767px) {
+
+    .hero-border h2 {
+        font-size: clamp(29px, 5vw, 36px);
+    }
+
+    .hero-border .flex.flex-col.items-center.justify-center.text-center {
+        margin-top: 100px !important;
+    }
+
+    .hero-border h2 > .flex.justify-center.items-center > .relative {
+        width: clamp(150px, 28vw, 200px);
+    }
+
+    #heroPara {
+        max-width: 420px;
+        font-size: 14px;
+    }
+}
+
+/* =====================================================
+   MOBILE — 376px TO 480px
+===================================================== */
+
+@media (min-width: 376px) and (max-width: 480px) {
+
+    .hero-border h2 {
+        font-size: clamp(22px, 6vw, 28px);
+        letter-spacing: -0.6px;
+    }
+
+    .hero-border .flex.flex-col.items-center.justify-center.text-center {
+        margin-top: 90px !important;
+    }
+
+    .hero-border h2 > .flex.justify-center.items-center {
+        gap: 2px;
+    }
+
+    .hero-border h2 > .flex.justify-center.items-center > .relative {
+        width: clamp(110px, 29vw, 140px);
+    }
+
+    #heroPara {
+        max-width: 330px;
+        font-size: 12px;
+    }
+}
+
+/* =====================================================
+   SMALL MOBILE — 340px TO 375px
+===================================================== */
+
+@media (min-width: 340px) and (max-width: 375px) {
+
+    .hero-border nav > a img {
+        height: 34px;
+        max-width: 110px;
+    }
+
+    #menuBtn {
+        width: 39px;
+        height: 39px;
+    }
+
+    .hero-border .flex.flex-col.items-center.justify-center.text-center {
+        margin-top: 82px !important;
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+
+    .hero-border h2 {
+        font-size: clamp(20px, 5.8vw, 23px);
+        letter-spacing: -0.5px;
+        line-height: 1.4;
+    }
+
+    .hero-border h2 > .flex.justify-center.items-center {
+        gap: 2px;
+    }
+
+    .hero-border h2 > .flex.justify-center.items-center > .relative {
+        width: 105px;
+    }
+
+    #heroPara {
+        max-width: 290px;
+        font-size: 11px;
+        line-height: 1.6;
+    }
+}
+
+/* =====================================================
+   EXTRA SMALL MOBILE — BELOW 340px
+===================================================== */
+
+@media (max-width: 339px) {
+
+    .hero-border nav > a img {
+        height: 30px;
+        max-width: 100px;
+    }
+
+    #menuBtn {
+        width: 38px;
+        height: 38px;
+    }
+
+    .hero-border .flex.flex-col.items-center.justify-center.text-center {
+        margin-top: 72px !important;
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+
+    .hero-border h2 {
+        font-size: 18px;
+        letter-spacing: -0.4px;
+        line-height: 1.4;
+    }
+
+    .hero-border h2 > .flex.justify-center.items-center {
+        gap: 1px;
+    }
+
+    .hero-border h2 > .flex.justify-center.items-center > .relative {
+        width: 95px;
+    }
+
+    #heroPara {
+        max-width: 265px;
+        font-size: 11px;
+    }
+}
+/* FIX: ALIGN THINGS ONE AND ANIMATED WORD ON THE SAME LINE */
+
+.hero-border h2 > .flex.justify-center.items-center {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+#line2 {
+    display: flex !important;
+    align-items: center !important;
+    height: 100%;
+    line-height: 1 !important;
+}
+
+#thingsText,
+#oneText {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1 !important;
+}
+
+.hero-border h2 > .flex.justify-center.items-center > .relative {
+    display: flex !important;
+    align-items: center !important;
+    height: 100%;
+}
+
+#swapWord {
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+}
+/* =========================================
+   LAPTOP & DESKTOP - PAGE WIDTH FIX
+========================================= */
+
+@media (min-width: 1025px) and (max-width: 1439px) {
+
+    /* Prevent horizontal overflow */
+    html,
+    body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* Main page sections */
+    body > *,
+    main,
+    main > section {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Keep hero within a centered layout */
+    .hero-border {
+        width: calc(100% - 64px) !important;
+        max-width: 1250px !important;
+        margin-left: auto;
+        margin-right: auto;
+        box-sizing: border-box;
+    }
+
+    .hero-border nav {
+        width: 100%;
+    }
+
+    .hero-border nav ul {
+        gap: clamp(14px, 1.5vw, 22px);
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .hero-border nav ul a {
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    .hero-border .flex.flex-col.items-center.justify-center.text-center {
+        margin-top: clamp(90px, 8vw, 110px);
+        max-width: 100%;
+        padding-left: 20px;
+        padding-right: 20px;
+        box-sizing: border-box;
+    }
+
+    .hero-border h2 {
+        font-size: clamp(36px, 3.6vw, 46px);
+        max-width: 100%;
+    }
+
+    .hero-border h2 > .flex.justify-center.items-center {
+        max-width: 100%;
+        gap: 8px;
+    }
+
+    .hero-border h2 > .flex.justify-center.items-center > .relative {
+        width: clamp(200px, 25vw, 300px);
+        min-width: 0;
+    }
+
+    #heroPara {
+        width: 100%;
+        max-width: 550px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* About image and glass card */
+    .hero-border + div {
+        width: calc(100% - 64px);
+        max-width: 1250px;
+        margin-left: auto;
+        margin-right: auto;
+        box-sizing: border-box;
+    }
+
+    .hero-border + div > div:first-child {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Founder section */
+    section.w-full.px-6.py-10 {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    section.w-full.px-6.py-10 > div {
+        max-width: 1200px;
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        box-sizing: border-box;
+    }
+
+    section.w-full.px-6.py-10 .grid {
+        width: 100%;
+        grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+        gap: 35px;
+    }
+
+    section.w-full.px-6.py-10 p {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    /* All images should stay inside their sections */
+    section img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Prevent cards and grids from stretching */
+    .cards-wrapper,
+    .cards-scale-wrapper {
+        width: calc(100% - 64px);
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+        box-sizing: border-box;
+    }
+
+    .service-card {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    /* Prevent long content from pushing the page width */
+    section,
+    section > div,
+    .grid,
+    .flex {
+        min-width: 0;
+        box-sizing: border-box;
+    }
+}
 
 
+/* =========================================
+   LARGE DESKTOP
+========================================= */
+
+@media (min-width: 1440px) {
+
+    html,
+    body {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    .hero-border {
+        max-width: 1400px;
+        width: calc(100% - 80px);
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-border + div {
+        max-width: 1350px;
+        width: calc(100% - 80px);
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .cards-wrapper,
+    .cards-scale-wrapper {
+        max-width: 1300px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
 
 
+/* =========================================
+   ABOUT IMAGE SECTION
+========================================= */
+
+.about-main-wrapper,
+.about-main-wrapper * {
+    box-sizing: border-box;
+}
+
+/* =========================================
+   MAIN IMAGE LAYOUT
+========================================= */
+
+.about-main-wrapper {
+    position: relative;
+    width: calc(100% - 48px);
+    max-width: 1450px;
+    margin: -250px auto 0;
+    padding: 0;
+    z-index: 99;
+}
+
+.about-image-box {
+    width: 100%;
+    max-width: 1257px;
+    height: 513px;
+    margin: 0 auto;
+
+    position: relative;
+    overflow: hidden;
+
+    border: 5px solid #fff;
+    border-radius: 28px;
+
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.25);
+}
+
+.about-image-box picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.about-main-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* =========================================
+   INFORMATION CARD
+========================================= */
+
+.about-info-card {
+    position: relative;
+    z-index: 5;
+
+    display: flex;
+    align-items: center;
+
+    width: calc(100% - 80px);
+    max-width: 1163px;
+    min-height: 209px;
+
+    margin: -185px auto 0;
+    padding: 24px 36px;
+
+    gap: 28px;
+
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 28px;
+
+    background: rgba(255,255,255,0.30);
+
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+
+    box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+}
+
+/* =========================================
+   N-ME LOGO CIRCLE
+========================================= */
+
+.about-logo-circle {
+    position: relative;
+
+    flex: 0 0 141px;
+    width: 141px;
+    height: 141px;
+
+    aspect-ratio: 1 / 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.about-logo-ring {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    border: 1px solid rgba(255,255,255,0.95);
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+.about-logo-image {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+/* =========================================
+   CONTENT LAYOUT
+========================================= */
+
+.about-info-content {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 900px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.about-info-content h2 {
+    margin: 0;
+
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.3;
+
+    color: #1A1A1A;
+
+    overflow-wrap: break-word;
+}
+
+.about-info-content p {
+    margin: 12px 0 0;
+
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.6;
+
+    color: rgba(26,26,26,0.9);
+
+    text-align: justify;
+    overflow-wrap: anywhere;
+}
+
+/* =========================================
+   LAPTOP
+   1025px - 1439px
+========================================= */
+
+@media (min-width: 1025px) and (max-width: 1439px) {
+
+    .about-main-wrapper {
+        width: calc(100% - 64px);
+        margin-top: -220px;
+    }
+
+    .about-image-box {
+        height: clamp(400px, 38vw, 500px);
+    }
+
+    .about-info-card {
+        width: calc(100% - 100px);
+        min-height: 185px;
+
+        margin-top: -165px;
+        padding: 22px 28px;
+        gap: 22px;
+    }
+
+    .about-logo-circle {
+        flex-basis: 115px;
+        width: 115px;
+        height: 115px;
+    }
+
+    .about-info-content h2 {
+        font-size: clamp(25px, 2.2vw, 30px);
+    }
+
+    .about-info-content p {
+        font-size: clamp(14px, 1.15vw, 16px);
+        line-height: 1.5;
+    }
+}
+
+/* =========================================
+   TABLET
+   768px - 1024px
+========================================= */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    .about-main-wrapper {
+        width: calc(100% - 40px);
+        margin-top: -150px;
+    }
+
+    .about-image-box {
+        height: 410px;
+    }
+
+    .about-info-card {
+        width: calc(100% - 40px);
+        min-height: 170px;
+
+        margin-top: -135px;
+        padding: 20px 24px;
+        gap: 18px;
+
+        border-radius: 24px;
+    }
+
+    .about-logo-circle {
+        flex-basis: 100px;
+        width: 100px;
+        height: 100px;
+    }
+
+    .about-info-content h2 {
+        font-size: 25px;
+    }
+
+    .about-info-content p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+}
+
+/* =========================================
+   MOBILE
+   481px - 767px
+========================================= */
+
+@media (min-width: 481px) and (max-width: 767px) {
+
+    .about-main-wrapper {
+        width: calc(100% - 32px);
+        margin-top: -90px;
+    }
+
+    .about-image-box {
+        height: 460px;
+        border-radius: 24px;
+    }
+
+    .about-info-card {
+        width: calc(100% - 24px);
+        min-height: 0;
+
+        margin-top: -155px;
+        padding: 22px;
+
+        gap: 16px;
+        border-radius: 24px;
+
+        background: linear-gradient(
+            to top,
+            #FFFFFF,
+            #D0D0D0
+        );
+
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .about-logo-circle {
+        flex: 0 0 76px;
+        width: 76px;
+        height: 76px;
+        align-self: flex-start;
+    }
+
+    .about-info-content h2 {
+        font-size: 20px;
+    }
+
+    .about-info-content p {
+        font-size: 14px;
+        line-height: 1.5;
+        text-align: left;
+    }
+}
+
+/* =========================================
+   SMALL MOBILE
+   480px AND BELOW
+========================================= */
+
+@media (max-width: 480px) {
+
+    .about-main-wrapper {
+        width: calc(100% - 24px);
+        margin-top: -65px;
+    }
+
+    .about-image-box {
+        height: clamp(350px, 110vw, 430px);
+        border-width: 4px;
+        border-radius: 22px;
+    }
+
+    .about-info-card {
+        width: calc(100% - 16px);
+        min-height: 0;
+
+        margin-top: -125px;
+        padding: 20px 16px;
+
+        gap: 12px;
+        border-radius: 22px;
+
+        background: linear-gradient(
+            to top,
+            #FFFFFF,
+            #D0D0D0
+        );
+
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .about-logo-circle {
+        flex: 0 0 clamp(58px, 18vw, 76px);
+        width: clamp(58px, 18vw, 76px);
+        height: clamp(58px, 18vw, 76px);
+
+        align-self: flex-start;
+    }
+
+    .about-logo-image {
+        padding: 3px;
+    }
+
+    .about-info-content {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    .about-info-content h2 {
+        font-size: clamp(17px, 4.8vw, 20px);
+        line-height: 1.35;
+    }
+
+    .about-info-content p {
+        margin-top: 8px;
+        font-size: 13px;
+        line-height: 1.5;
+        text-align: left;
+    }
+}
+
+/* =========================================
+   EXTRA SMALL MOBILE
+========================================= */
+
+@media (max-width: 350px) {
+
+    .about-main-wrapper {
+        width: calc(100% - 20px);
+    }
+
+    .about-info-card {
+        width: calc(100% - 10px);
+        padding: 16px 12px;
+        gap: 9px;
+        margin-top: -110px;
+    }
+
+    .about-logo-circle {
+        flex-basis: 54px;
+        width: 54px;
+        height: 54px;
+    }
+
+    .about-info-content h2 {
+        font-size: 16px;
+    }
+
+    .about-info-content p {
+        font-size: 12px;
+        line-height: 1.45;
+    }
+}
+
+/* =========================================
+   LARGE DESKTOP
+========================================= */
+
+@media (min-width: 1440px) {
+
+    .about-main-wrapper {
+        margin-top: -250px;
+    }
+
+    .about-image-box {
+        height: 513px;
+    }
+
+    .about-info-card {
+        margin-top: -185px;
+    }
+}
+
+@media (max-width: 1023px) {
+    #mobileMenu {
+        left: auto !important;
+        right: 18px !important;
+        transform: translateY(-8px) scaleY(0) !important;
+    }
+
+    #mobileMenu.menu-open {
+        transform: translateY(0) scaleY(1) !important;
+    }
+}
+#menuBtn.active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+#menuBtn.active span:nth-child(2) {
+    opacity: 0;
+}
+
+#menuBtn.active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* ==========================================
+   ABOUT PAGE - RESPONSIVE IMAGE & CONTENT
+========================================== */
+
+/* Main wrapper */
+.hero-border + div {
+    box-sizing: border-box;
+}
+
+/* Image wrapper */
+.hero-border + div > div:first-child {
+    width: 100%;
+    max-width: 1257px;
+    height: clamp(300px, 40vw, 513px);
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Images */
+.hero-border + div > div:first-child img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* Desktop content card */
+@media (min-width: 768px) {
+
+    .hero-border + div {
+        margin-top: -250px !important;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .hero-border + div > div:nth-child(2) {
+        height: auto;
+        min-height: 209px;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 60px);
+        max-width: 1163px;
+        box-sizing: border-box;
+        padding: 24px 32px;
+    }
+
+    .hero-border + div > div:nth-child(2) > div:last-child {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .hero-border + div > div:nth-child(2) p {
+        line-height: 1.6;
+        overflow-wrap: break-word;
+    }
+}
+
+/* Mobile and tablet */
+@media (max-width: 767px) {
+
+    .hero-border + div {
+        margin-top: -329px !important;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Responsive image */
+    .hero-border + div > div:first-child {
+        height: clamp(260px, 75vw, 420px) !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 24px;
+    }
+
+    /* Hide desktop card */
+    .hero-border + div > div:nth-child(2) {
+        display: none !important;
+    }
+
+    /* Mobile content card */
+    .hero-border + div > div:nth-child(3) {
+        position: relative !important;
+        width: 100% !important;
+        max-width: 500px;
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 16px auto 30px !important;
+        padding: 22px 20px !important;
+        box-sizing: border-box;
+        display: flex !important;
+        align-items: flex-start !important;
+        gap: 0 !important;
+        overflow: visible !important;
+    }
+
+    /* Mobile text */
+    .hero-border + div > div:nth-child(3) > div {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        margin-top: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box;
+    }
+
+    .hero-border + div > div:nth-child(3) h2 {
+        font-size: clamp(18px, 5vw, 22px) !important;
+        line-height: 1.4;
+    }
+
+    .hero-border + div > div:nth-child(3) p {
+        font-size: clamp(13px, 3.5vw, 15px) !important;
+        line-height: 1.6 !important;
+        margin-top: 12px !important;
+        text-align: left !important;
+        overflow-wrap: break-word;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 380px) {
+
+    .hero-border + div {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    .hero-border + div > div:nth-child(3) {
+        padding: 18px 15px !important;
+    }
+}
+
+/* Large desktop */
+@media (min-width: 1440px) {
+
+    .hero-border + div > div:first-child {
+        height: 513px;
+    }
+}
+
+/* ==========================================
+   ABOUT PAGE - ALL DEVICES
+   IMAGE WITH CONTENT CARD INSIDE
+========================================== */
+
+/* Main wrapper */
+.hero-border + div {
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* Image wrapper */
+.hero-border + div > div:first-child {
+    width: 100%;
+    max-width: 1257px;
+    height: clamp(450px, 48vw, 650px);
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+    border-radius: 28px;
+}
+
+/* Images */
+.hero-border + div > div:first-child img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* Desktop content card */
+.hero-border + div > div:nth-child(2) {
+    position: absolute !important;
+    left: 50% !important;
+    bottom: 25px !important;
+    transform: translateX(-50%) !important;
+
+    width: calc(100% - 80px) !important;
+    max-width: 1163px !important;
+    min-height: 209px !important;
+    height: auto !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    padding: 24px 32px !important;
+    box-sizing: border-box;
+}
+
+/* Desktop card text */
+.hero-border + div > div:nth-child(2) > div:last-child {
+    flex: 1;
+    min-width: 0;
+}
+
+.hero-border + div > div:nth-child(2) p {
+    line-height: 1.6;
+    overflow-wrap: break-word;
+}
+
+/* ==========================================
+   TABLET
+========================================== */
+@media (min-width: 768px) and (max-width: 1023px) {
+
+    .hero-border + div {
+        margin-top: -250px !important;
+    }
+
+    .hero-border + div > div:first-child {
+        height: 550px !important;
+    }
+
+    .hero-border + div > div:nth-child(2) {
+        width: calc(100% - 50px) !important;
+        bottom: 20px !important;
+        padding: 20px 24px !important;
+        min-height: 180px !important;
+    }
+
+    .hero-border + div > div:nth-child(2) > div:first-child {
+        width: 100px !important;
+        height: 100px !important;
+        flex-shrink: 0;
+    }
+
+    .hero-border + div > div:nth-child(2) h2 {
+        font-size: 25px !important;
+    }
+
+    .hero-border + div > div:nth-child(2) p {
+        font-size: 14px !important;
+        line-height: 1.5 !important;
+    }
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+@media (max-width: 767px) {
+
+    .hero-border + div {
+        margin-top: -329px !important;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    /* Mobile image */
+    .hero-border + div > div:first-child {
+        height: 550px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 24px;
+    }
+
+    /* Hide desktop card */
+    .hero-border + div > div:nth-child(2) {
+        display: none !important;
+    }
+
+    /* Mobile card inside image */
+    .hero-border + div > div:nth-child(3) {
+        position: absolute !important;
+        left: 50% !important;
+        bottom: 20px !important;
+        top: auto !important;
+        transform: translateX(-50%) !important;
+
+        width: calc(100% - 56px) !important;
+        max-width: 500px !important;
+        height: auto !important;
+        min-height: 0 !important;
+
+        margin: 0 !important;
+        padding: 22px 20px !important;
+
+        display: flex !important;
+        align-items: flex-start !important;
+        gap: 0 !important;
+
+        box-sizing: border-box;
+        border-radius: 24px;
+        z-index: 5;
+    }
+
+    /* Mobile text wrapper */
+    .hero-border + div > div:nth-child(3) > div {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box;
+    }
+
+    .hero-border + div > div:nth-child(3) h2 {
+        font-size: clamp(18px, 5vw, 22px) !important;
+        line-height: 1.4 !important;
+    }
+
+    .hero-border + div > div:nth-child(3) p {
+        font-size: clamp(13px, 3.5vw, 15px) !important;
+        line-height: 1.6 !important;
+        margin-top: 12px !important;
+        text-align: left !important;
+        overflow-wrap: break-word;
+    }
+}
+
+/* Small mobile */
+@media (max-width: 380px) {
+
+    .hero-border + div {
+        padding-left: 22px !important;
+        padding-right: 22px !important;
+    }
+
+    .hero-border + div > div:nth-child(3) {
+        width: calc(100% - 40px) !important;
+        padding: 18px 15px !important;
+    }
+}
+
+/* Large desktop */
+@media (min-width: 1440px) {
+
+    .hero-border + div > div:first-child {
+        height: 650px !important;
+    }
+}
+/* Space around content cards inside the image */
+
+/* Desktop and tablet */
+@media (min-width: 768px) {
+    .hero-border + div > div:nth-child(2) {
+        bottom: 35px !important;
+        width: calc(100% - 100px) !important;
+    }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    .hero-border + div > div:nth-child(3) {
+        bottom: 25px !important;
+        width: calc(100% - 60px) !important;
+    }
+}
+
+/* ==========================================
+   ABOUT FOUNDER - RESPONSIVE DESIGN
+========================================== */
+
+/* Main section */
+section:has(> div > div.grid.grid-cols-1) {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Main container */
+section:has(> div > div.grid.grid-cols-1) > div {
+    width: 100%;
+    height: auto !important;
+    /* min-height: 393px; */
+    box-sizing: border-box;
+}
+
+/* Grid layout */
+section:has(> div > div.grid.grid-cols-1) .grid.grid-cols-1 {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.7fr);
+    gap: 35px;
+}
+
+/* Left content */
+section:has(> div > div.grid.grid-cols-1) .grid > div:first-child {
+    min-width: 0;
+    width: 100%;
+}
+
+/* Description */
+section:has(> div > div.grid.grid-cols-1) .grid > div:first-child > p {
+    width: 100% !important;
+    max-width: 100% !important;
+    line-height: 1.7;
+    overflow-wrap: break-word;
+}
+
+/* Founder name and LinkedIn row */
+section:has(> div > div.grid.grid-cols-1) .grid > div:first-child > div {
+    width: 100%;
+    flex-wrap: wrap;
+    row-gap: 18px;
+}
+
+/* LinkedIn action */
+section:has(> div > div.grid.grid-cols-1) .grid > div:first-child > div > div:last-child {
+    padding-left: 0 !important;
+    align-items: flex-start;
+}
+
+/* Right image */
+section:has(> div > div.grid.grid-cols-1) .grid > div:last-child {
+    margin-left: 0 !important;
+    margin-top: 0 !important;
+    padding-left: 0 !important;
+    width: 100%;
+    justify-content: center;
+}
+
+/* CEO image */
+section:has(> div > div.grid.grid-cols-1) .grid > div:last-child img {
+    width: clamp(220px, 25vw, 320px);
+    height: clamp(220px, 25vw, 320px);
+    object-fit: cover;
+}
+
+/* ==========================================
+   TABLET
+========================================== */
+@media (min-width: 768px) and (max-width: 1023px) {
+
+    section:has(> div > div.grid.grid-cols-1) {
+        padding: 40px 24px;
+    }
+
+    section:has(> div > div.grid.grid-cols-1) > div {
+        padding: 28px !important;
+    }
+
+    section:has(> div > div.grid.grid-cols-1) .grid.grid-cols-1 {
+        grid-template-columns: minmax(0, 1fr) 230px;
+        gap: 20px;
+    }
+
+    section:has(> div > div.grid.grid-cols-1) .grid > div:first-child h2 {
+        font-size: 28px !important;
+    }
+
+    section:has(> div > div.grid.grid-cols-1) .grid > div:first-child > p {
+        font-size: 14px !important;
+    }
+
+    section:has(> div > div.grid.grid-cols-1) .grid > div:last-child img {
+        width: 220px;
+        height: 220px;
+    }
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+@media (max-width: 767px) {
+
+    section:has(> div > div.grid.grid-cols-1) {
+        padding: 30px 16px;
+    }
+
+    section:has(> div > div.grid.grid-cols-1) > div {
+        padding: 24px 20px !important;
+        border-radius: 28px !important;
+    }
+
+    section:has(> div > div.grid.grid-cols-1) .grid.grid-cols-1 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    section:has(> div > div.grid.grid-cols-1) .grid > div:first-child h2 {
+        font-size: 24px !important;
+        margin-bottom: 14px;
+    }
+
+    section:has(> div > div.grid.grid-cols-1) .grid > div:first-child > span {
+        font-size: 12px !important;
+    }
+
+    section:has(> div > div.grid.grid-cols-1) .grid > div:first-child > p {
+        width: 100% !important;
+        font-size: 14px !important;
+        line-height: 1.7 !important;
+        margin-bottom: 20px;
+    }
+
+    /* Name and LinkedIn */
+    section:has(> div > div.grid.grid-cols-1) .grid > div:first-child > div {
+        display: flex;
+        align-items: flex-start !important;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    section:has(> div > div.grid.grid-cols-1) .grid > div:first-child > div > div:first-child {
+        min-width: 0;
+    }
+
+    section:has(> div > div.grid.grid-cols-1) .grid > div:first-child > div > div:last-child {
+        flex-shrink: 0;
+        padding-left: 0 !important;
+        align-items: flex-start;
+    }
+
+    section:has(> div > div.grid.grid-cols-1) .grid > div:first-child > div > div:last-child > p {
+        font-size: 12px !important;
+    }
+
+    section:has(> div > div.grid.grid-cols-1) .grid > div:first-child > div > div:last-child a {
+        width: 110px !important;
+        height: 32px !important;
+    }
+
+    /* Show CEO image on mobile */
+    section:has(> div > div.grid.grid-cols-1) .grid > div:last-child {
+        display: flex !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        justify-content: center;
+    }
+
+    section:has(> div > div.grid.grid-cols-1) .grid > div:last-child img {
+        width: 210px;
+        height: 210px;
+    }
+}
+
+/* Small mobile */
+@media (max-width: 380px) {
+
+    section:has(> div > div.grid.grid-cols-1) > div {
+        padding: 20px 15px !important;
+    }
+
+    section:has(> div > div.grid.grid-cols-1) .grid > div:first-child > div {
+        gap: 10px;
+    }
+
+    section:has(> div > div.grid.grid-cols-1) .grid > div:first-child > div > div:last-child a {
+        width: 100px !important;
+    }
+
+    section:has(> div > div.grid.grid-cols-1) .grid > div:last-child img {
+        width: 180px;
+        height: 180px;
+    }
+}
 
 
+/* =====================================================
+   1. MAIN EXPERIENCE SECTION
+===================================================== */
+
+section:has(#backCard) {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+section:has(#backCard) > div:nth-child(2) > div.grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 0.66fr) minmax(0, 1fr) !important;
+    gap: 24px !important;
+    align-items: stretch !important;
+    width: 100% !important;
+}
+
+/* Both main containers */
+section:has(#backCard) > div:nth-child(2) > div.grid > div {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    min-height: 421px !important;
+    height: 100% !important;
+    box-sizing: border-box !important;
+    border-radius: 28px !important;
+}
+
+/* =====================================================
+   2. MY JOB CONTAINER
+===================================================== */
+
+section:has(#backCard) > div:nth-child(2) > div.grid > div:last-child {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 36px 40px 24px !important;
+    overflow: hidden !important;
+    min-width: 0 !important;
+}
+
+/* My Job heading */
+section:has(#backCard) > div:nth-child(2) > div.grid > div:last-child > h2 {
+    margin: 0 0 10px !important;
+    line-height: 1.3 !important;
+}
+
+/* My Job description */
+section:has(#backCard) > div:nth-child(2) > div.grid > div:last-child > p {
+    margin: 0 !important;
+    line-height: 1.55 !important;
+    max-width: 390px !important;
+}
+
+/* =====================================================
+   3. ANIMATION AREA
+===================================================== */
+
+section:has(#backCard) div:has(> #backCard) {
+    position: relative !important;
+    display: block !important;
+
+    width: calc(100% + 80px) !important;
+    height: 260px !important;
+
+    margin: 32px -40px 0 !important;
+    padding: 0 !important;
+
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    isolation: isolate !important;
+}
+
+/* =====================================================
+   4. COOK AND SALES CARDS
+===================================================== */
+
+#backCard,
+#frontCard {
+    position: absolute !important;
+
+    width: 62% !important;
+    max-width: 469px !important;
+    min-width: 0 !important;
+
+    height: 144px !important;
+    min-height: 144px !important;
+
+    padding: 12px 16px !important;
+    box-sizing: border-box !important;
+
+    display: block !important;
+    overflow: hidden !important;
+
+    border-radius: 19px !important;
+    transform-origin: center center !important;
+}
+
+/* Cook: behind, left */
+#backCard {
+    top: 56px !important;
+    left: 4% !important;
+    right: auto !important;
+    z-index: 1 !important;
+}
+
+/* Sales Man: front, right */
+#frontCard {
+    top: 0 !important;
+    right: 4% !important;
+    left: auto !important;
+    z-index: 3 !important;
+}
+
+/* =====================================================
+   5. INNER ROW: ICON + CONTENT
+   This matches your actual HTML:
+   <div class="flex items-start gap-4">
+       <div>ICON</div>
+       <div>CONTENT</div>
+   </div>
+===================================================== */
+
+#backCard > .flex.items-start.gap-4,
+#frontCard > .flex.items-start.gap-4 {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+
+    gap: 14px !important;
+    box-sizing: border-box !important;
+}
+
+/* =====================================================
+   6. FIXED ICON AREA
+===================================================== */
+
+#backCard > .flex.items-start.gap-4 > div:first-child,
+#frontCard > .flex.items-start.gap-4 > div:first-child {
+    flex: 0 0 82px !important;
+
+    width: 82px !important;
+    min-width: 82px !important;
+    max-width: 82px !important;
+
+    height: 82px !important;
+    min-height: 82px !important;
+    max-height: 82px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+/* Cook and Sales images */
+#backCard > .flex.items-start.gap-4 > div:first-child img,
+#frontCard > .flex.items-start.gap-4 > div:first-child img {
+    display: block !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    max-width: 100% !important;
+    max-height: 100% !important;
+
+    object-fit: contain !important;
+    flex-shrink: 0 !important;
+}
+
+/* =====================================================
+   7. CONTENT AREA
+===================================================== */
+
+#backCard > .flex.items-start.gap-4 > div:last-child,
+#frontCard > .flex.items-start.gap-4 > div:last-child {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+
+    flex: 1 1 0% !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    height: 100% !important;
+
+    gap: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+}
+
+/* Job title */
+#backCard > .flex.items-start.gap-4 > div:last-child > h2,
+#frontCard > .flex.items-start.gap-4 > div:last-child > h2 {
+    display: block !important;
+    width: 100% !important;
+
+    margin: 0 0 5px !important;
+    padding: 0 !important;
+
+    font-size: 16px !important;
+    line-height: 1.25 !important;
+    font-weight: 600 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Job description */
+#backCard > .flex.items-start.gap-4 > div:last-child > p,
+#frontCard > .flex.items-start.gap-4 > div:last-child > p {
+    display: block !important;
+    width: 100% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+}
+
+/* =====================================================
+   8. LOCATION + APPLY BUTTON ROW
+===================================================== */
+
+#backCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between,
+#frontCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    gap: 8px !important;
+    margin: 13px 0 0 !important;
+}
+
+/* Location paragraph */
+#backCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between > p,
+#frontCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between > p {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    width: auto !important;
+
+    gap: 5px !important;
+    margin: 0 !important;
+
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Location icon - fixed size */
+#backCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between > p img,
+#frontCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between > p img {
+    display: block !important;
+
+    width: 13px !important;
+    min-width: 13px !important;
+    max-width: 13px !important;
+
+    height: 13px !important;
+    min-height: 13px !important;
+    max-height: 13px !important;
+
+    object-fit: contain !important;
+    flex: 0 0 13px !important;
+}
+
+/* =====================================================
+   9. APPLY NOW BUTTON
+===================================================== */
+
+#backCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between > button,
+#frontCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between > button {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    flex: 0 0 89px !important;
+
+    width: 89px !important;
+    min-width: 89px !important;
+    max-width: 89px !important;
+
+    height: 30px !important;
+    min-height: 30px !important;
+
+    margin: 0 !important;
+    padding: 0 8px !important;
+
+    border-radius: 999px !important;
+    white-space: nowrap !important;
+
+    font-size: 12px !important;
+    line-height: 1 !important;
+    box-sizing: border-box !important;
+}
+
+/* Button text */
+#backCard button span,
+#frontCard button span {
+    font-size: 12px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+}
+
+/* =====================================================
+   10. SALES CARD DOT MENU
+===================================================== */
+
+#frontCard > .absolute.top-4.right-4 {
+    position: absolute !important;
+    top: 12px !important;
+    right: 14px !important;
+    z-index: 5 !important;
+    line-height: 1 !important;
+}
+
+/* =====================================================
+   11. CLICK ARROW
+===================================================== */
+
+#clickArrow {
+    position: absolute !important;
+    z-index: 10 !important;
+
+    width: 38px !important;
+    height: 38px !important;
+
+    pointer-events: none !important;
+}
+
+#clickArrow img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+}
+
+/* =====================================================
+   12. TABLET
+   Both main containers stay side by side.
+===================================================== */
+
+@media (min-width: 768px) and (max-width: 1100px) {
+
+    section:has(#backCard) > div:nth-child(2) > div.grid {
+        grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr) !important;
+        gap: 16px !important;
+    }
+
+    section:has(#backCard) > div:nth-child(2) > div.grid > div {
+        min-height: 400px !important;
+    }
+
+    section:has(#backCard) > div:nth-child(2) > div.grid > div:last-child {
+        padding: 28px 24px 20px !important;
+    }
+
+    section:has(#backCard) div:has(> #backCard) {
+        width: calc(100% + 48px) !important;
+        height: 245px !important;
+        margin: 28px -24px 0 !important;
+    }
+
+    #backCard,
+    #frontCard {
+        width: 82% !important;
+        height: 122px !important;
+        min-height: 122px !important;
+        padding: 9px !important;
+    }
+
+    #backCard {
+        left: 1% !important;
+        top: 58px !important;
+    }
+
+    #frontCard {
+        right: 1% !important;
+    }
+
+    #backCard > .flex.items-start.gap-4,
+    #frontCard > .flex.items-start.gap-4 {
+        gap: 9px !important;
+    }
+
+    #backCard > .flex.items-start.gap-4 > div:first-child,
+    #frontCard > .flex.items-start.gap-4 > div:first-child {
+        flex-basis: 58px !important;
+        width: 58px !important;
+        min-width: 58px !important;
+        max-width: 58px !important;
+        height: 58px !important;
+        min-height: 58px !important;
+        max-height: 58px !important;
+    }
+
+    #backCard > .flex.items-start.gap-4 > div:last-child > h2,
+    #frontCard > .flex.items-start.gap-4 > div:last-child > h2 {
+        font-size: 13px !important;
+    }
+
+    #backCard > .flex.items-start.gap-4 > div:last-child > p,
+    #frontCard > .flex.items-start.gap-4 > div:last-child > p {
+        font-size: 10px !important;
+    }
+
+    #backCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between,
+    #frontCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between {
+        gap: 5px !important;
+        margin-top: 9px !important;
+    }
+
+    #backCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between > p,
+    #frontCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between > p {
+        font-size: 9px !important;
+    }
+
+    #backCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between > button,
+    #frontCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between > button {
+        flex-basis: 68px !important;
+        width: 68px !important;
+        min-width: 68px !important;
+        max-width: 68px !important;
+        height: 25px !important;
+        min-height: 25px !important;
+        font-size: 9px !important;
+    }
+
+    #backCard button span,
+    #frontCard button span {
+        font-size: 9px !important;
+    }
+}
+
+/* =====================================================
+   13. MOBILE
+===================================================== */
+
+@media (max-width: 767px) {
+
+    section:has(#backCard) > div:nth-child(2) > div.grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 20px !important;
+    }
+
+    section:has(#backCard) > div:nth-child(2) > div.grid > div {
+        min-height: 350px !important;
+        height: auto !important;
+    }
+
+    section:has(#backCard) > div:nth-child(2) > div.grid > div:last-child {
+        padding: 24px !important;
+    }
+
+    section:has(#backCard) div:has(> #backCard) {
+        width: calc(100% + 48px) !important;
+        height: 225px !important;
+        margin: 25px -24px 0 !important;
+    }
+
+    #backCard,
+    #frontCard {
+        width: 90% !important;
+        max-width: 340px !important;
+
+        height: 118px !important;
+        min-height: 118px !important;
+
+        padding: 9px !important;
+        border-radius: 14px !important;
+    }
+
+    #backCard {
+        left: 1% !important;
+        top: 55px !important;
+    }
+
+    #frontCard {
+        right: 1% !important;
+    }
+
+    #backCard > .flex.items-start.gap-4,
+    #frontCard > .flex.items-start.gap-4 {
+        gap: 8px !important;
+    }
+
+    #backCard > .flex.items-start.gap-4 > div:first-child,
+    #frontCard > .flex.items-start.gap-4 > div:first-child {
+        flex: 0 0 45px !important;
+        width: 45px !important;
+        min-width: 45px !important;
+        max-width: 45px !important;
+        height: 45px !important;
+        min-height: 45px !important;
+        max-height: 45px !important;
+    }
+
+    #backCard > .flex.items-start.gap-4 > div:last-child > h2,
+    #frontCard > .flex.items-start.gap-4 > div:last-child > h2 {
+        font-size: 11px !important;
+        margin-bottom: 4px !important;
+    }
+
+    #backCard > .flex.items-start.gap-4 > div:last-child > p,
+    #frontCard > .flex.items-start.gap-4 > div:last-child > p {
+        font-size: 8px !important;
+        line-height: 1.35 !important;
+    }
+
+    #backCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between,
+    #frontCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between {
+        gap: 4px !important;
+        margin-top: 8px !important;
+    }
+
+    #backCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between > p,
+    #frontCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between > p {
+        font-size: 7px !important;
+        gap: 3px !important;
+    }
+
+    #backCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between > p img,
+    #frontCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between > p img {
+        width: 10px !important;
+        min-width: 10px !important;
+        max-width: 10px !important;
+        height: 10px !important;
+        min-height: 10px !important;
+        max-height: 10px !important;
+        flex-basis: 10px !important;
+    }
+
+    #backCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between > button,
+    #frontCard > .flex.items-start.gap-4 > div:last-child > div.flex.items-center.justify-between > button {
+        flex: 0 0 58px !important;
+        width: 58px !important;
+        min-width: 58px !important;
+        max-width: 58px !important;
+        height: 22px !important;
+        min-height: 22px !important;
+        padding: 0 4px !important;
+        font-size: 7px !important;
+    }
+
+    #backCard button span,
+    #frontCard button span {
+        font-size: 7px !important;
+    }
+
+    #frontCard > .absolute.top-4.right-4 {
+        top: 7px !important;
+        right: 8px !important;
+    }
+
+    #clickArrow {
+        width: 30px !important;
+        height: 30px !important;
+    }
+}
+
+/* =====================================================
+   14. VERY SMALL MOBILE
+===================================================== */
+
+@media (max-width: 380px) {
+
+    section:has(#backCard) > div:nth-child(2) > div.grid > div:last-child {
+        padding: 18px !important;
+    }
+
+    #backCard,
+    #frontCard {
+        width: 94% !important;
+        padding: 7px !important;
+    }
+
+    #backCard > .flex.items-start.gap-4,
+    #frontCard > .flex.items-start.gap-4 {
+        gap: 6px !important;
+    }
+
+    #backCard > .flex.items-start.gap-4 > div:first-child,
+    #frontCard > .flex.items-start.gap-4 > div:first-child {
+        flex-basis: 38px !important;
+        width: 38px !important;
+        min-width: 38px !important;
+        max-width: 38px !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        max-height: 38px !important;
+    }
+}
+
+
+/* =====================================================
+   SERVICE CARDS - COMPLETE RESPONSIVE CSS
+   Keep your existing HTML and JavaScript
+===================================================== */
+
+/* ---------- MAIN WRAPPER ---------- */
+
+.cards-wrapper {
+    width: 100%;
+    max-width: 1318px;
+    margin: 0 auto;
+    padding: 0 24px;
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 24px;
+    box-sizing: border-box;
+    align-items: stretch;
+}
+
+/* ---------- COMMON CARD ---------- */
+
+.cards-wrapper > .service-card {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    height: 421px;
+
+    position: relative;
+    box-sizing: border-box;
+
+    overflow: hidden;
+    border-radius: 36px;
+}
+
+/* Prevent content from increasing card width */
+.service-card *,
+.service-card *::before,
+.service-card *::after {
+    box-sizing: border-box;
+}
+
+.service-card img {
+    max-width: 100%;
+    object-fit: contain;
+}
+
+/* Keep headings and paragraphs readable */
+.service-card h1,
+.service-card h2,
+.service-card p {
+    max-width: 100%;
+    overflow-wrap: break-word;
+}
+
+/* =====================================================
+   CARD 1 - REGISTER TODAY
+===================================================== */
+
+.cards-wrapper > .service-card:first-child {
+    padding: 24px;
+}
+
+/* Header */
+.cards-wrapper > .service-card:first-child > div:first-child {
+    position: relative;
+    z-index: 10;
+}
+
+/* Scrolling viewport */
+#sectionsWrapper {
+    width: 100%;
+    min-width: 0;
+    will-change: transform;
+}
+
+/* Each animated section */
+#sectionsWrapper section {
+    width: 100%;
+    min-width: 0;
+    flex-shrink: 0;
+}
+
+/* Register card inner boxes */
+#sectionsWrapper section > div {
+    max-width: 100%;
+}
+
+/* Logo */
+#sectionsWrapper section img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* =====================================================
+   CARD 2 - DIRECT CONTACT / CHAT
+===================================================== */
+
+.cards-wrapper > .service-card:nth-child(2) {
+    padding: 24px;
+}
+
+/* Animation area */
+.cards-wrapper > .service-card:nth-child(2) .relative.w-full {
+    width: 100%;
+    min-width: 0;
+    height: 260px;
+    position: relative;
+}
+
+/* SVG lines */
+.cards-wrapper > .service-card:nth-child(2) svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* Main icon */
+#mainIcon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    flex-shrink: 0;
+}
+
+/* Side icons */
+.cards-wrapper > .service-card:nth-child(2) .icon {
+    position: absolute;
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 20;
+}
+
+.cards-wrapper > .service-card:nth-child(2) .icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* =====================================================
+   CARD 3 - OFFERS & DEALS
+===================================================== */
+
+.cards-wrapper > .service-card:nth-child(3) {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    min-width: 0;
+}
+
+/* Scrolling viewport */
+.cards-wrapper > .service-card:nth-child(3) > .relative.h-full {
+    width: 100%;
+    min-width: 0;
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Animated list */
+.cards-wrapper > .service-card:nth-child(3) .animate-scroll-y {
+    width: 100%;
+    min-width: 0;
+}
+
+/* Each offer row */
+.cards-wrapper > .service-card:nth-child(3) .animate-scroll-y > div {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Offer icon and text box */
+.cards-wrapper > .service-card:nth-child(3) .animate-scroll-y > div > div {
+    min-width: 0;
+    flex-shrink: 1;
+}
+
+/* Offer text box */
+.cards-wrapper > .service-card:nth-child(3) .animate-scroll-y > div > div:nth-child(2) {
+    flex: 1;
+    width: auto;
+    max-width: 100%;
+}
+
+/* Offer text */
+.cards-wrapper > .service-card:nth-child(3) .animate-scroll-y p {
+    white-space: normal;
+    overflow-wrap: break-word;
+    text-align: center;
+}
+
+/* =====================================================
+   SMALL DESKTOP / LAPTOP
+   1101px - 1300px
+===================================================== */
+
+@media (min-width: 1101px) and (max-width: 1300px) {
+
+    .cards-wrapper {
+        padding-left: 24px;
+        padding-right: 24px;
+        gap: 18px;
+    }
+
+    .cards-wrapper > .service-card {
+        height: 410px;
+        padding: 20px;
+        border-radius: 32px;
+    }
+
+    .service-card h2 {
+        font-size: 21px;
+    }
+
+    .service-card > p {
+        font-size: 14px;
+    }
+
+    .cards-wrapper > .service-card:nth-child(2) .relative.w-full {
+        height: 250px;
+    }
+
+    .cards-wrapper > .service-card:nth-child(3) .animate-scroll-y > div {
+        gap: 8px;
+    }
+
+}
+
+/* =====================================================
+   TABLET
+   768px - 1100px
+===================================================== */
+
+@media (min-width: 768px) and (max-width: 1100px) {
+
+    .cards-wrapper {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding-left: 24px;
+        padding-right: 24px;
+        gap: 22px;
+    }
+
+    .cards-wrapper > .service-card {
+        width: 100%;
+        height: 410px;
+        padding: 20px;
+        border-radius: 30px;
+    }
+
+    /* Third card takes full row */
+    .cards-wrapper > .service-card:nth-child(3) {
+        grid-column: 1 / -1;
+        max-width: 100%;
+    }
+
+    /* Register card */
+    .cards-wrapper > .service-card:first-child > div:last-child {
+        top: 105px;
+    }
+
+    #sectionsWrapper section {
+        height: 300px;
+    }
+
+    /* Contact card */
+    .cards-wrapper > .service-card:nth-child(2) .relative.w-full {
+        height: 250px;
+    }
+
+    .cards-wrapper > .service-card:nth-child(2) .icon {
+        width: 52px;
+        height: 52px;
+    }
+
+    /* Offers card */
+    .cards-wrapper > .service-card:nth-child(3) .animate-scroll-y > div {
+        gap: 16px;
+    }
+
+    .cards-wrapper > .service-card:nth-child(3) .animate-scroll-y > div > div:nth-child(2) {
+        flex: 1;
+    }
+
+}
+
+/* =====================================================
+   MOBILE
+   481px - 767px
+===================================================== */
+
+@media (min-width: 481px) and (max-width: 767px) {
+
+    .cards-wrapper {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 22px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .cards-wrapper > .service-card {
+        width: 100%;
+        max-width: 426px;
+        height: 390px;
+        margin: 0 auto;
+        padding: 20px;
+        border-width: 3px;
+        border-radius: 28px;
+    }
+
+    .cards-wrapper > .service-card:nth-child(3) {
+        grid-column: auto;
+    }
+
+    /* Register */
+    .cards-wrapper > .service-card:first-child > div:last-child {
+        top: 100px;
+    }
+
+    #sectionsWrapper section {
+        height: 280px;
+        gap: 18px;
+    }
+
+    /* Contact */
+    .cards-wrapper > .service-card:nth-child(2) .relative.w-full {
+        height: 250px;
+    }
+
+    #mainIcon {
+        width: 64px;
+        height: 64px;
+    }
+
+    .cards-wrapper > .service-card:nth-child(2) .icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    /* Offers */
+    .cards-wrapper > .service-card:nth-child(3) .animate-scroll-y > div {
+        gap: 12px;
+    }
+
+    .cards-wrapper > .service-card:nth-child(3) .animate-scroll-y > div > div:nth-child(2) {
+        flex: 1;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .cards-wrapper > .service-card:nth-child(3) .animate-scroll-y p {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+}
+
+/* =====================================================
+   SMALL MOBILE
+   361px - 480px
+===================================================== */
+
+@media (min-width: 361px) and (max-width: 480px) {
+
+    .cards-wrapper {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .cards-wrapper > .service-card {
+        width: 100%;
+        max-width: 426px;
+        height: 370px;
+        margin: 0 auto;
+        padding: 16px;
+        border-width: 3px;
+        border-radius: 26px;
+    }
+
+    .cards-wrapper > .service-card:first-child > div:last-child {
+        top: 95px;
+    }
+
+    #sectionsWrapper section {
+        height: 260px;
+        gap: 16px;
+    }
+
+    .cards-wrapper > .service-card:nth-child(2) .relative.w-full {
+        height: 230px;
+    }
+
+    #mainIcon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .cards-wrapper > .service-card:nth-child(2) .icon {
+        width: 44px;
+        height: 44px;
+    }
+
+    .cards-wrapper > .service-card:nth-child(3) .animate-scroll-y > div {
+        gap: 8px;
+    }
+
+    .cards-wrapper > .service-card:nth-child(3) .animate-scroll-y > div > div:nth-child(2) {
+        flex: 1;
+        padding: 8px;
+        height: auto;
+        min-height: 48px;
+    }
+
+    .cards-wrapper > .service-card:nth-child(3) .animate-scroll-y p {
+        font-size: 12px;
+        line-height: 1.3;
+    }
+
+    .cards-wrapper > .service-card:nth-child(3) .animate-scroll-y img {
+        width: 32px;
+        height: 32px;
+    }
+
+}
+
+/* =====================================================
+   EXTRA SMALL MOBILE
+   320px - 360px
+===================================================== */
+
+@media (max-width: 360px) {
+
+    .cards-wrapper {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .cards-wrapper > .service-card {
+        width: 100%;
+        height: 360px;
+        padding: 14px;
+        border-width: 3px;
+        border-radius: 24px;
+    }
+
+    .service-card h2 {
+        font-size: 13px;
+    }
+
+    .service-card > p {
+        font-size: 10px;
+        line-height: 1.4;
+    }
+
+    /* Register */
+    .cards-wrapper > .service-card:first-child > div:last-child {
+        top: 90px;
+    }
+
+    #sectionsWrapper section {
+        height: 250px;
+        gap: 14px;
+    }
+
+    /* Contact */
+    .cards-wrapper > .service-card:nth-child(2) .relative.w-full {
+        height: 220px;
+    }
+
+    #mainIcon {
+        width: 54px;
+        height: 54px;
+    }
+
+    .cards-wrapper > .service-card:nth-child(2) .icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Offers */
+    .cards-wrapper > .service-card:nth-child(3) .animate-scroll-y > div {
+        gap: 6px;
+    }
+
+    .cards-wrapper > .service-card:nth-child(3) .animate-scroll-y > div > div:nth-child(2) {
+        flex: 1;
+        min-height: 44px;
+        padding: 6px;
+    }
+
+    .cards-wrapper > .service-card:nth-child(3) .animate-scroll-y p {
+        font-size: 11px;
+        line-height: 1.3;
+    }
+
+    .cards-wrapper > .service-card:nth-child(3) .animate-scroll-y img {
+        width: 27px;
+        height: 27px;
+    }
+
+}
+
+/* =====================================================
+   VERY SMALL SCREENS
+   Below 320px
+===================================================== */
+
+@media (max-width: 319px) {
+
+    .cards-wrapper {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .cards-wrapper > .service-card {
+        padding: 12px;
+        height: 350px;
+    }
+
+    .cards-wrapper > .service-card:nth-child(3) .animate-scroll-y p {
+        font-size: 10px;
+    }
+
+}
+
+/* =====================================================
+   PREVENT HORIZONTAL OVERFLOW
+===================================================== */
+
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.cards-wrapper,
+.cards-wrapper > .service-card {
+    min-width: 0;
+}
+/* Space outside the cards on mobile */
+@media (max-width: 767px) {
+    .cards-wrapper {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 480px) {
+    .cards-wrapper {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+}
+
+@media (max-width: 360px) {
+    .cards-wrapper {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+}
+#sectionsWrapper {
+    padding-top: 20px;
+    box-sizing: border-box;
+}
+
+
+/* ==========================================
+   GLOBAL RESPONSIVE FIXES
+========================================== */
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+img,
+video {
+    max-width: 100%;
+}
+
+
+/* ==========================================
+   SECTION 1 - SMART FILTERS & EASY AD
+========================================== */
+
+section:has(#searchBox) {
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+section:has(#searchBox) > div {
+    width: 100%;
+    max-width: 1318px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Left and right cards */
+section:has(#searchBox) > div > div {
+    min-width: 0;
+    width: 100%;
+}
+
+/* Smart Filters search area */
+#searchBox {
+    width: 100%;
+    max-width: 503px;
+    min-width: 0;
+    z-index: 20;
+}
+
+/* Search input */
+#searchBox > div:first-child {
+    width: 100%;
+}
+
+/* Search dropdown */
+#dropdown {
+    width: 100%;
+    max-height: 240px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    z-index: 10;
+    font-size: clamp(13px, 1.3vw, 18px);
+}
+
+/* Search and button row */
+section:has(#searchBox) .flex.flex-col.sm\:flex-row {
+    width: 100%;
+    min-width: 0;
+}
+
+/* Search button */
+section:has(#searchBox) button {
+    flex-shrink: 0;
+    max-width: 100%;
+}
+
+/* Right card animation area */
+#saleBackCard,
+#saleFrontCard {
+    max-width: calc(100% - 8px);
+}
+
+#saleBackCard {
+    right: 0;
+}
+
+#saleFrontCard {
+    left: 0;
+}
+
+#saleFrontCard img,
+#saleBackCard img {
+    max-width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
+/* ==========================================
+   SECTION 2 - PHONE & APP DOWNLOAD
+========================================== */
+
+section:has(video[src]),
+section:has(video) {
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+/* Main section wrapper */
+section:has(video) > div {
+    width: 100%;
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Phone card */
+section:has(video) > div > div:first-child {
+    width: 100%;
+    min-width: 0;
+    max-width: 582px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Phone wrapper */
+section:has(video) > div > div:first-child > div {
+    max-width: 100%;
+}
+
+/* Phone screen */
+section:has(video) video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+/* Phone frame */
+section:has(video) img[src*="phoneframe"] {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* App download card */
+section:has(video) > div > div:last-child {
+    width: 100%;
+    min-width: 0;
+    max-width: 718px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Store buttons */
+section:has(video) a img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+
+/* ==========================================
+   LARGE LAPTOPS / DESKTOP
+========================================== */
+
+@media (min-width: 1280px) {
+
+    section:has(#searchBox) {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    section:has(video) {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+}
+
+
+/* ==========================================
+   LAPTOPS
+========================================== */
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+
+    section:has(#searchBox) > div {
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+        gap: 18px;
+    }
+
+    section:has(#searchBox) > div > div {
+        padding: 28px;
+        border-radius: 32px;
+    }
+
+    section:has(#searchBox) .flex.flex-col.sm\:flex-row {
+        gap: 12px;
+    }
+
+    #searchBox {
+        flex: 1;
+        width: 100%;
+    }
+
+    section:has(#searchBox) button {
+        width: 120px;
+    }
+
+    #saleFrontCard {
+        width: min(90%, 353px);
+    }
+
+    #saleBackCard {
+        width: min(82%, 293px);
+    }
+
+    section:has(video) > div {
+        gap: 24px;
+    }
+
+    section:has(video) > div > div:first-child {
+        flex: 0 1 45%;
+    }
+
+    section:has(video) > div > div:last-child {
+        flex: 1;
+    }
+
+}
+
+
+/* ==========================================
+   TABLETS
+========================================== */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+
+    section:has(#searchBox) {
+        padding-top: 45px;
+        padding-bottom: 30px;
+    }
+
+    section:has(#searchBox) > div {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    section:has(#searchBox) > div > div {
+        width: 100%;
+        height: auto;
+        min-height: 360px;
+        padding: 32px;
+        border-radius: 32px;
+    }
+
+    #searchBox {
+        width: 100%;
+        max-width: 503px;
+    }
+
+    section:has(#searchBox) .flex.flex-col.sm\:flex-row {
+        align-items: center;
+    }
+
+    section:has(#searchBox) button {
+        width: 150px;
+    }
+
+    /* Sale card */
+    #saleFrontCard {
+        width: min(75%, 353px);
+    }
+
+    #saleBackCard {
+        width: min(65%, 293px);
+    }
+
+    /* Phone and app section */
+    section:has(video) {
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+
+    section:has(video) > div {
+        flex-direction: column;
+        height: auto;
+        gap: 40px;
+    }
+
+    section:has(video) > div > div:first-child {
+        width: 100%;
+        max-width: 582px;
+        height: 460px;
+    }
+
+    section:has(video) > div > div:last-child {
+        width: 100%;
+        max-width: 718px;
+        min-height: 350px;
+    }
+
+}
+
+
+/* ==========================================
+   MOBILE DEVICES
+========================================== */
+
+@media (max-width: 767px) {
+
+    /* Section spacing */
+    section:has(#searchBox) {
+        padding: 30px 12px 24px;
+        margin-top: 12px;
+    }
+
+    section:has(#searchBox) > div {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+    }
+
+    /* Both cards */
+    section:has(#searchBox) > div > div {
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        min-height: 0;
+        padding: 22px 18px;
+        border-radius: 26px;
+        border-width: 3px;
+    }
+
+    /* Headings */
+    section:has(#searchBox) h2 {
+        font-size: 18px;
+        line-height: 1.35;
+    }
+
+    section:has(#searchBox) p {
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    /* Search area */
+    section:has(#searchBox) .flex.flex-col.sm\:flex-row {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    #searchBox {
+        width: 100%;
+        max-width: none;
+    }
+
+    #searchBox > div:first-child {
+        height: 50px;
+    }
+
+    #searchBox img {
+        width: 28px;
+        height: 28px;
+    }
+
+    #typingText {
+        font-size: 13px;
+    }
+
+    /* Dropdown */
+    #dropdown {
+        padding: 40px 16px 18px;
+        max-height: 200px;
+        border-radius: 0 0 20px 20px;
+        font-size: 13px;
+        gap: 14px;
+    }
+
+    /* Search button */
+    section:has(#searchBox) button {
+        width: 100%;
+        height: 46px;
+        font-size: 14px;
+    }
+
+    /* Sale animation */
+    section:has(#searchBox) > div > div:last-child > div:last-child {
+        height: 210px;
+        margin-top: 10px;
+    }
+
+    #saleBackCard {
+        width: 75%;
+        max-width: 260px;
+        height: 105px;
+        right: 0;
+        top: 0;
+        padding: 12px;
+    }
+
+    #saleFrontCard {
+        width: 90%;
+        max-width: 300px;
+        height: 125px;
+        top: 55px;
+        left: 0;
+        padding: 12px;
+        gap: 10px;
+    }
+
+    #saleFrontCard > div:first-child {
+        width: 45%;
+        height: 95px;
+    }
+
+    #saleFrontCard > div:last-child {
+        width: 55%;
+    }
+
+    #saleFrontCard h2 {
+        font-size: 36px;
+    }
+
+    #saleBackCard h2 {
+        font-size: 20px;
+    }
+
+
+    /* ==================================
+       PHONE AND APP DOWNLOAD SECTION
+    ================================== */
+
+    section:has(video) {
+        padding: 25px 12px 35px;
+        margin-top: 0;
+    }
+
+    section:has(video) > div {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+        height: auto;
+    }
+
+    /* Phone card */
+    section:has(video) > div > div:first-child {
+        width: 100%;
+        max-width: 430px;
+        height: 380px;
+        min-height: 380px;
+        border-radius: 28px;
+    }
+
+    /* Phone wrapper */
+    section:has(video) > div > div:first-child > div {
+        width: 290px;
+        max-width: 100%;
+        height: 350px;
+        bottom: 0;
+    }
+
+    /* Phone screen */
+    section:has(video) > div > div:first-child > div > div {
+        top: 14px;
+        left: 38px;
+        width: 214px;
+        height: 325px;
+        border-radius: 24px 24px 0 0;
+    }
+
+    /* Phone video */
+    section:has(video) video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Phone frame */
+    section:has(video) img[src*="phoneframe"] {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    /* App download card */
+    section:has(video) > div > div:last-child {
+        width: 100%;
+        max-width: 430px;
+        height: auto;
+        min-height: 280px;
+        padding: 32px 18px;
+        border-radius: 28px;
+    }
+
+    section:has(video) > div > div:last-child h2 {
+        font-size: 25px;
+        line-height: 1.3;
+    }
+
+    section:has(video) > div > div:last-child p {
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    /* App store buttons */
+    section:has(video) > div > div:last-child > div {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 24px;
+    }
+
+    section:has(video) a img {
+        height: 42px;
+        width: auto;
+    }
+
+}
+
+
+/* ==========================================
+   SMALL MOBILE DEVICES
+========================================== */
+
+@media (max-width: 480px) {
+
+    section:has(#searchBox) > div > div {
+        padding: 20px 15px;
+        border-radius: 24px;
+    }
+
+    #saleFrontCard {
+        width: 94%;
+    }
+
+    #saleBackCard {
+        width: 78%;
+    }
+
+    section:has(video) > div > div:first-child {
+        height: 340px;
+        min-height: 340px;
+    }
+
+    section:has(video) > div > div:first-child > div {
+        width: 270px;
+        height: 315px;
+    }
+
+    section:has(video) > div > div:first-child > div > div {
+        left: 35px;
+        width: 200px;
+        height: 292px;
+    }
+
+    section:has(video) > div > div:last-child {
+        padding: 28px 14px;
+    }
+
+    section:has(video) > div > div:last-child h2 {
+        font-size: 23px;
+    }
+
+    section:has(video) a img {
+        height: 38px;
+    }
+
+}
+
+
+/* ==========================================
+   EXTRA SMALL MOBILE DEVICES
+========================================== */
+
+@media (max-width: 360px) {
+
+    section:has(#searchBox) > div > div {
+        padding: 17px 12px;
+    }
+
+    section:has(#searchBox) h2 {
+        font-size: 16px;
+    }
+
+    #saleFrontCard {
+        width: 96%;
+        height: 115px;
+        padding: 9px;
+    }
+
+    #saleBackCard {
+        width: 80%;
+        height: 98px;
+        padding: 9px;
+    }
+
+    #saleFrontCard h2 {
+        font-size: 30px;
+    }
+
+    section:has(video) > div > div:first-child {
+        height: 315px;
+        min-height: 315px;
+    }
+
+    section:has(video) > div > div:first-child > div {
+        width: 245px;
+        height: 290px;
+    }
+
+    section:has(video) > div > div:first-child > div > div {
+        left: 32px;
+        width: 181px;
+        height: 268px;
+    }
+
+    section:has(video) > div > div:last-child h2 {
+        font-size: 21px;
+    }
+
+    section:has(video) a img {
+        height: 34px;
+    }
+
+}
+
+</style>
  {% endblock %}

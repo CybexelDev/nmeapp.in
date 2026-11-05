@@ -1,346 +1,330 @@
+{% extends "base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detailview</title>
-      <script src="https://cdn.tailwindcss.com"></script>
-      <link rel="stylesheet" href="{% static 'css/style.css' %}">
-        <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-/>
-<!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '388506759771216');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=388506759771216&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
-</head>
-<body class="min-h-screen overflow-x-hidden" style="background-image: linear-gradient(135deg, rgba(49, 49, 49,0.07) 0%, rgba(49, 49, 49,0.07) 12.5%,rgba(76, 76, 76,0.07) 12.5%, rgba(76, 76, 76,0.07) 25%,rgba(102, 102, 102,0.07) 25%, rgba(102, 102, 102,0.07) 37.5%,rgba(129, 129, 129,0.07) 37.5%, rgba(129, 129, 129,0.07) 50%,rgba(155, 155, 155,0.07) 50%, rgba(155, 155, 155,0.07) 62.5%,rgba(182, 182, 182,0.07) 62.5%, rgba(182, 182, 182,0.07) 75%,rgba(208, 208, 208,0.07) 75%, rgba(208, 208, 208,0.07) 87.5%,rgba(235, 235, 235,0.07) 87.5%, rgba(235, 235, 235,0.07) 100%),linear-gradient(45deg, rgba(5, 5, 5,0.07) 0%, rgba(5, 5, 5,0.07) 12.5%,rgba(39, 39, 39,0.07) 12.5%, rgba(39, 39, 39,0.07) 25%,rgba(73, 73, 73,0.07) 25%, rgba(73, 73, 73,0.07) 37.5%,rgba(107, 107, 107,0.07) 37.5%, rgba(107, 107, 107,0.07) 50%,rgba(141, 141, 141,0.07) 50%, rgba(141, 141, 141,0.07) 62.5%,rgba(175, 175, 175,0.07) 62.5%, rgba(175, 175, 175,0.07) 75%,rgba(209, 209, 209,0.07) 75%, rgba(209, 209, 209,0.07) 87.5%,rgba(243, 243, 243,0.07) 87.5%, rgba(243, 243, 243,0.07) 100%),linear-gradient(90deg, #ffffff,#ffffff);">
-  <div class=" p-2 md:p-4 lg:p-6">
+{% block title %}{{ post.card_head }} | N-Me App Blog{% endblock %}
 
-<div class="ml-0 md:ml-20 m-4 md:m-5 px-4">
-  <a
-    href="{% url 'blogs' %}"
-    class="inline-flex items-center gap-2
-           py-2 px-6 rounded-full
-           bg-gray-50 border-2 border-white
-           text-black font-semibold
-           text-[14px] md:text-[15px]
-           font-manrope">
-    <i class="fa-solid fa-chevron-left"></i>
-    Blogs
-  </a>
-</div>
+{% block meta_description %}{{ post.card_paragraph }}{% endblock %}
 
+{% block meta_keywords %}{{ post.keyword }}, N-Me App, Blog{% endblock %}
 
-<div class="ml-0 md:ml-20 mb-20 md:mb-40 px-4 w-full md:w-[1200px]">
+{% block content %}
 
-  <!-- TITLE -->
-  <h1
-    class="font-poppins font-semibold
-           text-[28px] sm:text-[36px] md:text-[48px]
-           leading-tight">
-    {{ post.card_head }}
-  </h1>
-
-  <!-- SHORT INTRO -->
-  <p
-    class="font-manrope font-medium
-           text-[16px] sm:text-[18px] md:text-[20px]
-           my-5 md:my-7">
-    {{ post.card_paragraph }}
-  </p>
-
-  <!-- IMAGE -->
-  <img
-    class="rounded-2xl md:rounded-3xl
-           w-full md:w-[1200px]
-           h-[280px] sm:h-[350px] md:h-[490px]
-           border-[3px] md:border-[5px] border-white
-           object-cover object-top"
-    src="{{ post.image.url }}"
-    alt="{{ post.card_head }}"
-  />
-
-  <!-- FULL CONTENT -->
-  <p
-    class="font-manrope font-medium
-           text-[15px] sm:text-[16px] md:text-[18px]
-           my-6 md:my-10 leading-relaxed">
-    {{ post.modal_paragraph|linebreaks }}
-  </p>
-
-  <!-- META -->
-  <div class="w-full flex items-center justify-between gap-2">
-    <p class="text-[#3C79FF] font-manrope text-[16px] md:text-[20px] font-medium">
-      {{ post.keyword }}
-    </p>
-    <p class="text-[#848383] font-manrope text-[14px] md:text-[16px] font-medium">
-      {{ post.created_at|date:"M d, Y" }}
-    </p>
-  </div>
-
-</div>
-
-<div class="flex flex-wrap justify-between px-4 m-5">
-
-  {% for blog in latest_blogs %}
-  <div class="rounded-3xl p-1 w-full md:w-[32%] mb-10">
-
-    <img
-      class="rounded-3xl w-full md:h-[55vh] object-cover"
-      src="{{ blog.image.url }}"
-      alt="{{ blog.card_head }}">
-
-    <div>
-      <h4 class="font-poppins text-[#3C79FF] text-xl mt-10 mb-2">
-        {{ blog.keyword }}
-      </h4>
-
-      <h2 class="font-poppins text-2xl font-semibold leading-normal">
-        {{ blog.card_head }}
-      </h2>
-    </div>
-
-    <div class="flex items-center gap-4 pt-2 mt-2">
-      <a href="{% url 'blog_detail' blog.id %}">
-        <button class="
-          relative overflow-hidden text-[16px] py-3 px-10 font-manrope rounded-full text-white
-          transition-all duration-700 ease-in-out
-          bg-gradient-to-b from-[#3C49FF] via-[#3b55ff]
-          bg-[length:100%_200%] bg-top
-          hover:bg-bottom
-          hover:shadow-[0_0_0px_rgba(59,85,255,0.9)]
-          active:scale-95">
-          Read More
-        </button>
-      </a>
-
-      <p class="ml-auto text-gray-500">
-        {{ blog.created_at|date:"M d, Y" }}
-      </p>
-    </div>
-
-  </div>
-  {% endfor %}
-
-</div>
-
-
-
- <!-- NEWSLETTER + FOOTER WRAPPER -->
-  <section class="w-full max-w-[1440px] px-4  mx-auto mt-24">
-    <!-- OUTER CARD -->
-    <div class="w-full bg-gradient-to-br from-[#FFFFFF] to-[#D2DAFF]
-             rounded-[40px]
-             flex flex-col
-             overflow-hidden border-white border-[5px]">
-
-      <!-- NEWSLETTER (TOP) -->
-      <div class="py-20 px-6 text-center rounded-t-[40px]">
-        <h2 class="text-[30px] md:text-[36px] font-semibold text-black">
-          Join Our Newsletter
-        </h2>
-
-        <p class="mt-4 text-[16px] text-black font-medium max-w-xl mx-auto">
-          Subscribe to our newsletter so we can update you with services and offers.
-        </p>
-
-        <!-- INPUT + BUTTON -->
-        <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <div class="flex items-center bg-white rounded-full px-6 py-3
-                    w-full sm:w-[360px]
-                    shadow-[0_4px_8px_rgba(0,0,0,0.08)]">
-            <!-- ICON -->
-            <img src="{% static 'images/msg.png' %}" class="w-[24px] h-[24px]">
-
-            <input type="email" placeholder="Enter your email"
-              class="w-full outline-none text-[14px] pl-4 font-manrope text-[#BBBBBB] placeholder-gray-400" />
-          </div>
-
-          <button class="px-10 py-3 rounded-full
-                       bg-gradient-to-r from-[#5b6cff] to-[#3b4bff]
-                       text-white font-semibold text-[16px]
-                       shadow-[0_6px_12px_rgba(59,75,255,0.35)]
-                       hover:opacity-90 transition">
-            Subscribe
-          </button>
-        </div>
-      </div>
-
-      <!-- FOOTER (BOTTOM) -->
-      <footer class="bg-black text-white px-4 sm:px-20 py-16 mt-auto rounded-[40px]">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 md:gap-[40px] text-center sm:text-left">
-
-          <!-- BRAND -->
-          <div class="mx-auto sm:mx-0 w-[315px]">
-            <div
-              class="flex flex-col sm:flex-row items-center sm:items-start justify-center sm:justify-start gap-3 mb-5">
-              <div class="w-[77px] h-[56px] ">
-                <img src="./static/images/footer_logo.png">
-              </div>
-              <h3 class="text-[21.29px] md:text-[30px] font-roboto font-bold">N - ME APP</h3>
-            </div>
-
-            <h1 class="text-[16px] text-white font-medium   mx-auto sm:mx-0">
-              All your needs are simplified, secure and just a tap away in one app
-            </h1>
-
-            <div class="flex justify-center sm:justify-start gap-4 mt-6 text-gray-400 text-lg">
-  <!-- Instagram -->
-  <a href="https://www.instagram.com/nme_app/?hl=en" target="_blank" rel="noopener noreferrer" class="w-[20px] h-[20px]">
-    <img src="./static/images/instagram.png" alt="Instagram">
-  </a>
-
-  <!-- Facebook -->
-  <a href="https://www.facebook.com/profile.php?id=100076151802998" target="_blank" rel="noopener noreferrer" class="w-[20px] h-[20px]">
-    <img src="./static/images/facebook.png" alt="Facebook">
-  </a>
-
-  <!-- Twitter -->
-  <a href="https://x.com/nmeapp" target="_blank" rel="noopener noreferrer" class="w-[20px] h-[20px]">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 14 14"><g fill="none"><g clip-path="url(#SVGG1Ot4cAD)"><path fill="#fff" d="M11.025.656h2.147L8.482 6.03L14 13.344H9.68L6.294 8.909l-3.87 4.435H.275l5.016-5.75L0 .657h4.43L7.486 4.71zm-.755 11.4h1.19L3.78 1.877H2.504z"/></g><defs><clipPath id="SVGG1Ot4cAD"><path fill="#fff" d="M0 0h14v14H0z"/></clipPath></defs></g></svg>
-  </a>
-
-  <!-- YouTube -->
-  <a href="https://youtube.com/@nme-app?si=F8sHQuXpcUrIpbdx" target="_blank" rel="noopener noreferrer" class="w-[24px] h-[24px]">
-    <img src="./static/images/youtube.png" alt="YouTube">
-  </a>
-</div>
-          </div>
-
-          <!-- MOBILE ROW WRAPPER -->
-          <div class="grid grid-cols-2 gap-6 sm:contents">
-
-            <!-- QUICK LINKS -->
-<div class="sm:mx-0 md:ml-[4.5rem]">
-  <h2 class="font-semibold text-[16px] md:text-[24px] mb-5 ml-4">
-    Quick Links
-  </h2>
-<ul class="space-y-3 text-[14px] md:text-[16px] font-medium font-manrope 
-           md:text-left footer-list whitespace-nowrap">
-  <li><a href="{% url 'home' %}" class="transition-colors duration-200">Home</a></li>
-  <li><a href="{% url 'about' %}" class="transition-colors duration-200">About</a></li>
-  <li><a href="{% url 'blogs' %}" class="transition-colors duration-200">Blogs</a></li>
-  <li><a href="{% url 'faq' %}" class="transition-colors duration-200">FAQ</a></li>
-  <li><a href="{% url 'services' %}" class="transition-colors duration-200">Service</a></li>
-  <li><a href="{% url 'contact' %}" class="transition-colors duration-200">Contact</a></li>
-</ul>
-</div>
-
-
-            <!-- SERVICES -->
-            <div class="mx-auto sm:mx-0">
-              <h2 class="font-semibold text-[16px] md:text-[24px] mb-5 md:ml-6">
-                Backend Offerings
-              </h2>
-              <ul class="space-y-3 text-[14px] sm:text-[16px] font-medium font-manrope footer-list">
-  <li>Web Development</li>
-  <li>App Development</li>
-  <li>Digital Marketing</li>
-  <li>Graphic Designing</li>
-  <li>Branding</li>
-</ul>
-            </div>
-
-          </div>
-
-          <!-- CONTACT -->
-          <div class="mx-auto sm:mx-0 ">
-            <h2 class="font-semibold text-[16px] md:text-[24px] mb-5">Get in Touch</h2>
-            <ul class="space-y-5 text-[14px] sm:text-[16px] font-medium font-manrope text-white text-left no-bullet">
-  <!-- Email -->
-  <li class="grid grid-cols-[80px_1fr] sm:grid-cols-[90px_1fr] gap-0 items-start">
-    <span class="whitespace-nowrap">Email:</span>
-    <div class="flex flex-col">
-      <span>info@nmeapp.in,</span>
-      <span>cybexeltechnologies@gmail.com</span>
-    </div>
-  </li>
-
-  <!-- Phone -->
-  <li class="grid grid-cols-[80px_1fr] sm:grid-cols-[90px_1fr] gap-0 items-start">
-    <span class="whitespace-nowrap">Phone:</span>
-    <div class="flex flex-col">
-      <span>+91 9072919991,</span>
-      <span>+91 9745109190</span>
-    </div>
-  </li>
-
-  <!-- Location -->
-  <li class="grid grid-cols-[80px_1fr] sm:grid-cols-[90px_1fr] gap-0 items-start">
-    <span class="whitespace-nowrap">Location:</span>
-    <div class="flex flex-col leading-relaxed">
-      <span>Kochi,</span>
-      <span>Thiruvananthapuram</span>
-      <span>Coimbatore, Chennai, Bengaluru</span>
-      <span>Dubai</span>
-    </div>
-  </li>
-</ul>
-
-
-          </div>
-        </div>
-
-        <!-- DIVIDER -->
-        <div class="mt-12 pt-6 text-center text-[16px] text-white font-manrope">
-          <div class="mx-auto w-full sm:w-[95%] border-t-[2px] border-white mb-6"></div>
-          © 2025 N-me App. All rights reserved.
-        </div>
-
-      </footer>
-
-    </div>
-  </section>
 <style>
-.footer-list li {
-  position: relative;
-  padding-left: 1.5rem; /* Space for the bullet */
-  cursor: pointer;
-  transition: transform 0.3s ease;
+    .detail-page {
+        width: 100%;
+        min-width: 0;
+        overflow-x: clip;
+    }
+
+    .detail-content {
+        width: calc(100% - 32px);
+        max-width: 1200px;
+        margin: 0 auto 80px;
+        min-width: 0;
+    }
+
+    .detail-image {
+        display: block;
+        width: 100%;
+        height: 490px;
+        object-fit: cover;
+        object-position: top;
+    }
+
+    .latest-blog-card {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .latest-blog-card img {
+        display: block;
+        width: 100%;
+        height: 373px;
+        object-fit: cover;
+    }
+
+    @media (max-width: 767px) {
+        .detail-content {
+            width: calc(100% - 24px);
+            margin-bottom: 50px;
+        }
+
+        .detail-image {
+            height: 280px;
+        }
+
+        .latest-blog-card img {
+            height: 260px;
+        }
+    }
+
+    @media (min-width: 640px) and (max-width: 767px) {
+        .detail-image {
+            height: 350px;
+        }
+    }
+
+    @media (min-width: 768px) and (max-width: 1023px) {
+        .detail-content {
+            width: calc(100% - 64px);
+            margin-bottom: 70px;
+        }
+
+        .detail-image {
+            height: 400px;
+        }
+
+        .latest-blog-card img {
+            height: 320px;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .detail-content {
+            width: calc(100% - 80px);
+            margin-bottom: 100px;
+        }
+    }
+    .back-blog-btn {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+
+    background: linear-gradient(
+        135deg,
+        rgba(65, 75, 255, 0.78),
+        rgba(112, 67, 255, 0.72),
+        rgba(151, 105, 255, 0.65)
+    ) !important;
+
+    border: 1px solid rgba(255, 255, 255, 0.55) !important;
+
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+
+    box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.55),
+        inset 0 -2px 5px rgba(44, 35, 180, 0.2),
+        0 8px 25px rgba(83, 65, 255, 0.28);
+
+    transition: all 0.4s ease;
 }
 
-/* Bullet hidden initially */
-.footer-list li::before {
-  content: "•";
-  position: absolute;
-  left: 0;               /* Place bullet at left edge */
-  top: 50%;
-  transform: translateY(-50%);
-  color: white;
-  font-size: 1.2rem;     /* Increase bullet size (adjust as needed) */
-  opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+/* Glossy glass reflection */
+.back-blog-btn::before {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    background: linear-gradient(
+        125deg,
+        rgba(255, 255, 255, 0.35),
+        transparent 38%,
+        rgba(255, 255, 255, 0.08) 75%,
+        transparent
+    );
+    pointer-events: none;
+    z-index: -1;
 }
 
-/* On hover: move text right and show bullet */
-.footer-list li:hover {
-  transform: translateX(0.5rem); /* Slide text slightly right */
+/* Moving liquid shine */
+.back-blog-btn::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -120%;
+    width: 65%;
+    height: 200%;
+    transform: rotate(25deg);
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.38),
+        transparent
+    );
+    transition: left 0.8s ease;
+    pointer-events: none;
+    z-index: -1;
 }
 
-.footer-list li:hover::before {
-  opacity: 1;
-  transform: translateY(-50%) translateX(0); /* Bullet slides in */
+.back-blog-btn:hover {
+    background: linear-gradient(
+        135deg,
+        rgba(76, 82, 255, 0.9),
+        rgba(125, 75, 255, 0.88),
+        rgba(164, 119, 255, 0.82)
+    ) !important;
+
+    box-shadow:
+        inset 0 1px 3px rgba(255, 255, 255, 0.7),
+        0 12px 32px rgba(95, 70, 255, 0.42);
+
+    transform: translateY(-2px);
+}
+
+.back-blog-btn:hover::after {
+    left: 150%;
+}
+
+.back-blog-btn:active {
+    transform: scale(0.96);
+}
+    /* Align Back to Blogs button with detail content - Desktop only */
+@media (min-width: 1024px) {
+    .detail-page > div:first-child {
+        width: calc(100% - 80px) !important;
+        max-width: 1200px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        box-sizing: border-box !important;
+    }
+}
+/* Back button spacing */
+.detail-page > div:first-child {
+    margin-top: 35px !important;
+    margin-bottom: 35px !important;
+}
+
+@media (max-width: 767px) {
+    .detail-page > div:first-child {
+        margin-top: 24px !important;
+        margin-bottom: 24px !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    .detail-page > div:first-child {
+        margin-top: 40px !important;
+        margin-bottom: 40px !important;
+    }
 }
 </style>
 
+<div class="detail-page">
 
-    
-</body>
-</html>
+  <div class="w-full max-w-[1200px] mx-auto px-4 md:px-0 mt-6 md:mt-10">
+    <a href="{% url 'blogs' %}"
+       class="back-blog-btn group inline-flex items-center gap-3
+              px-7 py-3 rounded-full
+              text-white font-manrope font-semibold
+              text-[14px] md:text-[15px]
+              border border-white/40
+              bg-gradient-to-r from-[#263BFF] via-[#3C79FF] to-[#648CFF]
+              shadow-[0_8px_25px_rgba(60,121,255,0.25)]
+              backdrop-blur-xl
+              transition-all duration-500 ease-out
+              hover:-translate-y-1
+              hover:shadow-[0_12px_30px_rgba(60,121,255,0.4)]
+              active:scale-95">
+
+        <i class="fa-solid fa-arrow-left transition-transform duration-300 group-hover:-translate-x-1"></i>
+        <span><-  Back to Blogs</span>
+    </a>
+</div>
+
+    <!-- BLOG DETAIL -->
+    <article class="detail-content mt-8 md:mt-12">
+
+        <!-- TITLE -->
+        <h1 class="font-poppins font-semibold
+                   text-[28px] sm:text-[36px] md:text-[48px]
+                   leading-tight text-black">
+            {{ post.card_head }}
+        </h1>
+
+        <!-- SHORT INTRO -->
+        <p class="font-manrope font-medium
+                  text-[16px] sm:text-[18px] md:text-[20px]
+                  my-5 md:my-7 text-black">
+            {{ post.card_paragraph }}
+        </p>
+
+        <!-- IMAGE -->
+        <img
+            class="detail-image rounded-2xl md:rounded-3xl
+                   border-[3px] md:border-[5px] border-white"
+            src="{{ post.image.url }}"
+            alt="{{ post.card_head }}"
+        >
+
+        <!-- FULL CONTENT -->
+        <div class="font-manrope font-medium
+                    text-[15px] sm:text-[16px] md:text-[18px]
+                    my-6 md:my-10 leading-relaxed text-black">
+            {{ post.modal_paragraph|linebreaks }}
+        </div>
+
+        <!-- META -->
+        <div class="w-full flex flex-wrap items-center justify-between gap-3">
+            <p class="text-[#3C79FF] font-manrope text-[16px] md:text-[20px] font-medium">
+                {{ post.keyword }}
+            </p>
+
+            <p class="text-[#848383] font-manrope text-[14px] md:text-[16px] font-medium">
+                {{ post.created_at|date:"M d, Y" }}
+            </p>
+        </div>
+
+    </article>
+
+    <!-- LATEST BLOGS -->
+    {% if latest_blogs %}
+    <section class="w-full max-w-[1440px] mx-auto px-4 md:px-8">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+
+            {% for blog in latest_blogs %}
+
+            <article class="latest-blog-card rounded-3xl p-1 mb-6">
+
+                <img
+                    class="rounded-3xl"
+                    src="{{ blog.image.url }}"
+                    alt="{{ blog.card_head }}"
+                    loading="lazy"
+                >
+
+                <div>
+                    <h4 class="font-poppins text-[#3C79FF] text-xl mt-8 mb-2">
+                        {{ blog.keyword }}
+                    </h4>
+
+                    <h2 class="font-poppins text-xl sm:text-2xl font-semibold leading-normal">
+                        {{ blog.card_head }}
+                    </h2>
+                </div>
+
+                <div class="flex items-center gap-4 pt-2 mt-3">
+
+                    <a href="{% url 'blog_detail' blog.id %}">
+                        <button type="button"
+                            class="relative overflow-hidden text-[15px] sm:text-[16px]
+                                   py-3 px-8 sm:px-10 font-manrope rounded-full
+                                   text-white transition-all duration-700 ease-in-out
+                                   bg-gradient-to-b from-[#3C49FF] via-[#3b55ff]
+                                   bg-[length:100%_200%] bg-top hover:bg-bottom
+                                   active:scale-95">
+                            Read More
+                        </button>
+                    </a>
+
+                    <p class="ml-auto text-gray-500 text-sm sm:text-base whitespace-nowrap">
+                        {{ blog.created_at|date:"M d, Y" }}
+                    </p>
+
+                </div>
+
+            </article>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -25,18 +25,22 @@ near me,clothes shopping mall near me, best shopping centres near me{% endblock 
 
   <div id="sharedCircleWrapper" class="relative w-full">
 
-    <!-- THE ONE & ONLY CIRCLE -->
-    <div id="sharedCircle" class="absolute left-1/2 top-[calc(75vh-120px)]
-         -translate-x-1/2 w-[282.35px] h-[282.35px]
-         md:w-[460px] md:h-[460px]
-         rounded-full
-         z-20
-         bg-gradient-to-br
-         from-[#3C5FFF]
-         to-[#C4CFFF]
-         shadow-[0_4px_23.2px_rgba(255,255,255,0.25)] max-md:top-[706.23px]">
-    </div>
-
+      <div id="sharedCircle"
+          class="absolute
+                  left-1/2
+                  top-[493px] md:top-[180px]
+                  translate-y-[80px]
+                  -translate-x-1/2
+                  w-[282.35px] h-[282.35px]
+                  md:w-[460px] md:h-[460px]
+                  rounded-full
+                  z-20
+                  bg-gradient-to-br
+                  from-[#3C5FFF]
+                  to-[#C4CFFF]
+                  shadow-[0_4px_23.2px_rgba(255,255,255,0.25)]
+                  pointer-events-none">
+      </div>
 
 
 
@@ -72,7 +76,7 @@ near me,clothes shopping mall near me, best shopping centres near me{% endblock 
   <div class="flex items-center gap-3">
 
     <!-- DESKTOP NAV -->
-    <ul class="hidden md:flex gap-10 px-10 py-5 rounded-full bg-white/40 backdrop-blur-xl border border-white/60">
+    <ul class="hidden lg:flex gap-10 px-10 py-5 rounded-full bg-white/40 backdrop-blur-xl border border-white/60">
   <li class="transition duration-300 hover:filter hover:blur-sm">
     <a href="{% url 'home' %}" class="text-blue-600 font-semibold">Home</a>
   </li>
@@ -95,6 +99,7 @@ near me,clothes shopping mall near me, best shopping centres near me{% endblock 
 
 
     <!-- MOBILE BUTTON -->
+     
     <button id="menuBtn"
       class="md:hidden w-12 h-12 rounded-xl bg-[#3C49FF]
       flex flex-col items-center justify-center">
@@ -288,7 +293,7 @@ near me,clothes shopping mall near me, best shopping centres near me{% endblock 
     </div>
     <!-- CENTER PHONE -->
     <!-- PHONE (z-40 → ABOVE CIRCLE) -->
-    <div class="absolute
+    <div id="heroPhoneWrapper" class="absolute
      left-1/2
      top-[493px] md:top-[180px]
      -translate-x-1/2
@@ -330,43 +335,40 @@ near me,clothes shopping mall near me, best shopping centres near me{% endblock 
       " fill="none" stroke="white" stroke-width="5" mask="url(#borderMask)" />
 
         <circle cx="700" cy="-124" r="230" fill="none" stroke="white" stroke-width="5" />
+         
       </svg>
 
-      <!-- ================= HERO CUT SECTION ================= -->
       <section class="hero-cut relative h-[340px]
            bg-gradient-to-b from-[#B9CCFF] via-[#EAF1FF] to-[#f3f4f6]
            px-12 pt-16 overflow-hidden
            z-10 rounded-[40px]
            max-md:h-auto max-md:px-6 max-md:pt-[7.5rem]">
 
-        <!-- HEADER TEXT -->
+      
 <div class="flex justify-between items-start
      max-md:flex-col max-md:gap-4 max-md:text-center">
 
-  <!-- TITLE -->
+
   <h2 class="text-[32px] max-md:mx-auto font-semibold md:font-medium 
              text-[#1A1A1A] max-md:text-[16px] whitespace-nowrap">
 
-    <!-- Desktop -->
+  
     <span class="hidden md:inline">
       Build, Promote & Grow<br />With N-Me
     </span>
 
-    <!-- Mobile -->
     <span class="md:hidden">
       Build, Promote & Grow With N-Me
     </span>
   </h2>
 
-  <!-- DESCRIPTION -->
-
-  <!-- Desktop text -->
+ 
   <p class="hidden md:block max-w-[380px] text-right text-[16px] text-[#1A1A1A]">
     Strengthening growing brands with seamless design,
     development, marketing support.
   </p>
 
-  <!-- Mobile text -->
+
   <p class="md:hidden text-center text-[14px] text-[#1A1A1A]">
     Seamless support for design, development & brand growth.
   </p>
@@ -419,13 +421,6 @@ near me,clothes shopping mall near me, best shopping centres near me{% endblock 
     </div>
 
 
-
-
-
-
-
-
-
     <section id="circleSection" class="relative w-full overflow-visible
          max-md:mt-20 max-sm:mt-10">
 
@@ -469,10 +464,6 @@ near me,clothes shopping mall near me, best shopping centres near me{% endblock 
       shadow-[inset_0_0_10px_rgba(111,111,112,0.25)]">
           <div class="ring-glow animate-[spin-slow_10s_linear_infinite]"></div>
         </div>
-
-
-
-
 
         <!-- ================= AI CHAT BOT (LEFT SIDE) ================= -->
         <div class="absolute md:left-[300px] md:top-[340px] left-[248px] top-[199px] max-md:z-[99999]
@@ -631,17 +622,7 @@ near me,clothes shopping mall near me, best shopping centres near me{% endblock 
     </section>
 
 
-
-
-
   </div>
-
-
-
-
-
-
-
 
 
 <section id="featureSection" class="max-w-[1400px] mx-auto py-20
@@ -1264,15 +1245,6 @@ p-8 bg-gradient-to-b from-[#FBFBFB]/20 via-[#D2DAFF]/10 to-[#D2DAFF]/60">
   </section>
 
 
-
-
-
-
-
-
-
-
-
 {% comment %} <section class="relative w-full px-6 mx-auto md:mt-24">
   <!-- TITLE -->
   <div class="text-center">
@@ -1498,14 +1470,2699 @@ updateScale();
 }
 
 
+/* ==========================================
+   TABLET ONLY FIX
+   Prevent hero text from going behind phone
+   ========================================== */
+
+@media (min-width: 768px) and (max-width: 1032px) {
+
+  /* Keep hero content inside its container */
+  #heroSection {
+    width: 94% !important;
+    max-width: 900px !important;
+    height: 760px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    overflow: hidden !important;
+  }
+
+  /* Keep left content away from the phone */
+  #heroSection .flex.flex-col.lg\\:flex-row > div:first-child {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    text-align: center !important;
+    align-items: center !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Align heading in the center */
+  #line1 {
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    max-width: 100% !important;
+    font-size: 38px !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Prevent animated words from extending underneath phone */
+  #scrollContainer {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 60px !important;
+    /* overflow: hidden !important; */
+    position: relative !important;
+    text-align: center !important;
+    font-size: 8px;
+  }
+
+  #scrollContent {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    align-items: center !important;
+    font-size: 34px !important;
+    line-height: 1.3 !important;
+    white-space: nowrap !important;
+  }
+
+  #scrollContent .word {
+    max-width: 100% !important;
+    white-space: nowrap !important;
+  }
+
+  /* Center description and prevent overlap */
+  #heroSection .flex.flex-col.lg\\:flex-row > div:first-child > p {
+    max-width: 460px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Center download button */
+  #heroSection .flex.flex-col.lg\\:flex-row > div:first-child > div.hidden.md\\:flex {
+    justify-content: center !important;
+  }
+
+  /* Keep QR section from squeezing text */
+  #heroSection .flex.flex-col.lg\\:flex-row > div:last-child {
+    width: 100% !important;
+    max-width: 250px !important;
+    min-width: 0 !important;
+    margin: 24px auto 0 !important;
+  }
+
+  /* Keep center phone correctly positioned */
+  #heroPhoneWrapper {
+    top: 180px !important;
+    width: 260px !important;
+    height: 540px !important;
+    z-index: 40 !important;
+    pointer-events: none !important;
+  }
+
+  /* #sharedCircle {
+    top: 180px !important;
+    width: 380px !important;
+    height: 380px !important;
+  } */
+
+  /* Lower section tablet spacing */
+  #heroCut {
+    width: 94% !important;
+    margin: 40px auto 0 !important;
+  }
+
+  #heroCut > section {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+}
 
 </style>
  {% endcomment %}
 
+<style>
+
+/* =====================================================
+   TABLET FIX ONLY — 768px to 1023px
+   Preserve existing mobile and desktop layouts
+===================================================== */
+
+@media screen and (min-width: 768px) and (max-width: 1032px) {
+
+    /* Keep the tablet hero inside the viewport */
+    #sharedCircleWrapper {
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: clip;
+        isolation: isolate;
+    }
+
+    #heroSection {
+        width: calc(100% - 32px) !important;
+        max-width: 960px !important;
+        height: 700px !important;
+        min-height: 700px !important;
+        margin: 16px auto 0 !important;
+        box-sizing: border-box !important;
+        border-radius: 28px !important;
+        overflow: hidden !important;
+    }
+
+    #heroSection > video {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+
+    #heroSection > div.relative.z-10 {
+        padding: 22px 24px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Navbar alignment
+    #heroSection nav {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 12px !important;
+        width: 100% !important;
+        position: relative !important;
+        z-index: 80 !important;
+    }
+
+    #heroSection nav > a:first-child img {
+        height: 70px !important;
+        width: auto !important;
+        max-width: 250px !important;
+        object-fit: contain !important;
+    }
+
+    #heroSection nav ul,
+    #heroSection nav > div > a {
+        display: none !important;
+    }
+
+    #heroSection nav > div {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        margin-left: auto !important;
+    }
+
+    
+    #mobileMenu {
+        position: absolute !important;
+        top: 76px !important;
+        left: 50% !important;
+        right: auto !important;
+        width: min(300px, calc(100% - 32px)) !important;
+        height: auto !important;
+        max-height: 360px !important;
+        overflow-y: auto !important;
+        z-index: 95 !important;
+        
+    }  */
+
+    /* Hero content: left text + right QR */
+    #heroSection > div.relative.z-10 > div.flex.flex-col {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) 155px !important;
+        column-gap: 20px !important;
+        align-items: start !important;
+        width: 100% !important;
+        margin-top: 32px !important;
+    }
+
+    #heroSection > div.relative.z-10 > div.flex.flex-col > div:first-child {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        width: 100% !important;
+        max-width: 290px !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 14px 0 0 !important;
+        gap: 16px !important;
+        text-align: left !important;
+        position: relative !important;
+        z-index: 45 !important;
+    }
+
+    /* Users row */
+    #heroSection > div.relative.z-10 > div.flex.flex-col >
+    div:first-child > div:first-child {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        gap: 5px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+    }
+
+    #heroSection > div.relative.z-10 > div.flex.flex-col >
+    div:first-child > div:first-child > img {
+        width: 48px !important;
+        height: 24px !important;
+        flex: 0 0 48px !important;
+        object-fit: contain !important;
+    }
+
+    /* #heroSection .digit {
+        display: inline-block !important;
+        height: 16px !important;
+        line-height: 16px !important;
+        overflow: hidden !important;
+        vertical-align: middle !important;
+    }
+
+    #heroSection .digit > div {
+        line-height: 16px !important;
+    }
+
+    #heroSection .digit,
+    #heroSection .comma {
+        font-size: 11px !important;
+    } */
+
+    #heroSection .font-manrope.text-\[14px\] {
+        font-size: 13px !important;
+        white-space: nowrap !important;
+    }
+
+    /* Heading and animated text */
+    #line1 {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        gap: 4px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        font-size: clamp(30px, 3.8vw, 38px) !important;
+        line-height: 1.25 !important;
+        overflow: visible !important;
+    }
+
+    #line1 .word {
+        display: inline-block !important;
+        white-space: nowrap !important;
+    }
+
+    #scrollContainer {
+        display: block !important;
+        position: relative !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 42px !important;
+        overflow: hidden !important;
+    }
+
+    #scrollContent {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: max-content !important;
+        max-width: none !important;
+        font-size: clamp(25px, 3.2vw, 32px) !important;
+        line-height: 1.4 !important;
+        white-space: nowrap !important;
+    }
+
+    #scrollContent .word,
+    #scrollContent .letter {
+        flex-shrink: 0 !important;
+        white-space: nowrap !important;
+    }
+
+    /* Description stays in its own column */
+    #heroSection > div.relative.z-10 > div.flex.flex-col >
+    div:first-child > p {
+        display: block !important;
+        position: relative !important;
+        z-index: 46 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-size: 15px !important;
+        line-height: 1.7 !important;
+        text-align: left !important;
+        overflow-wrap: break-word !important;
+        box-sizing: border-box !important;
+    }
+
+    #heroSection > div.relative.z-10 > div.flex.flex-col >
+    div:first-child > p br {
+        display: none !important;
+    }
+
+    /* Download button */
+    #heroSection > div.relative.z-10 > div.flex.flex-col >
+    div:first-child > div.hidden.md\:flex {
+        display: flex !important;
+        align-items: center !important;
+        margin-top: 2px !important;
+    }
+
+    #heroSection > div.relative.z-10 > div.flex.flex-col >
+    div:first-child > div.hidden.md\:flex > a {
+        width: 158px !important;
+        height: 44px !important;
+        padding-left: 18px !important;
+        box-sizing: border-box !important;
+        font-size: 14px !important;
+    }
+
+    #heroSection > div.relative.z-10 > div.flex.flex-col >
+    div:first-child > div.hidden.md\:flex > a > span:last-child {
+        width: 38px !important;
+        height: 38px !important;
+        margin-left: auto !important;
+    }
+
+    /* QR column */
+    #heroSection > div.relative.z-10 > div.flex.flex-col >
+    div:last-child {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
+        max-width: 155px !important;
+        min-width: 0 !important;
+        margin: 24px 0 0 !important;
+    }
+
+    #heroSection > div.relative.z-10 > div.flex.flex-col >
+    div:last-child > p {
+        width: 100% !important;
+        margin: 0 0 10px !important;
+        font-size: 13px !important;
+        line-height: 1.5 !important;
+        text-align: center !important;
+    }
+
+    #heroSection > div.relative.z-10 > div.flex.flex-col >
+    div:last-child > div {
+        width: 100% !important;
+        max-width: 155px !important;
+        height: 210px !important;
+        padding: 9px !important;
+        box-sizing: border-box !important;
+    }
+
+    #heroSection #qrImage {
+        width: 100% !important;
+        min-height: 0 !important;
+        flex: 1 1 auto !important;
+        object-fit: contain !important;
+    }
+
+    /* Center phone and gradient ball */
+    #sharedCircle {
+        position: absolute !important;
+        left: 50% !important;
+        top: 530px !important;
+        width: clamp(270px, 34vw, 330px) !important;
+        height: clamp(270px, 34vw, 330px) !important;
+        transform: translateX(-50%) !important;
+        translate: none !important;
+        border-radius: 50% !important;
+        z-index: 20 !important;
+        pointer-events: none !important;
+    }
+
+    #heroPhoneWrapper {
+        position: absolute !important;
+        left: 50% !important;
+        top: 380px !important;
+        width: clamp(175px, 21vw, 210px) !important;
+        height: auto !important;
+        aspect-ratio: 213.81 / 443 !important;
+        transform: translateX(-50%) !important;
+        margin: 0 !important;
+        z-index: 40 !important;
+        pointer-events: none !important;
+    }
+
+    #heroPhone {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important;
+    }
+
+  }
+@media screen and (min-width: 768px) and (max-width: 1032px) {
+
+    /* Main outer wrapper */
+    #heroCut {
+        position: relative !important;
+        width: calc(100% - 32px) !important;
+        max-width: 960px !important;
+        /* margin: 28px auto 0 !important; */
+        margin-top: 8px !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        border-radius: 30px !important;
+        isolation: isolate;
+    }
+
+    /* Inner gradient section */
+    #heroCut > section {
+        position: relative !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 280px !important;
+        margin: 0 !important;
+        padding: 30px 24px 32px !important;
+        box-sizing: border-box !important;
+        border-radius: 30px !important;
+        overflow: hidden !important;
+    }
+
+    /* SVG border and circular cut */
+    #heroCut > svg {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        z-index: 20 !important;
+        pointer-events: none !important;
+        display: block !important;
+        overflow: visible !important;
+    }
+
+    /* Heading + description */
+    #heroCut > section > div:first-child {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: flex-start !important;
+        justify-content: space-between !important;
+        gap: 20px !important;
+        width: 100% !important;
+        margin: 0 !important;
+        text-align: left !important;
+    }
+
+    /* Heading */
+    #heroCut h2 {
+        flex: 1 1 50% !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        font-size: 24px !important;
+        line-height: 1.4 !important;
+        white-space: normal !important;
+        text-align: left !important;
+    }
+
+    /* Desktop/tablet description */
+    #heroCut p.hidden.md\:block {
+        display: block !important;
+        flex: 1 1 45% !important;
+        min-width: 0 !important;
+        max-width: 280px !important;
+        margin: 0 !important;
+        font-size: 15px !important;
+        line-height: 1.6 !important;
+        text-align: right !important;
+    }
+
+    /* Hide mobile-only description */
+    #heroCut p.md\:hidden {
+        display: none !important;
+    }
+
+    /* Feature pills area */
+    #heroCut .relative.mt-16 {
+        margin-top: 28px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Preserve the existing pill animation */
+    /* #heroCut .pill-container.marquee-track {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        width: max-content !important;
+        max-width: none !important;
+    } */
+
+    #heroCut .pill-neu {
+        flex-shrink: 0 !important;
+        box-sizing: border-box !important;
+    }
+}
+
+
+#scrollContainer {
+    height: 70px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+#scrollContent {
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    will-change: transform;
+}
+
+#scrollContent > div {
+    height: 70px;
+    min-height: 70px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+/* Tablet: 768px–1023px */
+@media screen and (min-width: 768px) and (max-width: 1032px) {
+    #scrollContainer {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 70px !important;
+        overflow: visible !important;
+        position: relative !important;
+
+        /* Clip vertically, but allow overflow on both horizontal sides */
+        clip-path: inset(0 -100vw 0 -100vw) !important;
+    }
+
+    #scrollContent {
+        display: flex !important;
+        flex-direction: column !important;
+        width: max-content !important;
+        max-width: none !important;
+        white-space: nowrap !important;
+    }
+
+    #scrollContent > div {
+        height: 70px !important;
+        min-height: 70px !important;
+        width: max-content !important;
+        max-width: none !important;
+        flex-shrink: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        white-space: nowrap !important;
+        box-sizing: border-box !important;
+    }
+}
+
+
+/* ==========================================
+   TABLET VIEW: FIX HERO-CUT AND HEROCUT
+   ========================================== */
+@media screen and (min-width: 768px) and (max-width: 1032px) {
+
+    /* Outer hero wrapper */
+    #heroCut.hero-clip-wrapper {
+        position: relative !important;
+        display: block !important;
+        width: calc(100% - 32px) !important;
+        max-width: 960px !important;
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 24px auto 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+        border-radius: 30px !important;
+    }
+
+    /* Inner hero background */
+    #heroCut > section.hero-cut {
+        position: relative !important;
+        inset: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 340px !important;
+        margin: 0 !important;
+        padding: 130px 28px 35px !important;
+        background: linear-gradient(
+            to bottom,
+            #B9CCFF,
+            #EAF1FF,
+            #f3f4f6
+        ) !important;
+        border-radius: 30px !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Heading and description layout */
+    #heroCut > section.hero-cut > div:first-child {
+        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 12px !important;
+        width: 100% !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Heading */
+    #heroCut h2 {
+        display: block !important;
+        width: 100% !important;
+        max-width: 600px !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        font-size: 28px !important;
+        line-height: 1.35 !important;
+        font-weight: 600 !important;
+        text-align: center !important;
+        white-space: normal !important;
+        overflow-wrap: break-word !important;
+    }
+
+    #heroCut h2 span.hidden.md\:inline {
+        display: inline !important;
+        white-space: normal !important;
+    }
+
+    #heroCut h2 span.md\:hidden {
+        display: none !important;
+    }
+
+    /* Description */
+    #heroCut p.hidden.md\:block {
+        display: block !important;
+        width: 100% !important;
+        max-width: 520px !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        font-size: 14px !important;
+        line-height: 1.6 !important;
+        text-align: center !important;
+    }
+
+    #heroCut p.md\:hidden {
+        display: none !important;
+    }
+
+    /* Feature pills container */
+    #heroCut > section.hero-cut > div.relative.mt-16 {
+        position: relative !important;
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 32px auto 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Keep pills horizontally aligned */
+    /* #heroCut .pill-container.marquee-track {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        width: max-content !important;
+        max-width: none !important;
+    } */
+
+    #heroCut .pill-neu {
+        flex-shrink: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Hide decorative SVG border on tablets */
+    #heroCut > svg {
+        display: none !important;
+    }
+}
+
+/* ==========================================
+   TABLET CIRCLE LAYOUT + PHONE LAYERING
+   768px–1032px ONLY
+========================================== */
+
+@media screen and (min-width: 768px) and (max-width: 1032px) {
+
+    /* Main section */
+    /* #circleSection {
+        position: relative !important;
+        width: 100% !important;
+        margin-top: 30px !important;
+        padding: 0 16px !important;
+        overflow: visible !important;
+        box-sizing: border-box !important;
+    } */
+
+    /* Circle container */
+    #targetCircle {
+        position: relative !important;
+        isolation: isolate;
+        width: 100% !important;
+        max-width: 900px !important;
+        height: 620px !important;
+        margin: 30px auto 0 !important;
+        overflow: hidden !important;
+        transform: none !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Background rings */
+    #targetCircle > div:has(.ring-glow) {
+        left: 50% !important;
+        top: 50% !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: translate(-50%, -50%) !important;
+        z-index: 1 !important;
+    }
+
+    #targetCircle > div:has(.ring-glow):nth-of-type(1) {
+        width: 480px !important;
+        height: 480px !important;
+    }
+
+    #targetCircle > div:has(.ring-glow):nth-of-type(2) {
+        width: 370px !important;
+        height: 370px !important;
+    }
+
+    /* Inner circle stays behind the phone */
+    #circleCenter {
+        position: absolute !important;
+        left: 50% !important;
+        top: 50% !important;
+        right: auto !important;
+        bottom: auto !important;
+        width: 250px !important;
+        height: 250px !important;
+        transform: translate(-50%, -50%) !important;
+        z-index: 2 !important;
+    }
+
+    /* Content cards: always above the phone */
+    #targetCircle > div:has(> div.relative > h2) {
+        width: 210px !important;
+        z-index: 50 !important;
+    }
+
+    #targetCircle > div:has(> div.relative > h2) > div.relative {
+        width: 210px !important;
+        min-height: 88px !important;
+        height: auto !important;
+        padding: 14px 16px !important;
+        border-radius: 20px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Card headings */
+    #targetCircle h2 {
+        font-size: 18px !important;
+        line-height: 1.3 !important;
+    }
+
+    /* Card descriptions */
+    #targetCircle h2 + p {
+        width: auto !important;
+        padding-right: 0 !important;
+        margin-top: 5px !important;
+        font-size: 13px !important;
+        line-height: 1.5 !important;
+    }
+
+    /* Images */
+    #targetCircle img {
+        width: 76px !important;
+        height: 76px !important;
+        border-width: 6px !important;
+    }
+
+    /* Users */
+    #targetCircle > div:has(img[src*="u.jpg"]) {
+        left: 4% !important;
+        right: auto !important;
+        top: 90px !important;
+        bottom: auto !important;
+        z-index: 50 !important;
+    }
+
+    /* Business Owners */
+    #targetCircle > div:has(img[src*="bo.jpg"]) {
+        right: 4% !important;
+        left: auto !important;
+        top: 90px !important;
+        bottom: auto !important;
+        z-index: 50 !important;
+    }
+
+    /* Job Recruiters */
+    #targetCircle > div:has(img[src*="jr.jpg"]) {
+        right: 2% !important;
+        left: auto !important;
+        top: 200px !important;
+        bottom: auto !important;
+        z-index: 50 !important;
+    }
+
+    /* Shop Owners */
+    #targetCircle > div:has(img[src*="so.jpg"]) {
+        right: 4% !important;
+        left: auto !important;
+        top: 465px !important;
+        bottom: auto !important;
+        z-index: 50 !important;
+    }
+
+    /* Service Providers */
+    #targetCircle > div:has(img[src*="sp.jpg"]) {
+        left: 4% !important;
+        right: auto !important;
+        top: 465px !important;
+        bottom: auto !important;
+        z-index: 50 !important;
+    }
+
+    /* AI Chat Bot */
+    #targetCircle > div.absolute:has(> p) {
+        left: 18% !important;
+        right: auto !important;
+        top: 310px !important;
+        bottom: auto !important;
+        width: 105px !important;
+        height: 105px !important;
+        font-size: 12px !important;
+        border-width: 3px !important;
+        z-index: 51 !important;
+    }
+
+    /* Offer & Advertisement */
+    #targetCircle > div.absolute:has(> br) {
+        right: 18% !important;
+        left: auto !important;
+        bottom: 175px !important;
+        top: auto !important;
+        width: 105px !important;
+        height: 105px !important;
+        font-size: 12px !important;
+        z-index: 51 !important;
+    }
+
+    /* Phone clone: above rings, below cards and bubbles */
+    /* .hero-phone-clone {
+        position: absolute !important;
+        z-index: 10 !important;
+        pointer-events: none !important;
+    } */
+}
+
+
+/* ==========================================
+   FINAL FIX: PREVENT PHONE OVERLAPPING CONTENT
+   Tablet: 768px–1032px
+========================================== */
+
+@media screen and (min-width: 768px) and (max-width: 1032px) {
+
+    /* Create a predictable stacking layer */
+    #targetCircle {
+        position: relative !important;
+        isolation: isolate !important;
+    }
+
+    /* Rings behind the phone */
+    #targetCircle > div:has(.ring-glow) {
+        z-index: 1 !important;
+    }
+
+    /* Inner circle background */
+    #circleCenter {
+        z-index: 2 !important;
+    }
+
+    /* Phone between rings and content */
+    .hero-phone-clone {
+        z-index: 10 !important;
+        pointer-events: none !important;
+    }
+
+    /* All five content cards above phone */
+    #targetCircle > div:has(img[src*="u.jpg"]),
+    #targetCircle > div:has(img[src*="bo.jpg"]),
+    #targetCircle > div:has(img[src*="jr.jpg"]),
+    #targetCircle > div:has(img[src*="so.jpg"]),
+    #targetCircle > div:has(img[src*="sp.jpg"]) {
+        z-index: 100 !important;
+    }
+
+    /* AI Chat Bot bubble */
+    #targetCircle > div.absolute:has(> p) {
+        z-index: 101 !important;
+    }
+
+    /* Offer & Advertisement bubble */
+    #targetCircle > div.absolute:has(> br) {
+        z-index: 101 !important;
+    }
+}
+
+/* ==========================================
+   PHONE LAYERING FIX — TABLET
+   768px–1032px
+========================================== */
+
+@media screen and (min-width: 768px) and (max-width: 1032px) {
+
+    #targetCircle {
+        position: relative !important;
+        isolation: isolate !important;
+    }
+
+    /* Background circles */
+    #targetCircle > div:has(.ring-glow) {
+        z-index: 1 !important;
+    }
+
+    #circleCenter {
+        z-index: 2 !important;
+    }
+
+    /* Cards above the phone */
+    #targetCircle > div:has(> div.relative > h2) {
+        z-index: 20 !important;
+    }
+
+    /* Bubbles above the phone */
+    #targetCircle > div.absolute:has(> p),
+    #targetCircle > div.absolute:has(> br) {
+        z-index: 21 !important;
+    }
+}
+
+/* Global animated phone layer */
+.hero-phone-clone {
+    z-index: 5 !important;
+    pointer-events: none !important;
+}
 
 
 
+/* ==========================================
+   N-ME FEATURE SECTION — TABLET FIX
+   768px–1032px ONLY
+   HTML UNCHANGED
+========================================== */
 
+@media screen and (min-width: 768px) and (max-width: 1032px) {
+
+    /* Main section: single-column tablet layout */
+    #featureSection {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        align-items: start !important;
+        width: 100% !important;
+        max-width: 900px !important;
+        margin: 0 auto !important;
+        padding: 48px 16px !important;
+        gap: 32px !important;
+        box-sizing: border-box !important;
+        min-height: 0 !important;
+    }
+
+    /* Left heading and description */
+    #featureSection #leftContent {
+        display: block !important;
+        width: 100% !important;
+        padding-top: 0 !important;
+        text-align: center !important;
+    }
+
+    #featureSection #leftContent h2 {
+        font-size: 36px !important;
+        line-height: 1.2 !important;
+        white-space: normal !important;
+    }
+
+    #featureSection #leftContent p {
+        max-width: 540px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        font-size: 16px !important;
+        line-height: 1.7 !important;
+    }
+
+    /* Cards wrapper */
+    #featureSection #cardTrack {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
+        gap: 32px !important;
+        min-width: 0 !important;
+    }
+
+    /* All four feature cards */
+    #featureSection #cardTrack .feature-card {
+        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        max-width: 762px !important;
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 0 auto !important;
+        padding: 24px !important;
+        border-width: 5px !important;
+        border-radius: 40px !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+        gap: 20px !important;
+    }
+
+    /* Tablet ordering: images above content */
+    #featureSection #cardTrack .feature-card > div.flex.justify-center {
+        order: 1 !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    #featureSection #cardTrack .feature-card > div.relative.z-10 {
+        order: 2 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        text-align: left !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Hide desktop animated images at tablet widths */
+    #featureSection #cardTrack .feature-card img.phone-anim {
+        display: none !important;
+    }
+
+    /* Display static tablet images */
+    #featureSection #cardTrack .feature-card img.lg\:hidden {
+        display: block !important;
+        width: 220px !important;
+        max-width: 100% !important;
+        height: auto !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        object-fit: contain !important;
+    }
+
+    /* Card headings */
+    #featureSection #cardTrack .feature-card h2 {
+        width: 100% !important;
+        font-size: 26px !important;
+        line-height: 1.3 !important;
+        margin-bottom: 16px !important;
+        white-space: normal !important;
+        overflow-wrap: break-word !important;
+        text-align: left !important;
+    }
+
+    /* Card descriptions */
+    #featureSection #cardTrack .feature-card p {
+        font-size: 16px !important;
+        line-height: 1.65 !important;
+        overflow-wrap: break-word !important;
+    }
+
+    /* Feature list */
+    #featureSection #cardTrack .feature-card ul {
+        width: 100% !important;
+        margin-top: 0 !important;
+    }
+
+    #featureSection #cardTrack .feature-card ul li {
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+    }
+
+    #featureSection #cardTrack .feature-card ul li p {
+        margin: 0 !important;
+        font-size: 17px !important;
+        line-height: 1.5 !important;
+    }
+
+    #featureSection #cardTrack .feature-card ul li span {
+        flex-shrink: 0 !important;
+    }
+
+    #featureSection #cardTrack .feature-card ul li span img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important;
+    }
+
+    /* Background artwork */
+    #featureSection #cardTrack .feature-card > img:not(.phone-anim) {
+        max-width: none !important;
+        pointer-events: none !important;
+    }
+
+    /* Prevent horizontal overflow */
+    #featureSection,
+    #featureSection #cardTrack,
+    #featureSection #cardTrack .feature-card {
+        min-width: 0 !important;
+    }
+}
+
+
+/* ============================================
+   N-ME FEATURES SECTION — TABLET RESPONSIVE FIX
+   768px TO 1032px
+   HTML REMAINS UNCHANGED
+============================================ */
+
+@media screen and (min-width: 768px) and (max-width: 1032px) {
+
+    /* Main section */
+    section.w-full.md\:mt-48 {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-top: 0 !important;
+        padding: 48px 24px !important;
+        box-sizing: border-box !important;
+        overflow-x: clip !important;
+    }
+
+    /* Main content wrapper */
+    section.w-full.md\:mt-48 > div.max-w-\[1400px\] {
+        width: 100% !important;
+        max-width: 900px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Top row: heading above the two cards */
+    section.w-full.md\:mt-48 .grid.grid-cols-1.md\:grid-cols-3 {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
+        gap: 32px !important;
+    }
+
+    /* Heading and description */
+    section.w-full.md\:mt-48 .flex.flex-col.items-center.text-center {
+        width: 100% !important;
+        max-width: 650px !important;
+        margin: 0 auto !important;
+        align-items: center !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+
+    section.w-full.md\:mt-48 .flex.flex-col.items-center.text-center h2 {
+        width: 100% !important;
+        font-size: 32px !important;
+        line-height: 1.25 !important;
+        text-align: center !important;
+    }
+
+    section.w-full.md\:mt-48 .flex.flex-col.items-center.text-center p {
+        width: 100% !important;
+        max-width: 550px !important;
+        margin-top: 16px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        font-size: 16px !important;
+        line-height: 1.65 !important;
+        text-align: center !important;
+    }
+
+    /* Top two cards: stack vertically */
+    section.w-full.md\:mt-48 .col-span-2.flex.flex-col {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
+        gap: 24px !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Bottom two cards: stack vertically */
+    section.w-full.md\:mt-48 .mt-12.flex.flex-col {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
+        margin-top: 24px !important;
+        gap: 24px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* All four cards */
+    section.w-full.md\:mt-48 .col-span-2.flex.flex-col > div,
+    section.w-full.md\:mt-48 .mt-12.flex.flex-col > div {
+        width: 100% !important;
+        max-width: 762px !important;
+        height: auto !important;
+        min-height: 224px !important;
+        margin: 0 auto !important;
+        padding: 28px !important;
+        border-width: 5px !important;
+        border-radius: 32px !important;
+        box-sizing: border-box !important;
+        flex: none !important;
+    }
+
+    /* Card internal grid */
+    section.w-full.md\:mt-48 .col-span-2.flex.flex-col > div > .grid,
+    section.w-full.md\:mt-48 .mt-12.flex.flex-col > div > .grid {
+        display: grid !important;
+        grid-template-columns: 80px minmax(0, 1fr) !important;
+        column-gap: 20px !important;
+        row-gap: 16px !important;
+        width: 100% !important;
+        align-items: center !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Icon containers */
+    section.w-full.md\:mt-48 .col-span-2.flex.flex-col > div > .grid > .relative,
+    section.w-full.md\:mt-48 .mt-12.flex.flex-col > div > .grid > .relative {
+        width: 80px !important;
+        height: 80px !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Card icons */
+    section.w-full.md\:mt-48 .col-span-2.flex.flex-col > div > .grid > .relative img,
+    section.w-full.md\:mt-48 .mt-12.flex.flex-col > div > .grid > .relative img {
+        width: 4.6rem !important;
+        height: 4.6rem !important;
+        max-width: 100% !important;
+        object-fit: contain !important;
+    }
+
+    /* Card title and subtitle */
+    section.w-full.md\:mt-48 .col-span-2.flex.flex-col > div > .grid > div.self-center,
+    section.w-full.md\:mt-48 .mt-12.flex.flex-col > div > .grid > div.self-center {
+        min-width: 0 !important;
+        width: 100% !important;
+        align-self: center !important;
+    }
+
+    section.w-full.md\:mt-48 .col-span-2.flex.flex-col > div h2,
+    section.w-full.md\:mt-48 .mt-12.flex.flex-col > div h2 {
+        font-size: 20px !important;
+        line-height: 1.35 !important;
+        white-space: normal !important;
+        overflow-wrap: break-word !important;
+    }
+
+    section.w-full.md\:mt-48 .col-span-2.flex.flex-col > div .self-center p,
+    section.w-full.md\:mt-48 .mt-12.flex.flex-col > div .self-center p {
+        font-size: 14px !important;
+        line-height: 1.5 !important;
+        overflow-wrap: break-word !important;
+    }
+
+    /* Card description spans both columns */
+    section.w-full.md\:mt-48 .col-span-2.flex.flex-col > div > .grid > p,
+    section.w-full.md\:mt-48 .mt-12.flex.flex-col > div > .grid > p {
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+        margin: 0 !important;
+        font-size: 15px !important;
+        line-height: 1.7 !important;
+        white-space: normal !important;
+        overflow-wrap: break-word !important;
+    }
+}
+
+/* ============================================
+   SMALLER MOBILE SAFETY
+============================================ */
+
+@media screen and (max-width: 767px) {
+
+    section.w-full.md\:mt-48 {
+        overflow-x: clip !important;
+    }
+
+    section.w-full.md\:mt-48 .col-span-2.flex.flex-col > div,
+    section.w-full.md\:mt-48 .mt-12.flex.flex-col > div {
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    section.w-full.md\:mt-48 .col-span-2.flex.flex-col > div > .grid,
+    section.w-full.md\:mt-48 .mt-12.flex.flex-col > div > .grid {
+        grid-template-columns: 64px minmax(0, 1fr) !important;
+        column-gap: 12px !important;
+    }
+
+    section.w-full.md\:mt-48 .col-span-2.flex.flex-col > div > .grid > .relative,
+    section.w-full.md\:mt-48 .mt-12.flex.flex-col > div > .grid > .relative {
+        width: 64px !important;
+        height: 64px !important;
+    }
+}
+
+/* =========================================================
+   FINAL NAVBAR FIX — MOBILE, TABLET, LAPTOP & DESKTOP
+   Add this at the VERY END of your internal CSS
+========================================================= */
+
+/* Main navbar */
+#heroSection nav {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    min-height: 76px !important;
+    padding: 8px 18px !important;
+    box-sizing: border-box !important;
+    z-index: 1000 !important;
+}
+
+/* Logo */
+#heroSection nav > a:first-child {
+    display: flex !important;
+    align-items: center !important;
+    flex: 0 0 auto !important;
+    margin: 0 auto 0 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+    z-index: 1002 !important;
+}
+
+#heroSection nav > a:first-child img {
+    display: block !important;
+    width: auto !important;
+    height: 58px !important;
+    max-width: 220px !important;
+    object-fit: contain !important;
+}
+
+/* Navbar inner wrapper */
+#heroSection nav > div {
+    position: static !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    width: auto !important;
+    min-height: 60px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* =========================================================
+   MOBILE + TABLET — UP TO 1023px
+========================================================= */
+
+@media screen and (max-width: 1023px) {
+
+    #heroSection nav {
+        min-height: 72px !important;
+        padding: 8px 14px !important;
+    }
+
+    #heroSection nav > a:first-child img {
+        height: 54px !important;
+        max-width: 190px !important;
+    }
+
+    /* Hide desktop navigation links */
+    #heroSection nav > div > ul {
+        display: none !important;
+    }
+
+    /* Hide desktop message icon */
+    #heroSection nav a[href*="message"] {
+        display: none !important;
+    }
+
+    /* Hamburger button */
+    #menuBtn {
+        display: flex !important;
+        position: absolute !important;
+        top: 50% !important;
+        right: 14px !important;
+        left: auto !important;
+
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        transform: translateY(-50%) !important;
+        z-index: 1102 !important;
+        cursor: pointer !important;
+    }
+
+    /* Hamburger wrapper */
+    #menuBtn .hamburger {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 6px !important;
+        width: 26px !important;
+        height: 26px !important;
+    }
+
+    /* Hamburger lines */
+    #menuBtn .hamburger-line {
+        display: block !important;
+        width: 25px !important;
+        height: 2px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border-radius: 5px !important;
+        transition: all 0.3s ease !important;
+    }
+
+    /* Hamburger to close icon */
+    #menuBtn .hamburger.active .line-1 {
+        transform: translateY(8px) rotate(45deg) !important;
+    }
+
+    #menuBtn .hamburger.active .line-2 {
+        opacity: 0 !important;
+    }
+
+    #menuBtn .hamburger.active .line-3 {
+        transform: translateY(-8px) rotate(-45deg) !important;
+    }
+
+    /* Mobile dropdown */
+    #mobileMenu {
+        display: block !important;
+        position: absolute !important;
+
+        top: calc(19% + 4px) !important;
+        right: 14px !important;
+        left: auto !important;
+
+        width: min(300px, calc(100vw - 28px)) !important;
+        max-height: calc(100vh - 110px) !important;
+
+        margin: 0 !important;
+        padding: 12px !important;
+
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+
+        transform: translateY(-8px) scaleY(0) !important;
+        transform-origin: top right !important;
+
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+
+        z-index: 1101 !important;
+        box-sizing: border-box !important;
+
+        transition:
+            transform 0.25s ease,
+            opacity 0.25s ease,
+            visibility 0.25s ease !important;
+        /* Gradient glass background */
+        background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.72),
+            rgba(225, 230, 255, 0.48),
+            rgba(210, 215, 255, 0.38)
+        ) !important;
+
+        backdrop-filter: blur(22px) saturate(160%) !important;
+        -webkit-backdrop-filter: blur(22px) saturate(160%) !important;
+
+        border: 1px solid rgba(255, 255, 255, 0.65) !important;
+
+        box-shadow:
+            0 12px 35px rgba(45, 55, 180, 0.14),
+            inset 0 1px 1px rgba(255, 255, 255, 0.75) !important;
+
+        border-radius: 18px !important;
+    }
+
+    /* Dropdown open state */
+    #mobileMenu.menu-open {
+        transform: translateY(0) scaleY(1) !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+
+    /* Dropdown list */
+    #mobileMenu ul {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        width: 100% !important;
+        gap: 4px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    #mobileMenu li {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Dropdown link spacing */
+    #mobileMenu a {
+        display: flex !important;
+        align-items: center !important;
+        width: 100% !important;
+        min-height: 44px !important;
+        padding: 12px 16px !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        border-radius: 10px !important;
+        white-space: normal !important;
+    }
+}
+
+/* =========================================================
+   DESKTOP + LAPTOP — FROM 1024px
+========================================================= */
+
+@media screen and (min-width: 1024px) {
+
+    #heroSection nav {
+        min-height: 82px !important;
+        padding: 8px 24px !important;
+    }
+
+    #heroSection nav > a:first-child img {
+        height: 62px !important;
+        max-width: 230px !important;
+    }
+
+    /* Desktop navigation wrapper */
+    #heroSection nav > div {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        margin-left: 25px !important;
+    }
+
+    /* Desktop navigation list */
+    #heroSection nav > div > ul {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        position: static !important;
+        width: auto !important;
+        height: auto !important;
+        max-height: none !important;
+
+        flex: 1 1 auto !important;
+        gap: clamp(8px, 1.3vw, 20px) !important;
+
+        margin: 0 auto !important;
+        padding: 0 12px !important;
+
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+        pointer-events: auto !important;
+
+        box-sizing: border-box !important;
+    }
+
+    #heroSection nav > div > ul > li {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex: 0 0 auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* IMPORTANT: Add space around every navigation link */
+    #heroSection nav > div > ul > li > a {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        padding: 12px 15px !important;
+        margin: 0 !important;
+
+        line-height: 1.4 !important;
+        white-space: nowrap !important;
+
+        border-radius: 10px !important;
+        box-sizing: border-box !important;
+
+        position: static !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+
+        transition: background 0.2s ease, color 0.2s ease !important;
+    }
+
+    /* Message icon at the far right */
+    #heroSection nav a[href*="message"] {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        flex: 0 0 auto !important;
+        width: 44px !important;
+        height: 44px !important;
+
+        margin: 0 0 0 12px !important;
+        padding: 0 !important;
+
+        position: static !important;
+        transform: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    /* Hide mobile controls */
+    #menuBtn,
+    #mobileMenu {
+        display: none !important;
+    }
+}
+
+/* =========================================================
+   SMALL LAPTOP — 1024px TO 1200px
+========================================================= */
+
+@media screen and (min-width: 1024px) and (max-width: 1200px) {
+
+    #heroSection nav {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    #heroSection nav > a:first-child img {
+        height: 54px !important;
+        max-width: 180px !important;
+    }
+
+    #heroSection nav > div {
+        margin-left: 12px !important;
+    }
+
+    #heroSection nav > div > ul {
+        gap: 5px !important;
+        padding: 0 5px !important;
+    }
+
+    #heroSection nav > div > ul > li > a {
+        padding: 10px 10px !important;
+        font-size: 13px !important;
+    }
+
+    #heroSection nav a[href*="message"] {
+        margin-left: 6px !important;
+    }
+}
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media screen and (max-width: 380px) {
+
+    #heroSection nav {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    #heroSection nav > a:first-child img {
+        height: 48px !important;
+        max-width: 160px !important;
+    }
+
+    #menuBtn {
+        right: 8px !important;
+    }
+
+    #mobileMenu {
+        right: 8px !important;
+        width: calc(100vw - 16px) !important;
+    }
+}
+
+/* =========================================
+   DESKTOP NAVBAR ALIGNMENT
+========================================= */
+
+@media (min-width: 1024px) {
+
+    #heroSection nav {
+        display: flex !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
+
+    /* Navbar content wrapper */
+    #heroSection nav > div {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        flex: 1 !important;
+        gap: 20px !important;
+        width: auto !important;
+    }
+
+    /* Navigation links */
+    #heroSection nav > div > ul {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 22px !important;
+        margin-left: auto !important;
+        margin-right: 15px !important;
+        padding: 12px !important;
+        list-style: none !important;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.65),
+          rgba(220, 225, 255, 0.42),
+          rgba(190, 200, 255, 0.32)
+      ) !important;
+
+      backdrop-filter: blur(22px) saturate(160%) !important;
+      -webkit-backdrop-filter: blur(22px) saturate(160%) !important;
+
+      border: 1px solid rgba(255, 255, 255, 0.6) !important;
+      border-radius: 50px !important;
+
+      box-shadow:
+          0 8px 25px rgba(55, 65, 180, 0.10),
+          inset 0 1px 2px rgba(255, 255, 255, 0.7) !important;
+    }
+
+
+    /* Link styling */
+    #heroSection nav > div > ul li a {
+        display: inline-flex !important;
+        align-items: center !important;
+        white-space: nowrap !important;
+        padding: 10px 12px !important;
+        text-decoration: none !important;
+    }
+
+    /* Message icon */
+    #heroSection nav a[href*="message"] {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-shrink: 0 !important;
+        position: static !important;
+        margin-left: 0 !important;
+    }
+
+    #menuBtn,
+    #mobileMenu {
+        display: none !important;
+    }
+}
+/* Fix mobile S-size text clipping */
+@media (max-width: 380px) {
+    .block.md\:hidden.w-full.flex.justify-center {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+        box-sizing: border-box !important;
+        overflow: visible !important;
+    }
+
+    .block.md\:hidden.w-full.flex.justify-center > div {
+        font-size: clamp(19px, 6.1vw, 23px) !important;
+        letter-spacing: -1px !important;
+        white-space: nowrap !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+}
+/* Fix All Your Needs heading on small mobile screens */
+@media (max-width: 380px) {
+    #line1 {
+        width: 100% !important;
+        max-width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        flex-wrap: nowrap !important;
+        gap: 5px !important;
+        padding: 0 8px !important;
+        box-sizing: border-box !important;
+        font-size: 26px !important;
+        letter-spacing: -1px !important;
+        white-space: nowrap !important;
+        overflow: visible !important;
+    }
+
+    #line1 .word {
+        flex-shrink: 0 !important;
+        white-space: nowrap !important;
+    }
+}
+@media (max-width: 380px) {
+    .max-md\:w-\[252\.47px\].flex.items-center.justify-center {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        justify-content: center !important;
+        align-items: center !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .max-md\:w-\[252\.47px\].flex.items-center.justify-center > div {
+        justify-content: center !important;
+        white-space: nowrap !important;
+    }
+}
+@media (max-width: 380px) {
+    .flex.justify-between.items-start.max-md\:flex-col {
+        width: 100% !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        gap: 12px !important;
+        box-sizing: border-box !important;
+    }
+
+    .flex.justify-between.items-start.max-md\:flex-col h2 {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+        white-space: normal !important;
+        text-align: center !important;
+    }
+
+    .flex.justify-between.items-start.max-md\:flex-col p.md\:hidden {
+        display: block !important;
+        width: 100% !important;
+        max-width: 300px !important;
+        margin: 0 auto !important;
+        font-size: 13px !important;
+        line-height: 1.6 !important;
+        text-align: center !important;
+    }
+}
+
+/* MOBILE S - Keep complete circle content inside the screen */
+@media (max-width: 380px) {
+
+    #circleSection {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    #targetCircle {
+        width: 100% !important;
+        max-width: 355px !important;
+        height: 500px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        overflow: hidden !important;
+        position: relative !important;
+        transform: scale(0.92);
+        transform-origin: top center;
+    }
+
+    /* Outer ring */
+    #targetCircle > div:nth-child(1) {
+        width: 300px !important;
+        height: 300px !important;
+        left: 50% !important;
+        top: 50% !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: translate(-50%, -50%) !important;
+    }
+
+    /* Middle ring */
+    #targetCircle > div:nth-child(2) {
+        width: 240px !important;
+        height: 240px !important;
+        left: 50% !important;
+        top: 50% !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: translate(-50%, -50%) !important;
+    }
+
+    /* Inner ring */
+    #circleCenter {
+        width: 170px !important;
+        height: 170px !important;
+        left: 50% !important;
+        top: 50% !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: translate(-50%, -50%) !important;
+    }
+
+    /* AI Chat Bot */
+    #targetCircle > div:nth-child(4) {
+        left: 50% !important;
+        top: 30% !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: translate(-50%, -50%) !important;
+    }
+
+    /* Offer */
+    #targetCircle > div:nth-child(5) {
+        left: 50% !important;
+        right: auto !important;
+        bottom: 20% !important;
+        transform: translateX(-50%) !important;
+    }
+
+    /* All content cards - slightly smaller */
+    #targetCircle > div:nth-child(n+6) > div {
+        width: 155px !important;
+        max-width: 155px !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+        padding: 8px !important;
+    }
+
+    /* Users */
+    #targetCircle > div:nth-child(6) {
+        left: 3px !important;
+        top: 16% !important;
+        right: auto !important;
+    }
+
+    /* Business Owners */
+    #targetCircle > div:nth-child(7) {
+        right: 3px !important;
+        left: auto !important;
+        top: 29% !important;
+    }
+
+    /* Job Recruiters */
+    #targetCircle > div:nth-child(8) {
+        right: 3px !important;
+        left: auto !important;
+        top: 65% !important;
+    }
+
+    /* Shop Owners */
+    #targetCircle > div:nth-child(9) {
+        right: 3px !important;
+        left: auto !important;
+        bottom: 5% !important;
+    }
+
+    /* Service Providers */
+    #targetCircle > div:nth-child(10) {
+        left: 3px !important;
+        right: auto !important;
+        bottom: 25% !important;
+    }
+
+    /* Prevent card text from overflowing */
+    #targetCircle > div:nth-child(n+6) p {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-right: 0 !important;
+        font-size: 9px !important;
+        line-height: 1.3 !important;
+        white-space: normal !important;
+    }
+
+    #targetCircle > div:nth-child(n+6) h2 {
+        font-size: 11px !important;
+        line-height: 1.2 !important;
+    }
+
+    /* Phone image */
+    #circleSection > img.hero-phone-clone {
+        width: 145px !important;
+        max-width: 145px !important;
+        min-width: 0 !important;
+        height: 300px !important;
+        max-height: 300px !important;
+        min-height: 0 !important;
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        object-fit: contain !important;
+    }
+}
+
+
+/* MOBILE S - Arrange content around the rings */
+@media (max-width: 380px) {
+
+    #circleSection {
+        position: relative !important;
+        width: 100% !important;
+        overflow: hidden !important;
+        isolation: isolate !important;
+    }
+
+    #targetCircle {
+        position: relative !important;
+        width: 100% !important;
+        height: 510px !important;
+        overflow: hidden !important;
+        z-index: 2 !important;
+        transform: none !important;
+    }
+
+    /* Phone behind all content */
+    #circleSection > img.hero-phone-clone {
+        z-index: 1 !important;
+    }
+
+    /* AI Chat Bot - upper left */
+    #targetCircle > div:nth-child(4) {
+        left: 12% !important;
+        top: 45% !important;
+        right: auto !important;
+        bottom: auto !important;
+        z-index: 101 !important;
+    }
+
+    /* Offer - lower right */
+    #targetCircle > div:nth-child(5) {
+        left: auto !important;
+        right: 12% !important;
+        top: auto !important;
+        bottom: 10% !important;
+        z-index: 101 !important;
+    }
+
+    /* Common card settings */
+    #targetCircle > div:nth-child(n+6) {
+        width: 145px !important;
+        height: auto !important;
+        z-index: 102 !important;
+        transform: none !important;
+    }
+
+    #targetCircle > div:nth-child(n+6) > div {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: 58px !important;
+        height: auto !important;
+        padding: 8px 10px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
+        gap: 3px !important;
+        box-sizing: border-box !important;
+        border-radius: 14px !important;
+    }
+
+    /* Users - upper left */
+    #targetCircle > div:nth-child(6) {
+        left: 2% !important;
+        top: 25% !important;
+        right: auto !important;
+        bottom: auto !important;
+    }
+
+    /* Business Owners - upper right */
+    #targetCircle > div:nth-child(7) {
+        right: 2% !important;
+        top: 18% !important;
+        left: auto !important;
+        bottom: auto !important;
+    }
+
+    /* Job Recruiters - middle right */
+    #targetCircle > div:nth-child(8) {
+        right: 2% !important;
+        top: 61% !important;
+        left: auto !important;
+        bottom: auto !important;
+    }
+
+    /* Shop Owners - lower right */
+    #targetCircle > div:nth-child(9) {
+        right: 2% !important;
+        bottom: 45% !important;
+        left: auto !important;
+        top: auto !important;
+    }
+
+    /* Service Providers - lower left */
+    #targetCircle > div:nth-child(10) {
+        left: 2% !important;
+        bottom: 22% !important;
+        right: auto !important;
+        top: auto !important;
+    }
+
+    /* Headings */
+    #targetCircle > div:nth-child(n+6) h2 {
+        width: 100% !important;
+        font-size: 10px !important;
+        line-height: 1.2 !important;
+        margin: 0 !important;
+        white-space: nowrap !important;
+    }
+
+    /* Descriptions */
+    #targetCircle > div:nth-child(n+6) p {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        font-size: 8px !important;
+        line-height: 1.3 !important;
+        white-space: normal !important;
+    }
+}
+/* DESKTOP L - Keep left content visible while scrolling feature cards */
+@media (min-width: 1200px) {
+
+    #leftContent {
+        position: sticky !important;
+        top: 120px !important;
+        align-self: flex-start !important;
+        height: fit-content !important;
+        z-index: 20 !important;
+    }
+
+    #cardTrack {
+        position: relative !important;
+    }
+
+}
+@media (min-width: 768px) {
+  section.md\:mt-48 {
+    margin-top: 0 !important;
+  }
+}
+
+
+/* =========================================================
+   LAPTOP S RESPONSIVE WIDTH FIX
+   1033px – 1360px
+   Match tablet / small laptop layout
+   Keep navbar unchanged
+========================================================= */
+
+@media screen and (min-width: 1033px) and (max-width: 1360px) {
+
+    /* =========================================
+       1. GLOBAL WIDTH AND OVERFLOW
+    ========================================= */
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        overflow-x: hidden !important;
+    }
+
+    main,
+    #heroSection,
+    #circleSection,
+    #featureSection,
+    section.w-full.md\:mt-48 {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* =========================================
+       2. REMOVE EXCESSIVE SIDE SPACING
+       Keep content centered and use available width
+    ========================================= */
+
+    #heroSection,
+    #circleSection,
+    #featureSection,
+    section.w-full.md\:mt-48 {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    #heroSection > div,
+    #featureSection > div,
+    section.w-full.md\:mt-48 > div {
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    /* Prevent fixed-width content from escaping */
+    #heroSection .container,
+    #featureSection .container,
+    section.w-full.md\:mt-48 .container {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* =========================================
+       3. HERO SECTION
+    ========================================= */
+
+    #heroSection {
+        overflow-x: clip !important;
+    }
+
+    #heroSection > * {
+        box-sizing: border-box !important;
+        min-width: 0 !important;
+    }
+
+    #heroSection h1 {
+        font-size: clamp(28px, 2.7vw, 38px) !important;
+        line-height: 1.2 !important;
+    }
+
+    #heroSection p {
+        overflow-wrap: break-word !important;
+    }
+
+    /* =========================================
+       4. ANIMATED HEADING
+    ========================================= */
+
+    #line1 {
+        font-size: clamp(27px, 2.5vw, 32px) !important;
+        line-height: 1.2 !important;
+        gap: 7px !important;
+        white-space: nowrap !important;
+    }
+
+    #scrollContainer {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 70px !important;
+        overflow: hidden !important;
+    }
+
+    #scrollContent {
+        font-size: clamp(30px, 2.7vw, 36px) !important;
+        white-space: nowrap !important;
+    }
+
+    /* =========================================
+       5. HEADING LEFT / DESCRIPTION RIGHT
+    ========================================= */
+
+    div.flex.justify-between.items-start {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: flex-start !important;
+        gap: clamp(20px, 4vw, 55px) !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    div.flex.justify-between.items-start > h2 {
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        text-align: left !important;
+        font-size: clamp(25px, 2.3vw, 32px) !important;
+        line-height: 1.3 !important;
+        white-space: normal !important;
+    }
+
+    div.flex.justify-between.items-start > p.hidden.md\:block {
+        display: block !important;
+        flex: 0 1 380px !important;
+        width: 100% !important;
+        max-width: 300px !important;
+        min-width: 0 !important;
+        margin: 0 0 0 auto !important;
+        text-align: right !important;
+        font-size: 14px !important;
+        line-height: 1.6 !important;
+    }
+
+    div.flex.justify-between.items-start > p.md\:hidden {
+        display: none !important;
+    }
+
+    /* =========================================
+       6. CIRCLE SECTION
+       Preserve existing ring design
+    ========================================= */
+
+    #circleSection {
+        width: 100% !important;
+        overflow: visible !important;
+    }
+
+    #targetCircle {
+        position: relative !important;
+        width: 100% !important;
+        max-width: 1400px !important;
+        height: 820px !important;
+        margin: 0 auto !important;
+        overflow: visible !important;
+    }
+
+    /* Preserve ring dimensions */
+    #targetCircle > div:has(.ring-glow) {
+        flex-shrink: 0 !important;
+    }
+
+    #circleCenter {
+        z-index: 2 !important;
+    }
+
+    /* Keep cards above rings */
+    #targetCircle > div:has(img[src*="u.jpg"]),
+    #targetCircle > div:has(img[src*="bo.jpg"]),
+    #targetCircle > div:has(img[src*="jr.jpg"]),
+    #targetCircle > div:has(img[src*="so.jpg"]),
+    #targetCircle > div:has(img[src*="sp.jpg"]) {
+        z-index: 20 !important;
+    }
+
+    #targetCircle img {
+        object-fit: cover !important;
+    }
+
+    /* =========================================
+       7. PHONE IMAGE
+    ========================================= */
+
+    .hero-phone-clone {
+        pointer-events: none !important;
+        object-fit: contain !important;
+    }
+
+    /* =========================================
+       8. FEATURE SECTION
+       Preserve existing tablet-style layout
+    ========================================= */
+
+    #featureSection,
+    #featureSection #leftContent,
+    #featureSection #cardTrack {
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    #featureSection #cardTrack .feature-card {
+        min-width: 0 !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    #featureSection #cardTrack .feature-card img {
+        max-width: 100% !important;
+        height: auto;
+    }
+
+    /* =========================================
+       9. OTHER FEATURE CARDS
+    ========================================= */
+
+    section.w-full.md\:mt-48 {
+        overflow-x: clip !important;
+    }
+
+    section.w-full.md\:mt-48 > div.max-w-\[1400px\] {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        padding-left: clamp(16px, 2.5vw, 32px) !important;
+        padding-right: clamp(16px, 2.5vw, 32px) !important;
+    }
+
+    section.w-full.md\:mt-48 .col-span-2.flex.flex-col,
+    section.w-full.md\:mt-48 .mt-12.flex.flex-col {
+        min-width: 0 !important;
+        max-width: 100% !important;
+    }
+
+    section.w-full.md\:mt-48 .col-span-2.flex.flex-col > div,
+    section.w-full.md\:mt-48 .mt-12.flex.flex-col > div {
+        min-width: 0 !important;
+        max-width: 100% !important;
+    }
+
+    /* =========================================
+       10. MEDIA ELEMENTS
+    ========================================= */
+
+    img,
+    video,
+    iframe {
+        max-width: 100%;
+    }
+
+    /* =========================================
+       11. TEXT OVERFLOW
+    ========================================= */
+
+    #heroSection,
+    #circleSection,
+    #featureSection,
+    section.w-full.md\:mt-48 {
+        overflow-wrap: break-word;
+    }
+}
+
+</style>
+
+
+
+<!-- <script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    const menuBtn = document.getElementById("menuBtn");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    if (!menuBtn || !mobileMenu) return;
+
+    function toggleMenu(forceOpen) {
+        const isOpen = mobileMenu.classList.contains("menu-open");
+        const shouldOpen = typeof forceOpen === "boolean"
+            ? forceOpen
+            : !isOpen;
+
+        mobileMenu.classList.toggle("menu-open", shouldOpen);
+        mobileMenu.classList.toggle("scale-y-0", !shouldOpen);
+        mobileMenu.classList.toggle("scale-y-100", shouldOpen);
+        mobileMenu.classList.toggle("opacity-0", !shouldOpen);
+        mobileMenu.classList.toggle("opacity-100", shouldOpen);
+        mobileMenu.classList.toggle("pointer-events-none", !shouldOpen);
+        mobileMenu.classList.toggle("pointer-events-auto", shouldOpen);
+
+        menuBtn.setAttribute("aria-expanded", String(shouldOpen));
+    }
+
+    // Initial state
+    toggleMenu(false);
+
+    menuBtn.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        toggleMenu();
+    });
+
+    mobileMenu.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", function () {
+            toggleMenu(false);
+        });
+    });
+
+    document.addEventListener("click", function (event) {
+        if (
+            !mobileMenu.contains(event.target) &&
+            !menuBtn.contains(event.target)
+        ) {
+            toggleMenu(false);
+        }
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            toggleMenu(false);
+        }
+    });
+});
+
+</script>  -->
+
+<script>
+
+/* ==========================================
+   FIXED MOBILE + TABLET HAMBURGER MENU
+   HTML DOES NOT NEED TO CHANGE
+========================================== */
+
+(function () {
+    function initHamburgerMenu() {
+        const menuBtn = document.getElementById("menuBtn");
+        const mobileMenu = document.getElementById("mobileMenu");
+
+        if (!menuBtn || !mobileMenu) {
+            console.error(
+                "Hamburger menu: #menuBtn or #mobileMenu was not found."
+            );
+            return;
+        }
+
+        // Avoid registering this script more than once.
+        if (menuBtn.dataset.hamburgerReady === "true") return;
+        menuBtn.dataset.hamburgerReady = "true";
+
+        const tabletBreakpoint = 1024;
+
+        menuBtn.setAttribute("type", "button");
+        menuBtn.setAttribute("aria-controls", "mobileMenu");
+        menuBtn.setAttribute("aria-expanded", "false");
+
+        // Remember the original display value.
+        const originalDisplay = mobileMenu.style.display;
+
+        function isMobileOrTablet() {
+            return window.innerWidth < tabletBreakpoint;
+        }
+
+        function setMenuState(open) {
+            const canShowMenu = isMobileOrTablet();
+            const shouldOpen = open && canShowMenu;
+
+            mobileMenu.classList.toggle("menu-open", shouldOpen);
+
+            mobileMenu.classList.toggle("scale-y-0", !shouldOpen);
+            mobileMenu.classList.toggle("scale-y-100", shouldOpen);
+
+            mobileMenu.classList.toggle("opacity-0", !shouldOpen);
+            mobileMenu.classList.toggle("opacity-100", shouldOpen);
+
+            mobileMenu.classList.toggle(
+                "pointer-events-none",
+                !shouldOpen
+            );
+            mobileMenu.classList.toggle(
+                "pointer-events-auto",
+                shouldOpen
+            );
+
+            // Override the existing md:hidden class on tablets.
+            if (canShowMenu) {
+                mobileMenu.style.setProperty("display", "block", "important");
+            } else {
+                mobileMenu.style.removeProperty("display");
+            }
+
+            mobileMenu.setAttribute("aria-hidden", String(!shouldOpen));
+            menuBtn.setAttribute("aria-expanded", String(shouldOpen));
+        }
+
+        // Start with the menu closed.
+        setMenuState(false);
+
+        // Open or close on hamburger click.
+        menuBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const currentlyOpen =
+                mobileMenu.classList.contains("menu-open");
+
+            setMenuState(!currentlyOpen);
+        });
+
+        // Close when a navigation link is selected.
+        mobileMenu.querySelectorAll("a").forEach(function (link) {
+            link.addEventListener("click", function () {
+                setMenuState(false);
+            });
+        });
+
+        // Close when clicking outside the menu.
+        document.addEventListener("click", function (event) {
+            if (
+                mobileMenu.classList.contains("menu-open") &&
+                !mobileMenu.contains(event.target) &&
+                !menuBtn.contains(event.target)
+            ) {
+                setMenuState(false);
+            }
+        });
+
+        // Close when Escape is pressed.
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                setMenuState(false);
+            }
+        });
+
+        // Recalculate on orientation change or resize.
+        window.addEventListener("resize", function () {
+            if (!isMobileOrTablet()) {
+                setMenuState(false);
+            } else if (mobileMenu.classList.contains("menu-open")) {
+                setMenuState(true);
+            } else {
+                mobileMenu.style.setProperty("display", "block", "important");
+                setMenuState(false);
+            }
+        });
+
+        console.log("Mobile/tablet hamburger menu initialized.");
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            initHamburgerMenu,
+            { once: true }
+        );
+    } else {
+        initHamburgerMenu();
+    }
+})();
+
+</script>
 
 
 <!-- STATS SECTION -->
@@ -1593,14 +4250,6 @@ const observer = new IntersectionObserver((entries, observer) => {
 
 observer.observe(section);
 </script>
-
-
-
-
-
-
-
-
 
 
 <section class="w-full flex justify-center max-md:pb-6 max-md:mt-2 md:py-28 px-4">

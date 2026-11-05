@@ -125,57 +125,143 @@ grocery delivery near me,fast grocery delivery near me{% endblock %}
   Discover verified providers for work, home, and everyday life with ease
 </p>
 <script>
+
 function animateText(containerId, paragraphId, speed = 60) {
-  const heading = document.getElementById(containerId);
-  const paragraph = document.getElementById(paragraphId);
-  if (!heading) return;
+    const heading = document.getElementById(containerId);
+    const paragraph = document.getElementById(paragraphId);
 
-  const originalHTML = heading.innerHTML;
-  const temp = document.createElement("div");
-  temp.innerHTML = originalHTML;
-  heading.innerHTML = "";
+    if (!heading) return;
 
-  let delay = 0;
+    const originalHTML = heading.innerHTML;
+    const temp = document.createElement("div");
+    temp.innerHTML = originalHTML;
 
-  temp.childNodes.forEach(node => {
+    heading.innerHTML = "";
 
-    if (node.nodeName === "BR") {
-      heading.appendChild(document.createElement("br"));
-      return;
+    let delay = 0;
+
+    function createLetter(char, parent) {
+        const span = document.createElement("span");
+
+        span.className = "letter";
+        span.textContent = char;
+
+        span.style.animationDelay = `${delay}ms`;
+
+        parent.appendChild(span);
+
+        delay += speed;
     }
 
-    if (node.nodeType === Node.TEXT_NODE) {
-      [...node.textContent].forEach(char => {
-        createLetter(char);
-      });
-    } else {
-      const text = node.innerText;
-      const className = node.className;
-      [...text].forEach(char => {
-        createLetter(char, className);
-      });
+    function appendWords(text, parent) {
+        const parts = text.match(/\s+|[^\s]+/g) || [];
+
+        parts.forEach(part => {
+
+            // Preserve spaces between words
+            if (/^\s+$/.test(part)) {
+                parent.appendChild(document.createTextNode(part));
+                return;
+            }
+
+            // Keep each complete word together
+            const word = document.createElement("span");
+            word.className = "animated-word";
+
+            parent.appendChild(word);
+
+            [...part].forEach(char => {
+                createLetter(char, word);
+            });
+        });
     }
-  });
 
-  function createLetter(char, extraClass = "") {
-    const span = document.createElement("span");
-    span.className = `letter ${extraClass}`;
-    span.innerHTML = char === " " ? "&nbsp;" : char;
-    span.style.animationDelay = `${delay}ms`;
-    heading.appendChild(span);
-    delay += speed;
-  }
+    temp.childNodes.forEach(node => {
 
-  if (paragraph) {
-    setTimeout(() => {
-      paragraph.classList.remove("opacity-0");
-    }, delay + 300);
-  }
+        if (node.nodeName === "BR") {
+            heading.appendChild(document.createElement("br"));
+        }
+
+        else if (node.nodeType === Node.TEXT_NODE) {
+            appendWords(node.textContent, heading);
+        }
+
+        else if (node.nodeType === Node.ELEMENT_NODE) {
+
+            const wrapper = document.createElement("span");
+
+            wrapper.className = node.className || "";
+            wrapper.classList.add("animated-phrase");
+
+            heading.appendChild(wrapper);
+
+            appendWords(node.textContent, wrapper);
+        }
+    });
+
+    if (paragraph) {
+        setTimeout(() => {
+            paragraph.classList.remove("opacity-0");
+        }, delay + 300);
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  animateText("animatedServices", "animatedServicesPara", 55);
+    animateText("animatedServices", "animatedServicesPara", 55);
 });
+
+
+// function animateText(containerId, paragraphId, speed = 60) {
+//   const heading = document.getElementById(containerId);
+//   const paragraph = document.getElementById(paragraphId);
+//   if (!heading) return;
+
+//   const originalHTML = heading.innerHTML;
+//   const temp = document.createElement("div");
+//   temp.innerHTML = originalHTML;
+//   heading.innerHTML = "";
+
+//   let delay = 0;
+
+//   temp.childNodes.forEach(node => {
+
+//     if (node.nodeName === "BR") {
+//       heading.appendChild(document.createElement("br"));
+//       return;
+//     }
+
+//     if (node.nodeType === Node.TEXT_NODE) {
+//       [...node.textContent].forEach(char => {
+//         createLetter(char);
+//       });
+//     } else {
+//       const text = node.innerText;
+//       const className = node.className;
+//       [...text].forEach(char => {
+//         createLetter(char, className);
+//       });
+//     }
+//   });
+
+//   function createLetter(char, extraClass = "") {
+//     const span = document.createElement("span");
+//     span.className = `letter ${extraClass}`;
+//     span.innerHTML = char === " " ? "&nbsp;" : char;
+//     span.style.animationDelay = `${delay}ms`;
+//     heading.appendChild(span);
+//     delay += speed;
+//   }
+
+//   if (paragraph) {
+//     setTimeout(() => {
+//       paragraph.classList.remove("opacity-0");
+//     }, delay + 300);
+//   }
+// }
+
+// document.addEventListener("DOMContentLoaded", () => {
+//   animateText("animatedServices", "animatedServicesPara", 55);
+// });
 </script>
 <style>
   .letter {
@@ -999,10 +1085,1387 @@ Quick access to medical help, emergency support, and skilled freelancers.    </p
   </div>
 </section>
 
+<script>
+
+(function () {
+    "use strict";
+
+    const BREAKPOINT = 1024;
+    const SCREEN_PADDING = 12;
+    const MENU_GAP = 10;
+
+    let isMenuOpen = false;
+
+    function getElements() {
+        return {
+            btn: document.getElementById("menuBtn"),
+            menu: document.getElementById("mobileMenu")
+        };
+    }
+
+    /* Position dropdown below the hamburger button */
+
+    function positionMenu() {
+        const { btn, menu } = getElements();
+
+        if (!btn || !menu || !isMenuOpen) return;
+
+        const btnRect = btn.getBoundingClientRect();
+
+        const availableWidth = window.innerWidth - (SCREEN_PADDING * 2);
+        const menuWidth = Math.min(335, availableWidth);
+
+        let left = btnRect.right - menuWidth;
+
+        left = Math.max(
+            SCREEN_PADDING,
+            Math.min(left, window.innerWidth - menuWidth - SCREEN_PADDING)
+        );
+
+        menu.style.setProperty("position", "fixed", "important");
+        menu.style.setProperty("width", menuWidth + "px", "important");
+        menu.style.setProperty("max-width", availableWidth + "px", "important");
+        menu.style.setProperty("top", (btnRect.bottom + MENU_GAP) + "px", "important");
+        menu.style.setProperty("left", left + "px", "important");
+        menu.style.setProperty("right", "auto", "important");
+        menu.style.setProperty("bottom", "auto", "important");
+        menu.style.setProperty("display", "block", "important");
+    }
+
+    /* Open and close menu */
+
+    function setMenuState(open) {
+        const { btn, menu } = getElements();
+
+        if (!btn || !menu) return;
+
+        isMenuOpen = open && window.innerWidth < BREAKPOINT;
+
+        btn.classList.toggle("active", isMenuOpen);
+        menu.classList.toggle("menu-open", isMenuOpen);
+
+        btn.setAttribute("aria-expanded", String(isMenuOpen));
+        btn.setAttribute(
+            "aria-label",
+            isMenuOpen ? "Close navigation menu" : "Open navigation menu"
+        );
+
+        menu.setAttribute("aria-hidden", String(!isMenuOpen));
+
+        if (isMenuOpen) {
+            positionMenu();
+        } else {
+            menu.style.removeProperty("position");
+            menu.style.removeProperty("top");
+            menu.style.removeProperty("left");
+            menu.style.removeProperty("right");
+            menu.style.removeProperty("bottom");
+            menu.style.removeProperty("width");
+            menu.style.removeProperty("max-width");
+            menu.style.removeProperty("display");
+        }
+    }
+
+    function initializeMenu() {
+        const { btn, menu } = getElements();
+
+        if (!btn || !menu) return;
+
+        btn.setAttribute("type", "button");
+        btn.setAttribute("aria-controls", "mobileMenu");
+
+        setMenuState(false);
+
+        /* Hamburger button click */
+
+        btn.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            setMenuState(!isMenuOpen);
+        });
+
+        /* Close after selecting a menu link */
+
+        menu.addEventListener("click", function (event) {
+            if (event.target.closest("a")) {
+                setMenuState(false);
+            }
+        });
+
+        /* Close when clicking outside */
+
+        document.addEventListener("click", function (event) {
+            if (!isMenuOpen) return;
+
+            if (
+                !btn.contains(event.target) &&
+                !menu.contains(event.target)
+            ) {
+                setMenuState(false);
+            }
+        });
+
+        /* Close with Escape key */
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape" && isMenuOpen) {
+                setMenuState(false);
+                btn.focus();
+            }
+        });
+
+        /* Close on desktop breakpoint */
+
+        window.addEventListener("resize", function () {
+            if (window.innerWidth >= BREAKPOINT) {
+                setMenuState(false);
+            } else {
+                positionMenu();
+            }
+        });
+
+        /* Keep dropdown aligned while scrolling */
+
+        window.addEventListener("scroll", function () {
+            positionMenu();
+        }, true);
+
+        /* Close if page is restored from browser cache */
+
+        window.addEventListener("pageshow", function () {
+            setMenuState(false);
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initializeMenu);
+    } else {
+        initializeMenu();
+    }
+
+})();
+
+</script>
+
+<style>
+  
+/* =========================================
+   COMMON NAVBAR
+========================================= */
+
+nav:has(#menuBtn) {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    min-height: 76px !important;
+    box-sizing: border-box !important;
+    z-index: 1000 !important;
+}
+
+nav:has(#menuBtn) > a:first-child {
+    display: flex !important;
+    align-items: center !important;
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+}
+
+nav:has(#menuBtn) > a:first-child img {
+    display: block !important;
+    width: auto !important;
+    height: 58px !important;
+    max-width: 220px !important;
+    object-fit: contain !important;
+}
+
+nav:has(#menuBtn) > div {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+}
+
+/* =========================================
+   HAMBURGER BUTTON
+   Works with your existing three spans
+========================================= */
+
+#menuBtn {
+    display: none !important;
+    position: relative !important;
+    flex: 0 0 44px !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    height: 44px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    border: 0 !important;
+    cursor: pointer !important;
+    z-index: 1002 !important;
+    box-sizing: border-box !important;
+}
+
+#menuBtn > span {
+    display: block !important;
+    width: 25px !important;
+    height: 2px !important;
+    min-height: 2px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 10px !important;
+    background: #ffffff !important;
+    transition:
+        transform 0.3s ease,
+        opacity 0.2s ease !important;
+}
+
+/* Hamburger changes into X */
+
+#menuBtn.active > span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg) !important;
+}
+
+#menuBtn.active > span:nth-child(2) {
+    opacity: 0 !important;
+}
+
+#menuBtn.active > span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg) !important;
+}
+
+/* =========================================
+   MOBILE DROPDOWN
+========================================= */
+
+#mobileMenu {
+    display: block !important;
+    position: fixed !important;
+
+    width: min(335px, calc(100vw - 24px)) !important;
+    max-width: calc(100vw - 24px) !important;
+    max-height: calc(100dvh - 100px) !important;
+
+    margin: 0 !important;
+    padding: 12px !important;
+    box-sizing: border-box !important;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.88),
+        rgba(225, 230, 255, 0.82),
+        rgba(210, 215, 255, 0.76)
+    ) !important;
+
+    backdrop-filter: blur(22px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(160%) !important;
+
+    border: 1px solid rgba(255, 255, 255, 0.75) !important;
+    border-radius: 18px !important;
+
+    box-shadow:
+        0 12px 35px rgba(45, 55, 180, 0.16),
+        inset 0 1px 2px rgba(255, 255, 255, 0.75) !important;
+
+    transform: translateY(-8px) scaleY(0) !important;
+    transform-origin: top right !important;
+
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+
+    z-index: 1001 !important;
+
+    transition:
+        transform 0.25s ease,
+        opacity 0.25s ease,
+        visibility 0.25s ease !important;
+}
+
+/* Menu open */
+
+#mobileMenu.menu-open {
+    transform: translateY(0) scaleY(1) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+/* Menu links */
+
+#mobileMenu > a {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-height: 44px !important;
+    padding: 12px 16px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    border-radius: 10px !important;
+    color: #20234a !important;
+    text-decoration: none !important;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease !important;
+}
+
+#mobileMenu > a:hover {
+    background: rgba(255, 255, 255, 0.65) !important;
+    color: #3c49ff !important;
+}
+
+/* =========================================
+   MOBILE AND TABLET
+   0px - 1023px
+========================================= */
+
+@media screen and (max-width: 1023px) {
+
+    nav:has(#menuBtn) {
+        padding: 8px 12px !important;
+    }
+
+    nav:has(#menuBtn) > a:first-child img {
+        height: 50px !important;
+        max-width: 175px !important;
+    }
+
+    nav:has(#menuBtn) > div > ul {
+        display: none !important;
+    }
+
+    nav:has(#menuBtn) a[href*="message"] {
+        display: none !important;
+    }
+
+    #menuBtn {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+}
+
+/* =========================================
+   SMALL MOBILE
+   380px AND BELOW
+========================================= */
+
+@media screen and (max-width: 380px) {
+
+    nav:has(#menuBtn) {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+
+    nav:has(#menuBtn) > a:first-child img {
+        height: 44px !important;
+        max-width: 145px !important;
+    }
+
+    #menuBtn {
+        flex-basis: 42px !important;
+        width: 42px !important;
+        min-width: 42px !important;
+        height: 42px !important;
+    }
+}
+
+/* =========================================
+   LAPTOP AND DESKTOP
+   1024px AND ABOVE
+========================================= */
+
+@media screen and (min-width: 1024px) {
+
+    nav:has(#menuBtn) {
+        min-height: 82px !important;
+        padding: 8px 20px !important;
+    }
+
+    nav:has(#menuBtn) > a:first-child img {
+        height: 62px !important;
+        max-width: 230px !important;
+    }
+
+    nav:has(#menuBtn) > div > ul {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        flex-wrap: nowrap !important;
+        gap: clamp(4px, 1vw, 16px) !important;
+        margin: 0 12px 0 auto !important;
+        padding: 10px 14px !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+        border-radius: 50px !important;
+    }
+
+    nav:has(#menuBtn) > div > ul > li {
+        flex: 0 0 auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    nav:has(#menuBtn) > div > ul > li > a {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 9px 10px !important;
+        white-space: nowrap !important;
+    }
+
+    nav:has(#menuBtn) a[href*="message"] {
+        display: inline-flex !important;
+        flex: 0 0 auto !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    #menuBtn,
+    #mobileMenu {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+}
+
+/* MOBILE NAVBAR: LOGO LEFT, HAMBURGER RIGHT */
+
+@media screen and (max-width: 1023px) {
+
+    nav:has(#menuBtn) {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+
+        width: 100% !important;
+        min-height: 76px !important;
+
+        padding: 12px 18px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* N-Me logo on the left */
+
+    nav:has(#menuBtn) > a:first-child {
+        margin: 0 auto 0 0 !important;
+        flex: 0 1 auto !important;
+    }
+
+    nav:has(#menuBtn) > a:first-child img {
+        height: 50px !important;
+        width: auto !important;
+        max-width: 175px !important;
+        object-fit: contain !important;
+    }
+
+    /* Right-side hamburger wrapper */
+
+    nav:has(#menuBtn) > div {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+
+        flex: 0 0 auto !important;
+        margin-left: auto !important;
+        padding-top: 8px !important;
+    }
+
+    /* Hamburger position */
+
+    #menuBtn {
+        position: relative !important;
+        top: 0 !important;
+        right: auto !important;
+
+        margin: 0 !important;
+        transform: none !important;
+
+        width: 44px !important;
+        height: 44px !important;
+    }
+}
+
+/* SMALL MOBILE */
+
+@media screen and (max-width: 380px) {
+
+    nav:has(#menuBtn) {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    nav:has(#menuBtn) > a:first-child img {
+        height: 44px !important;
+        max-width: 145px !important;
+    }
+
+    nav:has(#menuBtn) > div {
+        padding-top: 6px !important;
+    }
+}
+/* =========================================
+   GLOBAL RESPONSIVE FIX
+========================================= */
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    overflow-x: clip;
+}
 
 
+/* =========================================
+   OUTER SERVICES HERO CONTAINER
+   SPACE FROM HTML BODY
+========================================= */
+
+.bg-move-box {
+    width: calc(100% - 24px) !important;
+    max-width: 1400px !important;
+
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    box-sizing: border-box !important;
+}
 
 
+/* =========================================
+   MAIN TEXT CONTAINER
+========================================= */
+
+.relative.z-20.flex.flex-col.items-center.justify-center.text-center.mt-32:has(> #animatedServices) {
+
+    position: relative !important;
+    z-index: 20 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    margin: 65px auto 0 !important;
+
+    padding: 0 16px !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================
+   HEADING
+========================================= */
+
+#animatedServices {
+
+    display: block !important;
+
+    width: 100% !important;
+    max-width: 850px !important;
+
+    margin: 0 auto !important;
+    padding: 0 !important;
+
+    font-size: clamp(30px, 4.2vw, 48px) !important;
+    font-weight: 600 !important;
+    line-height: 1.25 !important;
+
+    text-align: center !important;
+
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+}
+
+
+/* =========================================
+   KEEP EACH WORD TOGETHER
+========================================= */
+
+#animatedServices .animated-word {
+
+    display: inline-block !important;
+
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+}
+
+/* Keep the complete highlighted phrase together */
+#animatedServices .animated-phrase {
+
+    display: inline-block !important;
+
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+}
+
+/* Animated letters */
+#animatedServices .letter {
+
+    display: inline-block !important;
+
+    white-space: pre !important;
+
+    opacity: 0;
+    transform: translateX(-6px);
+
+    animation: letterShow 0.25s ease forwards;
+}
+
+/* Heading highlight */
+#animatedServices .text-blue-600 {
+    color: #2563eb !important;
+}
+
+@keyframes letterShow {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+/* =========================================
+   DESCRIPTION
+========================================= */
+
+#animatedServicesPara {
+
+    display: block !important;
+
+    width: 100% !important;
+    max-width: 560px !important;
+
+    margin: 16px auto 0 !important;
+    padding: 0 8px !important;
+
+    font-size: clamp(14px, 1.5vw, 18px) !important;
+    font-weight: 500 !important;
+
+    line-height: 1.6 !important;
+    text-align: center !important;
+
+    overflow-wrap: break-word !important;
+
+    box-sizing: border-box !important;
+
+    opacity: 0;
+    transition: opacity 0.7s ease !important;
+}
+
+#animatedServicesPara:not(.opacity-0) {
+    opacity: 1 !important;
+}
+
+
+/* =========================================
+   SMALL MOBILE - 320px TO 380px
+========================================= */
+
+@media screen and (max-width: 380px) {
+
+    .bg-move-box {
+        width: calc(100% - 16px) !important;
+    }
+
+    .relative.z-20.flex.flex-col.items-center.justify-center.text-center.mt-32:has(> #animatedServices) {
+
+        margin-top: 40px !important;
+
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+
+    #animatedServices {
+        max-width: 290px !important;
+
+        font-size: 27px !important;
+        line-height: 1.3 !important;
+    }
+
+    #animatedServicesPara {
+        max-width: 280px !important;
+
+        margin-top: 12px !important;
+
+        padding: 0 4px !important;
+
+        font-size: 14px !important;
+        line-height: 1.55 !important;
+    }
+}
+
+
+/* =========================================
+   MOBILE - 381px TO 600px
+========================================= */
+
+@media screen and (min-width: 381px) and (max-width: 600px) {
+
+    .bg-move-box {
+        width: calc(100% - 24px) !important;
+    }
+
+    .relative.z-20.flex.flex-col.items-center.justify-center.text-center.mt-32:has(> #animatedServices) {
+
+        margin-top: 50px !important;
+
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    #animatedServices {
+        max-width: 360px !important;
+
+        font-size: 33px !important;
+        line-height: 1.25 !important;
+    }
+
+    #animatedServicesPara {
+        max-width: 350px !important;
+
+        margin-top: 14px !important;
+
+        font-size: 15px !important;
+    }
+}
+
+
+/* =========================================
+   TABLET - 601px TO 767px
+========================================= */
+
+@media screen and (min-width: 601px) and (max-width: 767px) {
+
+    .bg-move-box {
+        width: calc(100% - 40px) !important;
+    }
+
+    .relative.z-20.flex.flex-col.items-center.justify-center.text-center.mt-32:has(> #animatedServices) {
+
+        margin-top: 65px !important;
+
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
+    #animatedServices {
+        max-width: 580px !important;
+
+        font-size: 39px !important;
+    }
+
+    #animatedServicesPara {
+        max-width: 470px !important;
+
+        font-size: 16px !important;
+    }
+}
+
+
+/* =========================================
+   TABLET - 768px TO 1023px
+========================================= */
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+
+    .bg-move-box {
+        width: calc(100% - 48px) !important;
+    }
+
+    .relative.z-20.flex.flex-col.items-center.justify-center.text-center.mt-32:has(> #animatedServices) {
+
+        margin-top: 80px !important;
+
+        padding-left: 25px !important;
+        padding-right: 25px !important;
+    }
+
+    #animatedServices {
+        max-width: 700px !important;
+
+        font-size: 44px !important;
+    }
+
+    #animatedServicesPara {
+        max-width: 520px !important;
+
+        font-size: 17px !important;
+    }
+}
+
+
+/* =========================================
+   SMALL LAPTOP - 1024px TO 1280px
+========================================= */
+
+@media screen and (min-width: 1024px) and (max-width: 1280px) {
+
+    .bg-move-box {
+        width: calc(100% - 64px) !important;
+    }
+
+    .relative.z-20.flex.flex-col.items-center.justify-center.text-center.mt-32:has(> #animatedServices) {
+
+        margin-top: 95px !important;
+
+        padding-left: 30px !important;
+        padding-right: 30px !important;
+    }
+
+    #animatedServices {
+        max-width: 800px !important;
+
+        font-size: 46px !important;
+    }
+
+    #animatedServicesPara {
+        max-width: 540px !important;
+
+        font-size: 17px !important;
+    }
+}
+
+
+/* =========================================
+   DESKTOP - 1281px+
+========================================= */
+
+@media screen and (min-width: 1281px) {
+
+    .bg-move-box {
+        width: calc(100% - 80px) !important;
+    }
+
+    .relative.z-20.flex.flex-col.items-center.justify-center.text-center.mt-32:has(> #animatedServices) {
+
+        margin-top: 110px !important;
+
+        padding-left: 30px !important;
+        padding-right: 30px !important;
+    }
+
+    #animatedServices {
+        max-width: 850px !important;
+
+        font-size: 48px !important;
+    }
+
+    #animatedServicesPara {
+        max-width: 560px !important;
+
+        font-size: 18px !important;
+    }
+}
+
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    #animatedServices .letter {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    #animatedServicesPara {
+        transition: none !important;
+        opacity: 1 !important;
+    }
+}
+
+
+/* =====================================================
+   OUR SERVICES - COMPLETE RESPONSIVE CSS FIX
+   Existing HTML remains unchanged
+===================================================== */
+
+/* Main section */
+section.w-full.py-20 {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Main container */
+section.w-full.py-20 > div.max-w-\[1364px\] {
+    width: 100%;
+    max-width: 1364px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+/* Cards grid */
+section.w-full.py-20 .grid {
+    display: grid !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 24px !important;
+    justify-items: stretch;
+    align-items: stretch;
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+/* Individual card */
+section.w-full.py-20 .grid > .group {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 450px !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    border: 5px solid #fff;
+    border-radius: 24px;
+    isolation: isolate;
+    background: #eee;
+}
+
+/* Card image - prevent image from escaping card */
+section.w-full.py-20 .grid > .group > img {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+
+    min-width: 0 !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+
+    object-fit: cover !important;
+    object-position: center center !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+    transform-origin: center center;
+    transition: transform 0.5s ease;
+}
+
+/* Image hover */
+section.w-full.py-20 .grid > .group:hover > img {
+    transform: scale(1.04);
+}
+
+/* Blur overlay */
+section.w-full.py-20 .grid > .group > div:nth-child(2) {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1 !important;
+    border-radius: 18px;
+
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    background: rgba(255, 255, 255, 0.25);
+
+    -webkit-mask-image: linear-gradient(
+        to top,
+        black 25%,
+        transparent 70%
+    );
+
+    mask-image: linear-gradient(
+        to top,
+        black 25%,
+        transparent 70%
+    );
+}
+
+/* Dark overlay */
+section.w-full.py-20 .grid > .group > div:nth-child(3) {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 2 !important;
+    border-radius: 18px;
+    background: transparent;
+    transition: background 0.6s ease;
+}
+
+section.w-full.py-20 .grid > .group:hover > div:nth-child(3) {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/* Text content */
+section.w-full.py-20 .grid > .group > div:nth-child(4) {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 3 !important;
+
+    display: flex !important;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+
+    padding: 24px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+
+    color: #1a1a1a;
+    transition: transform 0.6s ease, color 0.6s ease;
+}
+
+section.w-full.py-20 .grid > .group:hover > div:nth-child(4) {
+    transform: translateY(-12px);
+    color: #fff;
+}
+
+/* Card title */
+section.w-full.py-20 .grid > .group > div:nth-child(4) h3 {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 0 10px !important;
+    padding: 0;
+
+    font-size: 22px !important;
+    line-height: 1.3 !important;
+    font-weight: 600;
+
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+/* Card description */
+section.w-full.py-20 .grid > .group > div:nth-child(4) p {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 !important;
+    padding: 0;
+
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+    font-weight: 500;
+
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+/* =====================================================
+   LARGE DESKTOP - 1440px and above
+===================================================== */
+
+@media (min-width: 1440px) {
+    section.w-full.py-20 .grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 28px !important;
+    }
+
+    section.w-full.py-20 .grid > .group {
+        height: 468px !important;
+    }
+
+    section.w-full.py-20 .grid > .group > div:nth-child(4) {
+        padding: 26px !important;
+    }
+
+    section.w-full.py-20 .grid > .group > div:nth-child(4) h3 {
+        font-size: 24px !important;
+    }
+
+    section.w-full.py-20 .grid > .group > div:nth-child(4) p {
+        font-size: 17px !important;
+    }
+}
+
+/* =====================================================
+   LAPTOP - 1024px to 1439px
+===================================================== */
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+    section.w-full.py-20 > div.max-w-\[1364px\] {
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+
+    section.w-full.py-20 .grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 18px !important;
+    }
+
+    section.w-full.py-20 .grid > .group {
+        height: 370px !important;
+        border-width: 4px;
+        border-radius: 20px;
+    }
+
+    section.w-full.py-20 .grid > .group > div:nth-child(4) {
+        padding: 18px !important;
+    }
+
+    section.w-full.py-20 .grid > .group > div:nth-child(4) h3 {
+        font-size: 19px !important;
+    }
+
+    section.w-full.py-20 .grid > .group > div:nth-child(4) p {
+        font-size: 14px !important;
+    }
+}
+
+/* =====================================================
+   TABLET - 768px to 1023px
+===================================================== */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    section.w-full.py-20 {
+        padding-top: 55px;
+        padding-bottom: 55px;
+    }
+
+    section.w-full.py-20 > div.max-w-\[1364px\] {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    section.w-full.py-20 .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 20px !important;
+    }
+
+    section.w-full.py-20 .grid > .group {
+        width: 100% !important;
+        height: 360px !important;
+        border-width: 4px;
+        border-radius: 20px;
+    }
+
+    section.w-full.py-20 .grid > .group > div:nth-child(4) {
+        padding: 18px !important;
+    }
+
+    section.w-full.py-20 .grid > .group > div:nth-child(4) h3 {
+        font-size: 19px !important;
+    }
+
+    section.w-full.py-20 .grid > .group > div:nth-child(4) p {
+        font-size: 14px !important;
+    }
+}
+
+/* =====================================================
+   SMALL TABLET / MOBILE LANDSCAPE - 481px to 767px
+===================================================== */
+
+@media (min-width: 481px) and (max-width: 767px) {
+    section.w-full.py-20 {
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+
+    section.w-full.py-20 > div.max-w-\[1364px\] {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    section.w-full.py-20 .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 14px !important;
+    }
+
+    section.w-full.py-20 .grid > .group {
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 1 / 1.15;
+        min-height: 250px !important;
+        max-height: 340px !important;
+        border-width: 4px;
+        border-radius: 18px;
+    }
+
+    section.w-full.py-20 .grid > .group > div:nth-child(4) {
+        padding: 12px !important;
+    }
+
+    section.w-full.py-20 .grid > .group > div:nth-child(4) h3 {
+        font-size: clamp(14px, 2.5vw, 17px) !important;
+        line-height: 1.3 !important;
+        margin-bottom: 6px !important;
+    }
+
+    section.w-full.py-20 .grid > .group > div:nth-child(4) p {
+        font-size: clamp(11px, 1.8vw, 13px) !important;
+        line-height: 1.4 !important;
+    }
+}
+
+/* =====================================================
+   SMALL PHONES - 480px and below
+===================================================== */
+
+@media (max-width: 480px) {
+    section.w-full.py-20 {
+        padding-top: 35px;
+        padding-bottom: 35px;
+    }
+
+    section.w-full.py-20 > div.max-w-\[1364px\] {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    section.w-full.py-20 .grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 18px !important;
+        justify-items: center !important;
+    }
+
+    section.w-full.py-20 .grid > .group {
+        width: 100% !important;
+        max-width: 380px !important;
+        height: auto !important;
+        aspect-ratio: 309 / 338;
+        min-height: 0 !important;
+        max-height: none !important;
+
+        margin-left: auto !important;
+        margin-right: auto !important;
+
+        border-width: 4px;
+        border-radius: 20px;
+    }
+
+    section.w-full.py-20 .grid > .group > img {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        object-fit: cover !important;
+        object-position: center center !important;
+    }
+
+    section.w-full.py-20 .grid > .group > div:nth-child(4) {
+        padding: 17px !important;
+    }
+
+    section.w-full.py-20 .grid > .group > div:nth-child(4) h3 {
+        font-size: clamp(17px, 4.5vw, 20px) !important;
+        line-height: 1.3 !important;
+        margin-bottom: 7px !important;
+    }
+
+    section.w-full.py-20 .grid > .group > div:nth-child(4) p {
+        font-size: clamp(13px, 3.5vw, 15px) !important;
+        line-height: 1.45 !important;
+    }
+}
+
+/* =====================================================
+   VERY SMALL PHONES - 360px and below
+===================================================== */
+
+@media (max-width: 360px) {
+    section.w-full.py-20 > div.max-w-\[1364px\] {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    section.w-full.py-20 .grid {
+        gap: 15px !important;
+    }
+
+    section.w-full.py-20 .grid > .group {
+        width: 100% !important;
+        max-width: 100% !important;
+        aspect-ratio: 1 / 1.12;
+        border-width: 3px;
+        border-radius: 16px;
+    }
+
+    section.w-full.py-20 .grid > .group > div:nth-child(4) {
+        padding: 14px !important;
+    }
+
+    section.w-full.py-20 .grid > .group > div:nth-child(4) h3 {
+        font-size: 16px !important;
+    }
+
+    section.w-full.py-20 .grid > .group > div:nth-child(4) p {
+        font-size: 12px !important;
+    }
+}
+
+/* =====================================================
+   TOUCH DEVICES - Avoid sticky hover effects
+===================================================== */
+
+@media (hover: none) {
+    section.w-full.py-20 .grid > .group:hover > img {
+        transform: none;
+    }
+
+    section.w-full.py-20 .grid > .group:hover > div:nth-child(3) {
+        background: transparent;
+    }
+
+    section.w-full.py-20 .grid > .group:hover > div:nth-child(4) {
+        transform: none;
+        color: #1a1a1a;
+    }
+}
+
+/* Prevent horizontal overflow from this section */
+section.w-full.py-20,
+section.w-full.py-20 * {
+    box-sizing: border-box;
+}
+
+</style>
 
 
 

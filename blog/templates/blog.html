@@ -1,779 +1,1122 @@
-
+{% extends "base.html" %}
 {% load static %}
 {% load humanize %}
-<!DOCTYPE html>
-<html lang="en" class="overflow-x-hidden">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blog | N-Me App</title>
 
-<meta name="description" content="The Nme app (Near Me) is an all-in-one business and service
-listing platform that helps users quickly locate nearby businesses and services
-with ease. It enables direct connections with both small and large businesses,
-helping users save time while eliminating the role of middlemen. By offering
-multiple categories for everyday needs, users can easily access reliable services
-near me whenever required. The Nme app is designed to be fast, simple, and
-easy to use for all users and is available on Android, iOS, and web platforms. As
-Nme continues to expand globally, it empowers users to make informed choices
-by discovering trusted businesses and services near me.
-">
+{% block title %}Blog | N-Me App{% endblock %}
 
-<meta name="keywords" content="health centre near me,health clinic near me,private clinic near me,care
-clinic near me,nearest clinic near me">
+{% block meta_description %}
+The Nme app (Near Me) is an all-in-one business and service listing platform that helps users quickly locate nearby businesses and services with ease.
+{% endblock %}
 
-<meta name="author" content="N-Me App">
+{% block meta_keywords %}
+health centre near me, health clinic near me, private clinic near me, care clinic near me, nearest clinic near me
+{% endblock %}
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-/>
+{% block content %}
 
+<style>
+  .border-fade::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 40px;
+    pointer-events: none;
+    border: 5px solid rgba(255,255,255,1);
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '388506759771216');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=388506759771216&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
-  <style>
-.border-fade::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 40px; /* match card rounding */
-  pointer-events: none;
+    -webkit-mask-image: linear-gradient(
+      to top,
+      rgba(0,0,0,1) 0%,
+      rgba(0,0,0,1) 50%,
+      rgba(0,0,0,0) 100%
+    );
 
-  /* Fake white border */
-  border: 5px solid rgba(255, 255, 255);
-
-  /* Fade top only */
-  -webkit-mask-image: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 1) 50%,
-    rgba(0, 0, 0, 0) 100%
-  );
-  mask-image: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 1) 50%,
-    rgba(0, 0, 0, 0) 100%
-  );
-}
-
-.bg-move-box::before {
-  content: "";
-  position: absolute;
-  inset: -50%;
-  background: radial-gradient(
-    circle at center,
-    rgba(255,255,255,0.8),
-    transparent 60%
-  );
-  animation: moveEverywhere 6s ease-in-out infinite alternate;
-}
-
-@keyframes moveEverywhere {
-  0% {
-    transform: translate(-20%, -20%);
+    mask-image: linear-gradient(
+      to top,
+      rgba(0,0,0,1) 0%,
+      rgba(0,0,0,1) 50%,
+      rgba(0,0,0,0) 100%
+    );
   }
-  25% {
-    transform: translate(20%, -10%);
+
+  .bg-move-box {
+    isolation: isolate;
   }
-  50% {
-    transform: translate(10%, 20%);
+
+  .bg-move-box::before {
+    content: "";
+    position: absolute;
+    inset: -50%;
+    background: radial-gradient(
+      circle at center,
+      rgba(255,255,255,0.8),
+      transparent 60%
+    );
+    animation: moveEverywhere 6s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: -1;
   }
-  75% {
-    transform: translate(-10%, 10%);
+
+  @keyframes moveEverywhere {
+    0% { transform: translate(-20%, -20%); }
+    25% { transform: translate(20%, -10%); }
+    50% { transform: translate(10%, 20%); }
+    75% { transform: translate(-10%, 10%); }
+    100% { transform: translate(20%, 20%); }
   }
-  100% {
-    transform: translate(20%, 20%);
+
+  .hamburger-line {
+    transition: all 0.3s ease;
   }
-}
-    .hamburger-line {
-      transition: all 0.3s ease;
+
+  .hamburger.open .line-1 {
+    transform: rotate(45deg) translate(6px, 6px);
+  }
+
+  .hamburger.open .line-2 {
+    opacity: 0;
+  }
+
+  .hamburger.open .line-3 {
+    transform: rotate(-45deg) translate(6px, -6px);
+  }
+
+  .letter {
+    display: inline-block;
+    opacity: 0;
+    transform: translateX(-6px);
+    animation: letterShow 0.25s ease forwards;
+  }
+
+  @keyframes letterShow {
+    to {
+      opacity: 1;
+      transform: translateX(0);
     }
-    .hamburger.open .line-1 {
-      transform: rotate(45deg) translate(6px, 6px);
-    }
-    .hamburger.open .line-2 {
-      opacity: 0;
-    }
-    .hamburger.open .line-3 {
-      transform: rotate(-45deg) translate(6px, -6px);
-    }
-  </style>
-</head>
-<body class="min-h-screen overflow-x-hidden" style="background-image: linear-gradient(135deg, rgba(49, 49, 49,0.07) 0%, rgba(49, 49, 49,0.07) 12.5%,rgba(76, 76, 76,0.07) 12.5%, rgba(76, 76, 76,0.07) 25%,rgba(102, 102, 102,0.07) 25%, rgba(102, 102, 102,0.07) 37.5%,rgba(129, 129, 129,0.07) 37.5%, rgba(129, 129, 129,0.07) 50%,rgba(155, 155, 155,0.07) 50%, rgba(155, 155, 155,0.07) 62.5%,rgba(182, 182, 182,0.07) 62.5%, rgba(182, 182, 182,0.07) 75%,rgba(208, 208, 208,0.07) 75%, rgba(208, 208, 208,0.07) 87.5%,rgba(235, 235, 235,0.07) 87.5%, rgba(235, 235, 235,0.07) 100%),linear-gradient(45deg, rgba(5, 5, 5,0.07) 0%, rgba(5, 5, 5,0.07) 12.5%,rgba(39, 39, 39,0.07) 12.5%, rgba(39, 39, 39,0.07) 25%,rgba(73, 73, 73,0.07) 25%, rgba(73, 73, 73,0.07) 37.5%,rgba(107, 107, 107,0.07) 37.5%, rgba(107, 107, 107,0.07) 50%,rgba(141, 141, 141,0.07) 50%, rgba(141, 141, 141,0.07) 62.5%,rgba(175, 175, 175,0.07) 62.5%, rgba(175, 175, 175,0.07) 75%,rgba(209, 209, 209,0.07) 75%, rgba(209, 209, 209,0.07) 87.5%,rgba(243, 243, 243,0.07) 87.5%, rgba(243, 243, 243,0.07) 100%),linear-gradient(90deg, #ffffff,#ffffff);">
-  <div class="  md:p-4 lg:p-6">
+  }
+</style>
 
-<div
-  class="relative m-4 p-6 rounded-3xl ring-4 ring-white/80 overflow-hidden
-         h-[434px] md:min-h-[600px] bg-move-box"
-  style="background: linear-gradient(135deg, #E4EEFF,#7D99FF);"
->
+<!-- ================= BLOG HERO ================= -->
 
-  <!-- SHIMMER -->
+<div class="relative m-4 p-6 rounded-3xl ring-4 ring-white/80 overflow-hidden
+            h-[434px] md:min-h-[600px] bg-move-box"
+     style="background: linear-gradient(135deg, #E4EEFF,#7D99FF);">
+
   <div class="absolute inset-0 shimmer opacity-30"></div>
 
-<nav class="flex justify-between items-center w-full relative">
+  <!-- NAVBAR -->
+  <nav class="flex justify-between items-center w-full relative z-20">
 
-  <!-- Logo -->
-  <a href="{% url 'home' %}">
-    <img src="{% static 'images/logo.png' %}" class="h-12" />
-  </a>
+    <a href="{% url 'home' %}">
+      <img src="{% static 'images/logo.png' %}" class="h-12" alt="N-Me Logo">
+    </a>
 
-  <div class="flex items-center gap-3">
+    <div class="flex items-center gap-3">
 
-    <!-- DESKTOP NAV -->
-   <ul class="hidden md:flex gap-10 px-10 py-5 rounded-full
-           bg-white/40 backdrop-blur-xl border border-white/60">
+      <!-- DESKTOP NAV -->
+      <ul class="hidden md:flex gap-10 px-10 py-5 rounded-full
+                 bg-white/40 backdrop-blur-xl border border-white/60">
 
-  <li class="transition duration-300 hover:filter hover:blur-sm">
-    <a href="{% url 'home' %}" class="hover:text-blue-600">Home</a>
-  </li>
+        <li><a href="{% url 'home' %}" class="hover:text-blue-600">Home</a></li>
+        <li><a href="{% url 'about' %}" class="hover:text-blue-600">About</a></li>
+        <li><a href="{% url 'blogs' %}" class="text-blue-600 font-semibold">Blogs</a></li>
+        <li><a href="{% url 'faq' %}" class="hover:text-blue-600">FAQs</a></li>
+        <li><a href="{% url 'services' %}" class="hover:text-blue-600">Services</a></li>
+        <li><a href="{% url 'contact' %}" class="hover:text-blue-600">Contact</a></li>
 
-  <li class="transition duration-300 hover:filter hover:blur-sm">
-    <a href="{% url 'about' %}" class="hover:text-blue-600">About</a>
-  </li>
+      </ul>
 
-  <li class="transition duration-300 hover:filter hover:blur-sm">
-    <a href="{% url 'blogs' %}" class="text-blue-600 font-semibold">Blogs</a>
-  </li>
+      <!-- MOBILE BUTTON -->
+      <button id="menuBtn"
+        class="md:hidden w-12 h-12 rounded-xl bg-[#3C49FF]
+               flex flex-col items-center justify-center"
+        aria-label="Toggle navigation menu"
+        aria-expanded="false"
+        aria-controls="mobileMenu">
 
-  <li class="transition duration-300 hover:filter hover:blur-sm">
-    <a href="{% url 'faq' %}" class="hover:text-blue-600">FAQs</a>
-  </li>
+        <span class="w-6 h-0.5 bg-white mb-1.5"></span>
+        <span class="w-6 h-0.5 bg-white mb-1.5"></span>
+        <span class="w-6 h-0.5 bg-white"></span>
 
-  <li class="transition duration-300 hover:filter hover:blur-sm">
-    <a href="{% url 'services' %}" class="hover:text-blue-600">Services</a>
-  </li>
+      </button>
 
-  <li class="transition duration-300 hover:filter hover:blur-sm">
-    <a href="{% url 'contact' %}" class="hover:text-blue-600">Contact</a>
-  </li>
+      <!-- CHAT ICON -->
+      <a href="{% url 'message' %}">
+        <div class="hidden md:flex h-12 w-12 rounded-full
+                    bg-gradient-to-br from-blue-500 to-blue-700
+                    shadow-md items-center justify-center">
 
-</ul>
+          <img src="{% static 'images/icon1.png' %}" class="w-6" alt="Messages">
 
+        </div>
+      </a>
 
-    <!-- MOBILE BUTTON -->
-    <button id="menuBtn"
-      class="md:hidden w-12 h-12 rounded-xl bg-[#3C49FF]
-      flex flex-col items-center justify-center">
-      <span class="w-6 h-0.5 bg-white mb-1.5"></span>
-      <span class="w-6 h-0.5 bg-white mb-1.5"></span>
-      <span class="w-6 h-0.5 bg-white"></span>
-    </button>
+      <!-- MOBILE MENU -->
+      <div id="mobileMenu"
+        class="absolute top-[70px] left-1/2 -translate-x-1/2
+               w-[335px] h-[294px] md:hidden
+               backdrop-blur-xl bg-white/30
+               rounded-2xl shadow-2xl border border-white/60
+               origin-top scale-y-0 opacity-0
+               pointer-events-none transition-all duration-300
+               z-50 py-2">
 
-    <!-- CHAT ICON (DESKTOP ONLY) -->
-     <a href="{% url 'message' %}">
-    <div class="hidden md:flex h-12 w-12 rounded-full
-      bg-gradient-to-br from-blue-500 to-blue-700
-      shadow-md items-center justify-center">
-      <img src="{% static 'images/icon1.png' %}" class="w-6" />
+        <a href="{% url 'home' %}" class="block text-[16px] px-6 py-3 hover:text-blue-600">Home</a>
+        <a href="{% url 'about' %}" class="block text-[16px] px-6 py-3 hover:text-blue-600">About</a>
+        <a href="{% url 'blogs' %}" class="block text-[16px] px-6 py-3 text-blue-600">Blogs</a>
+        <a href="{% url 'faq' %}" class="block text-[16px] px-6 py-3 hover:text-blue-600">FAQs</a>
+        <a href="{% url 'services' %}" class="block text-[16px] px-6 py-3 hover:text-blue-600">Services</a>
+        <a href="{% url 'contact' %}" class="block text-[16px] px-6 py-3 hover:text-blue-600">Contact</a>
+
+      </div>
+
     </div>
-  </a>
-<!-- MOBILE MENU -->
-<div id="mobileMenu" class="absolute top-[70px] left-1/2 -translate-x-1/2
-           w-[335px] h-[294px]
-           md:hidden
-           backdrop-blur-xl bg-white/30
-           rounded-2xl shadow-2xl
-           border border-white/60
-           origin-top scale-y-0 opacity-0
-           pointer-events-none
-           transition-all duration-300 z-50 py-2">
+  </nav>
 
-  <a href="{% url 'home' %}" class="block font-manrope text-[16px] px-6 py-3 hover:text-blue-600">Home</a>
-  <a href="{% url 'about' %}" class="block font-manrope text-[16px] px-6 py-3 hover:text-blue-600">About</a>
-  <a href="{% url 'blogs' %}" class="block font-manrope text-[16px] px-6 py-3 text-blue-600">Blogs</a>
-  <a href="{% url 'faq' %}" class="block font-manrope text-[16px] px-6 py-3 hover:text-blue-600">FAQs</a>
-  <a href="{% url 'services' %}" class="block font-manrope text-[16px] px-6 py-3 hover:text-blue-600">Services</a>
-  <a href="{% url 'contact' %}" class="block font-manrope text-[16px] px-6 py-3 hover:text-blue-600">Contact</a>
-
-</div>
-  </div>
-</nav>
-
-
-  <!-- ================= HERO CONTENT ================= -->
+  <!-- HERO CONTENT -->
   <section class="max-w-3xl mx-auto mt-10 md:mt-40 px-4 relative z-10 text-center">
 
     <h1 id="animatedHeading"
-    class="font-poppins text-4xl md:text-5xl font-semibold text-black mb-3">
-  N-ME <span class="text-blue-500">Blog</span>
-</h1>
+      class="font-poppins text-4xl md:text-5xl font-semibold text-black mb-3">
+      N-ME <span class="text-blue-500">Blog</span>
+    </h1>
 
-<p id="animatedParagraph"
-   class="text-black/90 font-semibold leading-relaxed mx-auto opacity-0 transition-opacity duration-700">
-  Insights, stories, and tips for businesses & smart shoppers.
-</p>
+    <p id="animatedParagraph"
+      class="text-black/90 font-semibold leading-relaxed mx-auto opacity-0 transition-opacity duration-700">
+      Insights, stories, and tips for businesses & smart shoppers.
+    </p>
 
-<style>
-.letter {
-  display: inline-block;
-  opacity: 0;
-  transform: translateX(-6px);
-  animation: letterShow 0.25s ease forwards;
-}
+    <!-- SEARCH -->
+    <form method="get"
+      class="mt-6 flex flex-col items-center md:flex-row md:justify-center gap-3">
 
-@keyframes letterShow {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-</style>
+      <div class="relative w-full max-w-80">
+
+        <span class="iconify absolute left-4 top-1/2 -translate-y-1/2
+                     w-6 h-5 text-gray-500"
+          data-icon="flowbite:search-outline"></span>
+
+        <input
+          type="search"
+          name="q"
+          value="{{ request.GET.q }}"
+          placeholder="Search articles..."
+          class="w-full pl-12 pr-4 py-3 rounded-3xl border border-gray-300
+                 focus:outline-none shadow-sm text-gray-700"
+        >
+
+      </div>
+
+      <button type="submit"
+        class="relative overflow-hidden font-medium py-3 px-11 rounded-full
+               text-white transition-all duration-700 ease-in-out
+               bg-gradient-to-b from-[#4d69ff] via-[#3b55ff] to-[#D9F0FF]
+               bg-[length:100%_200%] bg-top hover:bg-bottom active:scale-95">
+        Search
+      </button>
+
+    </form>
+
+    {% if query and not page_obj %}
+      <p class="text-center text-gray-500 mt-10 text-lg">
+        No blogs found matching "{{ query }}"
+      </p>
+    {% endif %}
+
+  </section>
+
+</div>
+
+<!-- ================= HERO ANIMATION ================= -->
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+
   const heading = document.getElementById("animatedHeading");
   const paragraph = document.getElementById("animatedParagraph");
 
+  if (!heading || !paragraph) return;
+
   const originalHTML = heading.innerHTML;
   const temp = document.createElement("div");
+
   temp.innerHTML = originalHTML;
   heading.innerHTML = "";
 
   let delay = 0;
-  const speed = 60; // milliseconds per letter
+  const speed = 60;
 
   temp.childNodes.forEach(node => {
 
-    // Normal text
     if (node.nodeType === Node.TEXT_NODE) {
+
       [...node.textContent].forEach(char => {
         createLetter(char);
       });
-    }
 
-    // Span text (keeps color)
-    else {
+    } else {
+
       const text = node.innerText;
       const className = node.className;
 
       [...text].forEach(char => {
         createLetter(char, className);
       });
+
     }
+
   });
 
   function createLetter(char, extraClass = "") {
+
     const span = document.createElement("span");
+
     span.className = `letter ${extraClass}`;
     span.innerHTML = char === " " ? "&nbsp;" : char;
     span.style.animationDelay = `${delay}ms`;
+
     heading.appendChild(span);
+
     delay += speed;
   }
 
-  // Show paragraph after heading animation finishes
   setTimeout(() => {
     paragraph.classList.remove("opacity-0");
   }, delay + 300);
+
 });
 </script>
 
-    <!-- SEARCH -->
-    <form method="get" class="mt-6 flex flex-col items-center md:flex-row md:justify-center gap-3">
+<!-- ================= FEATURED BLOG ================= -->
 
-  <div class="relative w-80">
-    <span
-      class="iconify absolute left-4 top-1/2 -translate-y-1/2
-             w-6 h-5 text-gray-500"
-      data-icon="flowbite:search-outline">
-    </span>
-
-    <input
-      type="search"
-      name="q"
-      value="{{ request.GET.q }}"
-      placeholder="Search articles..."
-      class="w-80 pl-12 pr-4 py-3 rounded-3xl
-             border border-gray-300
-             focus:outline-none shadow-sm text-gray-700"
-    />
-  </div>
-
-  <button
-    type="submit"
-    class="relative overflow-hidden font-medium py-3 px-11
-           rounded-full text-white
-           transition-all duration-700 ease-in-out
-           bg-gradient-to-b from-[#4d69ff] via-[#3b55ff] to-[#D9F0FF]
-           bg-[length:100%_200%] bg-top
-           hover:bg-bottom active:scale-95">
-    Search
-  </button>
-
-</form>
-{% if query and not page_obj %}
-  <p class="text-center text-gray-500 mt-10 text-lg">
-    No blogs found matching "{{ query }}"
-  </p>
-{% endif %}
-
-
-  </section>
-
-</div>
-<script>
-  if (performance.navigation.type === 1) {
-    window.location.href = window.location.pathname;
-  }
-</script>
-
-
-<div class="flex flex-col md:flex-row w-full px-4 md:px-0">
+<!-- <div class="flex flex-col md:flex-row w-full px-4 md:px-0"> -->
+<div class="blog-featured-layout flex flex-col md:flex-row w-full px-4 md:px-0">
 
   {% if page_obj %}
-  {% with latest=page_obj|first %}
-  
-  <div class="bg-white rounded-3xl mt-6 md:m-12 p-1 w-[85%] md:w-6/12 mx-auto">
-    <img 
-      class="rounded-3xl w-full h-60 md:h-[55vh] object-cover"
-      src="{{ latest.image.url }}" 
-      alt="{{ latest.card_head }}"
-    >
-  </div>
 
-  <div class="w-full md:w-5/12 p-4 md:p-6 mt-4 md:mt-12 space-y-6">
-    
-    <p class="text-[#3C79FF] font-normal">
-      New Post
-    </p>
+    {% with latest=page_obj|first %}
 
-    <h2 class="font-poppins  text-[20px] md:text-[24px] font-semibold text-black leading-normal">
-      {{ latest.card_head }}
-    </h2>
+      <div class="bg-white rounded-3xl mt-6 md:m-6 p-1
+                  w-[85%] md:w-6/12 mx-auto">
 
-    <h4 class="font-manrope text-[16px] md:text-[20px] font-medium text-black">
-      {{ latest.keyword }}
-    </h4>
+        <img
+          class="rounded-3xl w-full h-60 md:h-[55vh] object-cover"
+          src="{{ latest.image.url }}"
+          alt="{{ latest.card_head }}"
+        >
 
-    <p class="font-manrope font-medium text-[14px] md:text-[16px] text-black leading-relaxed">
-      {{ latest.card_paragraph|truncatechars:200 }}
-    </p>
+      </div>
 
-    <div class="flex items-center gap-4 pt-2">
-      <a
-        href="{% url 'blog_detail' latest.id %}"
-        class="relative text-[16px] py-3.5 px-10 font-manrope rounded-full text-white
-         transition-all duration-700 ease-in-out
-         bg-gradient-to-b from-[#3C49FF] via-[#3b55ff]
-         bg-[length:100%_200%] bg-top
-         hover:bg-bottom
-         hover:shadow-[0_0_10px_rgba(59,85,255,0.9)]
-         active:scale-95
-         border-2 border-white/30
-         shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] hover:shadow-[inset_0_0_10px_rgba(255,255,255,0.3),0_0_10px_rgba(59,85,255,0.9)]">
-        Read More
-      </a>
+      <div class="w-full md:w-5/12 p-4 md:p-6 mt-4 md:mt-12 space-y-6">
 
-      <p class="ml-auto text-[13.67px] md:text-[16px] text-[#BBBBBB]">
-        {{ latest.created_at|date:"M d, Y" }}
-      </p>
-    </div>
+        <p class="text-[#3C79FF] font-normal">New Post</p>
 
-  </div>
+        <h2 class="font-poppins text-[20px] md:text-[24px]
+                   font-semibold text-black leading-normal">
+          {{ latest.card_head }}
+        </h2>
 
-  {% endwith %}
+        <h4 class="font-manrope text-[16px] md:text-[20px]
+                   font-medium text-black">
+          {{ latest.keyword }}
+        </h4>
+
+        <p class="font-manrope font-medium text-[14px] md:text-[16px]
+                  text-black leading-relaxed">
+          {{ latest.card_paragraph|truncatechars:200 }}
+        </p>
+
+        <div class="flex items-center gap-4 pt-2">
+
+          <a href="{% url 'blog_detail' latest.id %}"
+            class="relative text-[16px] py-3.5 px-10 font-manrope
+                   rounded-full text-white transition-all duration-700
+                   bg-gradient-to-b from-[#3C49FF] via-[#3b55ff]
+                   bg-[length:100%_200%] bg-top hover:bg-bottom
+                   active:scale-95 border-2 border-white/30 shadow-md">
+            Read More
+          </a>
+
+          <p class="ml-auto text-[13.67px] md:text-[16px] text-[#BBBBBB]">
+            {{ latest.created_at|date:"M d, Y" }}
+          </p>
+
+        </div>
+
+      </div>
+
+    {% endwith %}
+
   {% endif %}
 
 </div>
 
+<!-- ================= BLOG CARDS ================= -->
 
-{# ------------------- BLOG CARDS ------------------- #}
-{# ------------------- BLOG CARDS ------------------- #}
-<div class="flex flex-wrap justify-between px-4 m-5">
+<!-- <div class="flex flex-wrap justify-between px-4 m-5"> -->
+<div class="blog-cards-layout flex flex-wrap justify-between px-4 m-5">
   {% for blog in page_obj %}
+
     {% if not forloop.first %}
-    <div class="rounded-3xl p-1 w-full md:w-[32%] mb-10">
-      
-      <img 
-        class="rounded-[40px] w-[335px] h-[335px] md:w-[405px] md:h-[373px] object-cover"
-        src="{{ blog.image.url }}" 
-        alt="{{ blog.card_head }}"
-      >
 
-      <div>
-        <h4 class="font-manrope text-[#3C79FF] font-medium text-[16px] md:text-[20px] mt-10 mb-2">
-          {{ blog.keyword }}
-        </h4>
+      <div class="rounded-3xl p-1 w-full md:w-[32%] mb-10">
 
-        <h2 class="font-poppins text-[20px] md:text-[24px] font-semibold leading-normal">
-          {{ blog.card_head }}
-          
-        </h2>
-      </div>
+        <img
+          class="rounded-[40px] w-[335px] h-[335px]
+                 md:w-[405px] md:h-[373px] object-cover"
+          src="{{ blog.image.url }}"
+          alt="{{ blog.card_head }}"
+        >
 
-      <div class="flex items-center gap-4 pt-2 mt-2">
-         <a
-  href="{% url 'blog_detail' blog.id %}"
-  class="relative text-[16px] py-3.5 px-10 font-manrope rounded-full text-white
-         transition-all duration-700 ease-in-out
-         bg-gradient-to-b from-[#3C49FF] via-[#3b55ff]
-         bg-[length:100%_200%] bg-top
-         hover:bg-bottom
-         hover:shadow-[0_0_10px_rgba(59,85,255,0.9)]
-         active:scale-95
-         border-2 border-white/30
-         shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] hover:shadow-[inset_0_0_10px_rgba(255,255,255,0.3),0_0_10px_rgba(59,85,255,0.9)]">
-  Read More
-</a>
+        <div>
 
+          <h4 class="font-manrope text-[#3C79FF] font-medium
+                     text-[16px] md:text-[20px] mt-10 mb-2">
+            {{ blog.keyword }}
+          </h4>
 
-
-        <p class="ml-auto text-[13.67px] md:text-[16px] text-[#848383]">
-          {{ blog.created_at|date:"M d, Y" }}
-        </p>
-      </div>
-
-    </div>
-    {% endif %}
-  {% endfor %}
-</div>
-
-
-
-<div class="mt-20 flex items-center justify-center gap-1 sm:gap-3">
-  <p class="cursor-pointer px-2 sm:px-6 py-1.5 sm:py-3 text-xs sm:text-base font-manrope  rounded-3xl bg-white">
-    First
-  </p>
-  <ul class="flex items-center font-manrope gap-1 sm:gap-2 rounded-3xl border border-white p-1 bg-gray-50">
-    <li class="cursor-pointer text-white px-2 sm:px-4 py-1.5 sm:py-3 rounded-3xl text-center bg-black text-xs sm:text-base">
-      Previous
-    </li>
-    <li class="cursor-pointer px-2 sm:px-4 py-1.5 sm:py-3 rounded-full min-w-[30px] sm:min-w-[50px] text-center text-xs sm:text-base">1</li>
-    <li class="cursor-pointer px-2 sm:px-4 py-1.5 sm:py-3 rounded-full min-w-[30px] sm:min-w-[50px] text-center bg-[#5A8EFF] text-black text-xs sm:text-base">
-      2
-    </li>
-    <li class="cursor-pointer px-2 sm:px-4 py-1.5 sm:py-3 rounded-full min-w-[30px] sm:min-w-[50px] text-center text-xs sm:text-base">3</li>
-    <li class="cursor-pointer px-2 sm:px-4 py-1.5 sm:py-3 rounded-full min-w-[30px] sm:min-w-[50px] text-center text-xs sm:text-base">4</li>
-    <li class="cursor-pointer text-white px-2 sm:px-5 py-1.5 sm:py-3 rounded-3xl text-center bg-black text-xs sm:text-base">
-      Next
-    </li>
-  </ul>
-  <p class="cursor-pointer px-2 sm:px-6 py-1.5 sm:py-3 text-xs sm:text-base font-manrope  rounded-3xl bg-white">
-    Last
-  </p>
-</div>
-
-
-
-
-<section class="w-full flex justify-center max-md:pb-6 max-md:mt-2 md:py-28 px-4">
-  <!-- SECTION CONTAINER -->
-  <div class="flex flex-col lg:flex-row gap-10 items-center
-         w-full max-w-[1320px]
-         h-auto lg:h-[534px]">
-
-    <div class="relative w-full max-w-[582px]
-       h-[420px] md:h-[460px]
-       rounded-[40px]
-       bg-gradient-to-t from-[#A4C2FF] via-[#DDE8FF]/60 to-[#f3f4f6]/5
-       flex justify-center
-       overflow-visible
-       border-fade
-       shadow-[0_4px_5px_0_rgba(0,0,0,0.25)]">
-
-      <!-- PHONE WRAPPER -->
-      <div class="absolute bottom-[8px] md:bottom-0
-             w-[307px] md:w-[447px]
-             h-[302px] md:h-[537px]">
-
-        <!-- SCREEN -->
-        <div class="absolute
-               top-[14px] md:top-[25px]
-               left-[40px] md:left-[18px]
-               w-[230px] md:w-[407px]
-               h-[289px] md:h-[507px]
-               overflow-hidden
-               rounded-t-[30px]
-               z-10">
-
-          <!-- Video -->
-          <video autoplay muted loop playsinline class="w-full h-full object-cover object-top">
-            <source src="{% static 'video/nmevd.mp4' %}" type="video/mp4" />
-          </video>
-
-          <div class="absolute bottom-0 left-0 w-full h-[30px] pointer-events-none z-20"
-     style="background: radial-gradient(
-       ellipse 120% 200% at 50% 120%,
-       rgba(21, 80, 198, 0.5) 0%,
-       rgba(21, 80, 198, 0.35) 25%,
-       rgba(21, 80, 198, 0.15) 45%,
-       transparent 65%
-     );">
-</div>
-
+          <h2 class="font-poppins text-[20px] md:text-[24px]
+                     font-semibold leading-normal">
+            {{ blog.card_head }}
+          </h2>
 
         </div>
 
-        <!-- PHONE FRAME -->
-        <img src="{% static 'images/phoneframe.png' %}" alt="Phone Frame"
-          class="absolute inset-0 w-full h-full object-contain z-30 pointer-events-none" />
+        <div class="flex items-center gap-4 pt-2 mt-2">
+
+          <a href="{% url 'blog_detail' blog.id %}"
+            class="relative text-[16px] py-3.5 px-10 font-manrope
+                   rounded-full text-white transition-all duration-700
+                   bg-gradient-to-b from-[#3C49FF] via-[#3b55ff]
+                   bg-[length:100%_200%] bg-top hover:bg-bottom
+                   active:scale-95 border-2 border-white/30 shadow-md">
+            Read More
+          </a>
+
+          <p class="ml-auto text-[13.67px] md:text-[16px] text-[#848383]">
+            {{ blog.created_at|date:"M d, Y" }}
+          </p>
+
+        </div>
+
       </div>
+
+    {% endif %}
+
+  {% endfor %}
+
 </div>
 
+<!-- ================= PAGINATION ================= -->
 
-    <!-- RIGHT CARD -->
-    <div class="relative w-full max-w-[718px]
-           h-auto lg:h-[461px]
-           rounded-[40px]
-           bg-gradient-to-t from-[#A4C2FF] via-[#DDE8FF]/60 to-[#f3f4f6]/5
-           shadow-[0_4px_5px_0_rgba(0,0,0,0.25)]
-           flex flex-col items-center justify-center
-           text-center px-6 md:px-16 py-12 border-fade">
+<div class="mt-20 mb-5 flex items-center justify-center gap-1 sm:gap-3">
+
+  <p class="cursor-pointer px-2 sm:px-6 py-1.5 sm:py-3
+            text-xs sm:text-base font-manrope rounded-3xl bg-white">
+    First
+  </p>
+
+  <ul class="flex items-center font-manrope gap-1 sm:gap-2
+             rounded-3xl border border-white p-1 bg-gray-50">
+
+    <li class="cursor-pointer text-white px-2 sm:px-4 py-1.5 sm:py-3
+               rounded-3xl text-center bg-black text-xs sm:text-base">
+      Previous
+    </li>
+
+    <li class="cursor-pointer px-2 sm:px-4 py-1.5 sm:py-3
+               rounded-full min-w-[30px] sm:min-w-[50px]
+               text-center text-xs sm:text-base">1</li>
+
+    <li class="cursor-pointer px-2 sm:px-4 py-1.5 sm:py-3
+               rounded-full min-w-[30px] sm:min-w-[50px]
+               text-center bg-[#5A8EFF] text-black text-xs sm:text-base">2</li>
+
+    <li class="cursor-pointer px-2 sm:px-4 py-1.5 sm:py-3
+               rounded-full min-w-[30px] sm:min-w-[50px]
+               text-center text-xs sm:text-base">3</li>
+
+    <li class="cursor-pointer px-2 sm:px-4 py-1.5 sm:py-3
+               rounded-full min-w-[30px] sm:min-w-[50px]
+               text-center text-xs sm:text-base">4</li>
+
+    <li class="cursor-pointer text-white px-2 sm:px-5 py-1.5 sm:py-3
+               rounded-3xl text-center bg-black text-xs sm:text-base">
+      Next
+    </li>
+
+  </ul>
+
+  <p class="cursor-pointer px-2 sm:px-6 py-1.5 sm:py-3
+            text-xs sm:text-base font-manrope rounded-3xl bg-white">
+    Last
+  </p>
+
+</div>
+
+<!-- ================= GET APP SECTION ================= -->
+
+<!-- <section class="w-full flex justify-center max-md:pb-6 max-md:mt-2 md:py-28 px-4"> -->
+<section class="blog-app-section w-full flex justify-center max-md:pb-6 max-md:mt-2 md:py-28 px-4">
+
+  <div class="flex flex-col lg:flex-row gap-10 items-center
+              w-full max-w-[1320px] h-auto lg:h-[534px]">
+
+    <!-- PHONE -->
+    <div class="relative w-full max-w-[582px] h-[420px] md:h-[460px]
+                rounded-[40px]
+                bg-gradient-to-t from-[#A4C2FF] via-[#DDE8FF]/60
+                to-[#f3f4f6]/5 flex justify-center overflow-visible
+                border-fade shadow-[0_4px_5px_0_rgba(0,0,0,0.25)]">
+
+      <div class="absolute bottom-[8px] md:bottom-0
+                  w-[307px] md:w-[447px] h-[302px] md:h-[537px]">
+
+        <div class="absolute top-[14px] md:top-[25px]
+                    left-[40px] md:left-[18px]
+                    w-[230px] md:w-[407px]
+                    h-[289px] md:h-[507px]
+                    overflow-hidden rounded-t-[30px] z-10">
+
+          <video autoplay muted loop playsinline
+                 class="w-full h-full object-cover object-top">
+
+            <source src="{% static 'video/nmevd.mp4' %}" type="video/mp4">
+
+          </video>
+
+          <div class="absolute bottom-0 left-0 w-full h-[30px]
+                      pointer-events-none z-20"
+            style="background: radial-gradient(
+              ellipse 120% 200% at 50% 120%,
+              rgba(21,80,198,0.5) 0%,
+              rgba(21,80,198,0.35) 25%,
+              rgba(21,80,198,0.15) 45%,
+              transparent 65%
+            );">
+          </div>
+
+        </div>
+
+        <img src="{% static 'images/phoneframe.png' %}"
+             alt="Phone Frame"
+             class="absolute inset-0 w-full h-full object-contain
+                    z-30 pointer-events-none">
+
+      </div>
+
+    </div>
+
+    <!-- APP DOWNLOAD -->
+    <div class="relative w-full max-w-[718px] h-auto lg:h-[461px]
+                rounded-[40px]
+                bg-gradient-to-t from-[#A4C2FF] via-[#DDE8FF]/60
+                to-[#f3f4f6]/5 shadow-[0_4px_5px_0_rgba(0,0,0,0.25)]
+                flex flex-col items-center justify-center text-center
+                px-6 md:px-16 py-12 border-fade">
 
       <h2 class="text-[26px] md:text-[36px] font-semibold text-[#1a1a1a]">
         Get the App Now!
       </h2>
 
-      <p class="mt-4 text-[14px] md:text-[16px]
-              font-medium text-[#1A1A1A]
-              max-w-[480px]">
+      <p class="mt-4 text-[14px] md:text-[16px] font-medium
+                text-[#1A1A1A] max-w-[480px]">
         Join thousands of users who simplified their daily life
       </p>
 
       <div class="mt-8 md:mt-10 flex flex-col md:flex-row gap-4 md:gap-6">
-                <!-- Apple Store -->
-<a href="https://apps.apple.com/in/app/n-me/id1614150675" target="_blank">
-    <img src="{% static 'images/app.png' %}" class="h-[48px] md:h-[56px]" />
-</a>
 
-<!-- Play Store -->
-<a href="https://play.google.com/store/apps/details?id=com.smart.nme" target="_blank">
-    <img src="{% static 'images/playstore.png' %}" class="h-[48px] md:h-[56px]" />
-</a>
+        <a href="https://apps.apple.com/in/app/n-me/id1614150675"
+           target="_blank" rel="noopener noreferrer">
+          <img src="{% static 'images/app.png' %}"
+               class="h-[48px] md:h-[56px]" alt="Download on App Store">
+        </a>
+
+        <a href="https://play.google.com/store/apps/details?id=com.smart.nme"
+           target="_blank" rel="noopener noreferrer">
+          <img src="{% static 'images/playstore.png' %}"
+               class="h-[48px] md:h-[56px]" alt="Get it on Google Play">
+        </a>
+
       </div>
+
     </div>
 
   </div>
+
 </section>
+<script>
+  (function () {
+    "use strict";
 
+    const BREAKPOINT = 1024;
+    const MENU_GAP = 10;
+    const SCREEN_PADDING = 12;
 
+    let isMenuOpen = false;
+    let initialized = false;
 
+    function getElements() {
+        return {
+            btn: document.getElementById("menuBtn"),
+            menu: document.getElementById("mobileMenu")
+        };
+    }
 
+    function positionMenu() {
+        const { btn, menu } = getElements();
 
+        if (!btn || !menu || !isMenuOpen) return;
 
+        const btnRect = btn.getBoundingClientRect();
 
+        const menuWidth = Math.min(
+            335,
+            window.innerWidth - SCREEN_PADDING * 2
+        );
 
+        let left = btnRect.right - menuWidth;
 
+        left = Math.max(
+            SCREEN_PADDING,
+            Math.min(
+                left,
+                window.innerWidth - menuWidth - SCREEN_PADDING
+            )
+        );
 
- <!-- NEWSLETTER + FOOTER WRAPPER -->
-  <section class="w-full max-w-[1440px] px-4  mx-auto mt-24">
-    <!-- OUTER CARD -->
-    <div class="w-full bg-gradient-to-br from-[#FFFFFF] to-[#D2DAFF]
-             rounded-[40px]
-             flex flex-col
-             overflow-hidden border-white border-[5px]">
+        const top = btnRect.bottom + MENU_GAP;
 
-      <!-- NEWSLETTER (TOP) -->
-      <div class="py-20 px-6 text-center rounded-t-[40px]">
-        <h2 class="text-[30px] md:text-[36px] font-semibold text-black">
-          Join Our Newsletter
-        </h2>
+        menu.style.setProperty("position", "fixed", "important");
+        menu.style.setProperty("top", top + "px", "important");
+        menu.style.setProperty("left", left + "px", "important");
+        menu.style.setProperty("right", "auto", "important");
+        menu.style.setProperty("bottom", "auto", "important");
 
-        <p class="mt-4 text-[16px] text-black font-medium max-w-xl mx-auto">
-          Subscribe to our newsletter so we can update you with services and offers.
-        </p>
+        menu.style.setProperty("width", menuWidth + "px", "important");
+        menu.style.setProperty(
+            "max-height",
+            "calc(100vh - " + (top + SCREEN_PADDING) + "px)",
+            "important"
+        );
+    }
 
-        <!-- INPUT + BUTTON -->
-        <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <div class="flex items-center bg-white rounded-full px-6 py-3
-                    w-full sm:w-[360px]
-                    shadow-[0_4px_8px_rgba(0,0,0,0.08)]">
-            <!-- ICON -->
-            <img src="./static/images/msg.png" class="w-[24px] h-[24px]">
+    function openMenu() {
+        const { btn, menu } = getElements();
 
-            <input type="email" placeholder="Enter your email"
-              class="w-full outline-none text-[14px] pl-4 font-manrope text-[#BBBBBB] placeholder-gray-400" />
-          </div>
+        if (!btn || !menu || window.innerWidth >= BREAKPOINT) return;
 
-          <button class="px-10 py-3 rounded-full
-                       bg-gradient-to-r from-[#5b6cff] to-[#3b4bff]
-                       text-white font-semibold text-[16px]
-                       shadow-[0_6px_12px_rgba(59,75,255,0.35)]
-                       hover:opacity-90 transition">
-            Subscribe
-          </button>
-        </div>
-      </div>
+        isMenuOpen = true;
 
-      <!-- FOOTER (BOTTOM) -->
-      <footer class="bg-black text-white px-4 sm:px-20 py-16 mt-auto rounded-[40px]">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 md:gap-[40px] text-center sm:text-left">
+        /* Move menu outside clipped/transformed containers */
+        if (menu.parentElement !== document.body) {
+            document.body.appendChild(menu);
+        }
 
-          <!-- BRAND -->
-          <div class="mx-auto sm:mx-0 w-[315px]">
-            <div
-              class="flex flex-col sm:flex-row items-center sm:items-start justify-center sm:justify-start gap-3 mb-5">
-              <div class="w-[77px] h-[56px] ">
-                <img src="./static/images/footer_logo.png">
-              </div>
-              <h3 class="text-[21.29px] md:text-[30px] font-roboto font-bold">N - ME APP</h3>
-            </div>
+        menu.style.setProperty("display", "block", "important");
+        menu.style.setProperty("visibility", "visible", "important");
+        menu.style.setProperty("opacity", "1", "important");
+        menu.style.setProperty("pointer-events", "auto", "important");
+        menu.style.setProperty("transform", "translateY(0) scaleY(1)", "important");
+        menu.style.setProperty("z-index", "999999", "important");
 
-            <h1 class="text-[16px] text-white font-medium   mx-auto sm:mx-0">
-              All your needs are simplified, secure and just a tap away in one app
-            </h1>
+        positionMenu();
 
-            <div class="flex justify-center sm:justify-start gap-4 mt-6 text-gray-400 text-lg">
-  <!-- Instagram -->
-  <a href="https://www.instagram.com/nme_app/?hl=en" target="_blank" rel="noopener noreferrer" class="w-[20px] h-[20px]">
-    <img src="./static/images/instagram.png" alt="Instagram">
-  </a>
+        btn.classList.add("active");
+        btn.setAttribute("aria-expanded", "true");
+        menu.setAttribute("aria-hidden", "false");
+    }
 
-  <!-- Facebook -->
-  <a href="https://www.facebook.com/profile.php?id=100076151802998" target="_blank" rel="noopener noreferrer" class="w-[20px] h-[20px]">
-    <img src="./static/images/facebook.png" alt="Facebook">
-  </a>
+    function closeMenu() {
+        const { btn, menu } = getElements();
 
-  <!-- Twitter -->
-  <a href="https://x.com/nmeapp" target="_blank" rel="noopener noreferrer" class="w-[20px] h-[20px]">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 14 14"><g fill="none"><g clip-path="url(#SVGG1Ot4cAD)"><path fill="#fff" d="M11.025.656h2.147L8.482 6.03L14 13.344H9.68L6.294 8.909l-3.87 4.435H.275l5.016-5.75L0 .657h4.43L7.486 4.71zm-.755 11.4h1.19L3.78 1.877H2.504z"/></g><defs><clipPath id="SVGG1Ot4cAD"><path fill="#fff" d="M0 0h14v14H0z"/></clipPath></defs></g></svg>
-  </a>
+        if (!btn || !menu) return;
 
-  <!-- YouTube -->
-  <a href="https://youtube.com/@nme-app?si=F8sHQuXpcUrIpbdx" target="_blank" rel="noopener noreferrer" class="w-[24px] h-[24px]">
-    <img src="./static/images/youtube.png" alt="YouTube">
-  </a>
-</div>
-          </div>
+        isMenuOpen = false;
 
-          <!-- MOBILE ROW WRAPPER -->
-          <div class="grid grid-cols-2 gap-6 sm:contents">
+        menu.style.setProperty("opacity", "0", "important");
+        menu.style.setProperty("visibility", "hidden", "important");
+        menu.style.setProperty("pointer-events", "none", "important");
+        menu.style.setProperty(
+            "transform",
+            "translateY(-8px) scaleY(.95)",
+            "important"
+        );
 
-            <!-- QUICK LINKS -->
-<div class="sm:mx-0 md:ml-[4.5rem]">
-  <h2 class="font-semibold text-[16px] md:text-[24px] mb-5 ml-4">
-    Quick Links
-  </h2>
-<ul class="space-y-3 text-[14px] md:text-[16px] font-medium font-manrope 
-           md:text-left footer-list whitespace-nowrap">
-  <li><a href="{% url 'home' %}" class="transition-colors duration-200">Home</a></li>
-  <li><a href="{% url 'about' %}" class="transition-colors duration-200">About</a></li>
-  <li><a href="{% url 'blogs' %}" class="transition-colors duration-200">Blogs</a></li>
-  <li><a href="{% url 'faq' %}" class="transition-colors duration-200">FAQ</a></li>
-  <li><a href="{% url 'services' %}" class="transition-colors duration-200">Service</a></li>
-  <li><a href="{% url 'contact' %}" class="transition-colors duration-200">Contact</a></li>
-</ul>
-</div>
+        btn.classList.remove("active");
+        btn.setAttribute("aria-expanded", "false");
+        menu.setAttribute("aria-hidden", "true");
+    }
 
+    function toggleMenu() {
+        if (isMenuOpen) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    }
 
-            <!-- SERVICES -->
-            <div class="mx-auto sm:mx-0">
-              <h2 class="font-semibold text-[16px] md:text-[24px] mb-5 md:ml-6">
-                Backend Offerings
-              </h2>
-              <ul class="space-y-3 text-[14px] sm:text-[16px] font-medium font-manrope footer-list">
-  <li>Web Development</li>
-  <li>App Development</li>
-  <li>Digital Marketing</li>
-  <li>Graphic Designing</li>
-  <li>Branding</li>
-</ul>
-            </div>
+    function initializeMenu() {
+        const { btn, menu } = getElements();
 
-          </div>
+        if (!btn || !menu || initialized) return;
 
-          <!-- CONTACT -->
-          <div class="mx-auto sm:mx-0 ">
-            <h2 class="font-semibold text-[16px] md:text-[24px] mb-5">Get in Touch</h2>
-            <ul class="space-y-5 text-[14px] sm:text-[16px] font-medium font-manrope text-white text-left no-bullet">
-  <!-- Email -->
-  <li class="grid grid-cols-[80px_1fr] sm:grid-cols-[90px_1fr] gap-0 items-start">
-    <span class="whitespace-nowrap">Email:</span>
-    <div class="flex flex-col">
-      <span>info@nmeapp.in,</span>
-      <span>cybexeltechnologies@gmail.com</span>
-    </div>
-  </li>
+        initialized = true;
 
-  <!-- Phone -->
-  <li class="grid grid-cols-[80px_1fr] sm:grid-cols-[90px_1fr] gap-0 items-start">
-    <span class="whitespace-nowrap">Phone:</span>
-    <div class="flex flex-col">
-      <span>+91 9072919991,</span>
-      <span>+91 9745109190</span>
-    </div>
-  </li>
+        btn.type = "button";
+        btn.setAttribute("aria-controls", "mobileMenu");
+        btn.setAttribute("aria-expanded", "false");
 
-  <!-- Location -->
-  <li class="grid grid-cols-[80px_1fr] sm:grid-cols-[90px_1fr] gap-0 items-start">
-    <span class="whitespace-nowrap">Location:</span>
-    <div class="flex flex-col leading-relaxed">
-      <span>Kochi,</span>
-      <span>Thiruvananthapuram</span>
-      <span>Coimbatore, Chennai, Bengaluru</span>
-      <span>Dubai</span>
-    </div>
-  </li>
-</ul>
+        menu.setAttribute("aria-hidden", "true");
 
+        closeMenu();
 
-          </div>
-        </div>
+        /* Hamburger click */
+        btn.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            toggleMenu();
+        });
 
-        <!-- DIVIDER -->
-        <div class="mt-12 pt-6 text-center text-[16px] text-white font-manrope">
-          <div class="mx-auto w-full sm:w-[95%] border-t-[2px] border-white mb-6"></div>
-          © 2025 N-me App. All rights reserved.
-        </div>
+        /* Close when a menu link is clicked */
+        menu.addEventListener("click", function (event) {
+            if (event.target.closest("a")) {
+                closeMenu();
+            }
+        });
 
-      </footer>
+        /* Close when clicking outside */
+        document.addEventListener("click", function (event) {
+            if (!isMenuOpen) return;
 
-    </div>
-  </section>
+            if (
+                !btn.contains(event.target) &&
+                !menu.contains(event.target)
+            ) {
+                closeMenu();
+            }
+        });
+
+        /* Escape key */
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape" && isMenuOpen) {
+                closeMenu();
+            }
+        });
+
+        /* Reposition when scrolling */
+        window.addEventListener("scroll", function () {
+            if (isMenuOpen) {
+                positionMenu();
+            }
+        }, true);
+
+        /* Handle resizing */
+        window.addEventListener("resize", function () {
+            if (window.innerWidth >= BREAKPOINT) {
+                closeMenu();
+            } else if (isMenuOpen) {
+                positionMenu();
+            }
+        });
+
+        window.addEventListener("pageshow", closeMenu);
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initializeMenu);
+    } else {
+        initializeMenu();
+    }
+
+})();
+</script>
 <style>
-.footer-list li {
-  position: relative;
-  padding-left: 1.5rem; /* Space for the bullet */
-  cursor: pointer;
-  transition: transform 0.3s ease;
+  
+/* =========================================
+   BLOG PAGE - LAPTOP AND DESKTOP RESPONSIVE
+========================================= */
+
+/* Prevent horizontal overflow */
+body {
+    overflow-x: clip;
 }
 
-/* Bullet hidden initially */
-.footer-list li::before {
-  content: "•";
-  position: absolute;
-  left: 0;               /* Place bullet at left edge */
-  top: 50%;
-  transform: translateY(-50%);
-  color: white;
-  font-size: 1.2rem;     /* Increase bullet size (adjust as needed) */
-  opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+body img,
+body video {
+    max-width: 100%;
 }
 
-/* On hover: move text right and show bullet */
-.footer-list li:hover {
-  transform: translateX(0.5rem); /* Slide text slightly right */
+/* BLOG HERO */
+body > section,
+.bg-move-box {
+    box-sizing: border-box;
 }
 
-.footer-list li:hover::before {
-  opacity: 1;
-  transform: translateY(-50%) translateX(0); /* Bullet slides in */
+.bg-move-box {
+    width: calc(100% - 32px);
+    margin: 16px auto !important;
+    min-width: 0;
+}
+
+/* HERO NAVIGATION */
+.bg-move-box nav {
+    width: 100%;
+    min-width: 0;
+}
+
+.bg-move-box nav ul {
+    gap: clamp(16px, 2.2vw, 40px);
+    padding-left: clamp(18px, 3vw, 40px);
+    padding-right: clamp(18px, 3vw, 40px);
+}
+
+/* FEATURED BLOG */
+.blog-featured-layout {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 24px clamp(20px, 4vw, 60px);
+    display: flex;
+    align-items: center;
+    gap: clamp(24px, 4vw, 60px);
+}
+
+.blog-featured-layout > div {
+    min-width: 0;
+}
+
+.blog-featured-layout > div:first-child {
+    width: 50%;
+    margin: 0;
+}
+
+.blog-featured-layout > div:first-child img {
+    width: 100%;
+    height: clamp(300px, 35vw, 520px);
+    object-fit: cover;
+}
+
+.blog-featured-layout > div:last-child {
+    width: 50%;
+    margin: 0;
+}
+
+/* BLOG CARDS */
+.blog-cards-layout {
+    width: 100%;
+    max-width: 1440px;
+    margin: 40px auto !important;
+    padding: 0 clamp(20px, 4vw, 60px);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(20px, 3vw, 40px);
+}
+
+.blog-cards-layout > div {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+}
+
+.blog-cards-layout img {
+    width: 100%;
+    height: clamp(240px, 25vw, 373px);
+    object-fit: cover;
+}
+
+/* APP DOWNLOAD SECTION */
+.blog-app-section {
+    width: 100%;
+    padding: 60px clamp(20px, 4vw, 60px);
+}
+
+.blog-app-section > div {
+    max-width: 1320px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    align-items: center;
+}
+
+/* =========================================
+   LARGE DESKTOP - 1440px AND ABOVE
+========================================= */
+
+@media (min-width: 1440px) {
+
+    .bg-move-box {
+        max-width: 1582px;
+    }
+
+    .blog-featured-layout,
+    .blog-cards-layout {
+        max-width: 1440px;
+    }
+}
+
+/* =========================================
+   LAPTOP - 1024px TO 1439px
+========================================= */
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+
+    .bg-move-box {
+        min-height: 560px;
+        height: auto;
+    }
+
+    .bg-move-box > section {
+        margin-top: 120px;
+    }
+
+    .blog-featured-layout {
+        gap: 30px;
+        padding-left: 35px;
+        padding-right: 35px;
+    }
+
+    .blog-featured-layout > div:first-child img {
+        height: 380px;
+    }
+
+    .blog-cards-layout {
+        gap: 24px;
+        padding-left: 35px;
+        padding-right: 35px;
+    }
+
+    .blog-app-section > div {
+        gap: 30px;
+    }
+
+    .blog-app-section > div > div:first-child {
+        max-width: 48%;
+    }
+
+    .blog-app-section > div > div:last-child {
+        max-width: 52%;
+    }
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+
+    .bg-move-box {
+        min-height: 540px;
+        height: auto;
+    }
+
+    .bg-move-box > section {
+        margin-top: 110px;
+    }
+
+    .blog-featured-layout {
+        gap: 24px;
+        padding: 20px;
+    }
+
+    .blog-featured-layout > div:first-child img {
+        height: 320px;
+    }
+
+    .blog-cards-layout {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .blog-app-section > div {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .blog-app-section > div > div {
+        max-width: 100%;
+    }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+
+    .bg-move-box {
+        min-height: 434px;
+        height: auto;
+        padding: 20px;
+    }
+
+    .bg-move-box > section {
+        margin-top: 65px;
+    }
+
+    .blog-featured-layout {
+        flex-direction: column;
+        padding: 16px;
+    }
+
+    .blog-featured-layout > div:first-child,
+    .blog-featured-layout > div:last-child {
+        width: 100%;
+    }
+
+    .blog-featured-layout > div:first-child img {
+        height: 260px;
+    }
+
+    .blog-cards-layout {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 0 16px;
+    }
+
+    .blog-app-section {
+        padding: 30px 16px;
+    }
+
+    .blog-app-section > div {
+        flex-direction: column;
+    }
+
+    .blog-app-section > div > div {
+        max-width: 100%;
+    }
+}
+
+/* =========================================
+   DESKTOP - MATCH ALL BLOG SECTION WIDTHS
+========================================= */
+
+@media (min-width: 1024px) {
+
+    /* Common width and alignment */
+    .bg-move-box,
+    .blog-featured-layout,
+    .blog-cards-layout {
+        width: calc(100% - 32px) !important;
+        max-width: 1582px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        box-sizing: border-box !important;
+    }
+
+    /* HERO */
+    .bg-move-box {
+        margin-top: 16px !important;
+        margin-bottom: 16px !important;
+    }
+
+    /* FEATURED BLOG */
+    .blog-featured-layout {
+        padding-left: 30px !important;
+        padding-right: 30px !important;
+        gap: 30px !important;
+    }
+
+    /* BLOG CARDS */
+    .blog-cards-layout {
+        padding-left: 30px !important;
+        padding-right: 30px !important;
+        gap: 30px !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+}
+/* Small mobile screens */
+@media (max-width: 640px) {
+    div.mt-20.mb-5.flex.items-center.justify-center {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 25px auto 20px !important;
+        padding: 0 4px !important;
+        gap: 2px !important;
+        box-sizing: border-box !important;
+    }
+
+    div.mt-20.mb-5.flex.items-center.justify-center ul {
+        gap: 0 !important;
+        padding: 3px !important;
+        flex-shrink: 1 !important;
+        min-width: 0 !important;
+    }
+
+    div.mt-20.mb-5.flex.items-center.justify-center ul li,
+    div.mt-20.mb-5.flex.items-center.justify-center > p {
+        padding: 6px 4px !important;
+        font-size: 10px !important;
+        min-width: 0 !important;
+        white-space: nowrap !important;
+    }
+}
+
+/* Tablet, laptop and desktop */
+@media (min-width: 641px) {
+    div.mt-20.mb-5.flex.items-center.justify-center {
+        margin-bottom: 80px !important;
+    }
+}
+@media (max-width: 380px) {
+    #animatedHeading {
+        white-space: nowrap !important;
+        font-size: 30px !important;
+        letter-spacing: -1px;
+    }
+}
+/* Tablet and mobile: Hamburger only */
+@media screen and (max-width: 1023px) {
+
+    .bg-move-box nav > div > ul,
+    #heroSection nav > div > ul,
+    .hero-border nav > div > ul {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+    }
+
+    /* Hide message icon */
+    .bg-move-box nav a[href*="message"],
+    #heroSection nav a[href*="message"],
+    .hero-border nav a[href*="message"] {
+        display: none !important;
+    }
+
+    /* Show hamburger */
+    #menuBtn {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+}
+
+/* Laptop and desktop: Links + message icon */
+@media screen and (min-width: 1024px) {
+
+    .bg-move-box nav > div > ul,
+    #heroSection nav > div > ul,
+    .hero-border nav > div > ul {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    /* Show message icon on desktop */
+    .bg-move-box nav a[href*="message"],
+    #heroSection nav a[href*="message"],
+    .hero-border nav a[href*="message"] {
+        display: inline-flex !important;
+    }
+
+    /* Hide hamburger */
+    #menuBtn {
+        display: none !important;
+    }
+
+    #mobileMenu {
+        display: none !important;
+    }
 }
 </style>
 
-
-</div>
-<script src="./static/js/script.js"></script>
-
-</body>
-</html>
+{% endblock %}

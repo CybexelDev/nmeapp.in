@@ -3,297 +3,710 @@
 <html lang="en">
 <head>
   <!-- BASIC META -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- SEO META -->
   <title>{% block title %}N-Me App{% endblock %}</title>
 
-  <meta name="description" content="{% block meta_description %}N-Me App is a business and services listing platform helping users find nearby businesses and services easily.{% endblock %}">
+  <meta name="description"
+      content="{% block meta_description %}N-Me App is a business and services listing platform helping users find nearby businesses and services easily.{% endblock %}">
 
-  <meta name="keywords" content="{% block meta_keywords %}best restaurant near me, services, business listing, n-me app{% endblock %}">
+<meta name="keywords"
+      content="{% block meta_keywords %}best restaurant near me, services, business listing, n-me app{% endblock %}">
 
-  <meta name="author" content="Giving customers quick access to  businesses.">
-  <meta name="google-site-verification" content="FEci3zbweUPJYtA9SPb_GBwMF2PgzRURKa9arhL5ROE"/>
+  <meta name="author" content="Giving customers quick access to businesses.">
+  <meta name="google-site-verification" content="FEci3zbweUPJYtA9SPb_GBwMF2PgzRURKa9arhL5ROE">
+  <meta name="facebook-domain-verification" content="sb3woq8b2lbopkyh2mlx2nwlbgwinl">
 
   <!-- FAVICON -->
-  <link rel="icon" type="image/png" href="{% static 'images/nmeappwhite.png' %}" />
+  <link rel="icon" type="image/png" href="{% static 'images/nmeappwhite.png' %}">
 
   <!-- GOOGLE FONTS -->
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- TAILWIND -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- PROJECT CSS -->
+  <!-- TAILWIND CSS -->
+  <link rel="stylesheet" href="{% static 'output.css' %}">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
   <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/gsap@3/dist/ScrollToPlugin.min.js"></script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-F7T4TRB5SS"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-F7T4TRB5SS');
-</script>
+  <!-- GOOGLE ANALYTICS -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-F7T4TRB5SS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Saied K Muhammed",
-  "jobTitle": "Founder & CEO",
-  "worksFor": {
-    "@type": "Organization",
-    "name": "Cybexel Technologies Pvt.Ltd",
-    "url": "https://cybexel.com/"
-  },
-  "sameAs": [
-    "https://www.linkedin.com/in/saied-k-muhammed/",
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-F7T4TRB5SS');
+  </script>
+
+  <!-- STRUCTURED DATA -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Saied K Muhammed",
+    "jobTitle": "Founder & CEO",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Cybexel Technologies Pvt.Ltd",
+      "url": "https://cybexel.com/"
+    },
+    "sameAs": [
+      "https://www.linkedin.com/in/saied-k-muhammed/"
+    ],
+    "image": "https://cybexel.com/images/ceo4.png"
+  }
+  </script>
+
+  <!-- META PIXEL -->
+  <script>
+    !function(f,b,e,v,n,t,s) {
+      if (f.fbq) return;
+
+      n = f.fbq = function() {
+        n.callMethod
+          ? n.callMethod.apply(n, arguments)
+          : n.queue.push(arguments);
+      };
+
+      if (!f._fbq) f._fbq = n;
+
+      n.push = n;
+      n.loaded = true;
+      n.version = '2.0';
+      n.queue = [];
+
+      t = b.createElement(e);
+      t.async = true;
+      t.src = v;
+
+      s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s);
+    }(
+      window,
+      document,
+      'script',
+      'https://connect.facebook.net/en_US/fbevents.js'
+    );
+
+    fbq('init', '388506759771216');
+    fbq('track', 'PageView');
+  </script>
+
+  <noscript>
+    <img
+      height="1"
+      width="1"
+      style="display:none"
+      src="https://www.facebook.com/tr?id=388506759771216&ev=PageView&noscript=1"
+      alt=""
+    >
+  </noscript>
+
+  <!-- RESPONSIVE FOOTER STYLES -->
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      width: 100%;
+      overflow-x: clip;
+    }
+
+    body {
+      margin: 0;
+      width: 100%;
+      min-width: 0;
+      overflow-x: clip;
+      font-family: 'Manrope', sans-serif;
+    }
+
+    img,
+    svg {
+      max-width: 100%;
+    }
+
+    .footer-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .footer-list li {
+      position: relative;
+      padding-left: 1.25rem;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .footer-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%) translateX(-4px);
+      color: white;
+      font-size: 1.2rem;
+      opacity: 0;
+      transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+    }
+
+    .footer-list li:hover {
+      transform: translateX(0.25rem);
+    }
+
+    .footer-list li:hover::before {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+    }
+
+    .footer-link {
+      display: inline-block;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      transition: color 0.2s ease;
+    }
+
+    .footer-link:hover {
+      color: #c5ceff;
+    }
+
+    .footer-social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+
+    .footer-social-link:hover {
+      transform: translateY(-3px);
+    }
+
+    .footer-social-link img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .newsletter-input {
+      min-width: 0;
+      width: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: #222;
+      font-family: 'Manrope', sans-serif;
+    }
+
+    .newsletter-input::placeholder {
+      color: #999;
+      opacity: 1;
+    }
+
+    .newsletter-button {
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .contact-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .contact-list li {
+      display: grid;
+      grid-template-columns: 76px minmax(0, 1fr);
+      gap: 8px;
+      align-items: start;
+    }
+
+    .contact-value {
+      min-width: 0;
+      overflow-wrap: anywhere;
+      word-break: normal;
+    }
+
+    @media (min-width: 640px) {
+      .contact-list li {
+        grid-template-columns: 78px minmax(0, 1fr);
+      }
+    }
+
+    @media (min-width: 768px) {
+      .footer-main {
+        align-items: start;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .contact-list li {
+        grid-template-columns: 76px minmax(0, 1fr);
+        gap: 6px;
+      }
+    }
+
+    @media (hover: none) {
+      .footer-list li:hover {
+        transform: none;
+      }
+
+      .footer-list li::before {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .footer-list li,
+      .footer-list li::before,
+      .footer-social-link {
+        transition: none;
+      }
+    }
+
+
     
-  ],
-  "image": "https://cybexel.com/images/ceo4.png"
+/* =========================================
+   MOBILE: TWO-COLUMN FOOTER
+========================================= */
+
+@media (max-width: 767px) {
+
+    .footer-main {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 30px 18px !important;
+        align-items: start !important;
+    }
+
+    /* N-Me App: full width */
+    .footer-main > div:first-child {
+        grid-column: 1 / -1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    .footer-main > div:first-child > div:first-child {
+        justify-content: center !important;
+    }
+
+    .footer-main > div:first-child p {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        text-align: center !important;
+    }
+
+    .footer-main > div:first-child > div:last-child {
+        justify-content: center !important;
+    }
+
+    /* Make Quick Links and Backend Offerings
+       separate columns */
+    .footer-main > div:nth-child(2) {
+        display: contents !important;
+    }
+
+    .footer-main > div:nth-child(2) > div:first-child {
+        grid-column: 1 !important;
+        width: 100% !important;
+        text-align: left !important;
+    }
+
+    .footer-main > div:nth-child(2) > div:last-child {
+        grid-column: 2 !important;
+        width: 100% !important;
+        text-align: left !important;
+    }
+
+    /* Get in Touch: centered below both */
+    .footer-main > div:last-child {
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+        max-width: 400px !important;
+        justify-self: center !important;
+        text-align: left !important;
+    }
+
+    .footer-main h2 {
+        font-size: 15px !important;
+        margin-bottom: 15px !important;
+    }
+
+    .footer-list li {
+        font-size: 12px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .contact-list li {
+        grid-template-columns: 65px minmax(0, 1fr) !important;
+        gap: 7px !important;
+    }
 }
-</script>
 
-<!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '388506759771216');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=388506759771216&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
+/* =========================================
+   TABLET AND ABOVE: ALL FOUR IN ONE ROW
+========================================= */
 
-<meta name="facebook-domain-verification" content="sb3woq8b2lbopkyh2mlx2nwlbgwinl" />
+@media (min-width: 768px) {
+
+    .footer-main {
+        display: grid !important;
+        grid-template-columns:
+            minmax(0, 1.2fr)
+            minmax(0, 0.8fr)
+            minmax(0, 1fr)
+            minmax(0, 1.2fr) !important;
+        gap: 20px !important;
+        align-items: start !important;
+    }
+
+    /* Convert nested links wrapper into
+       independent grid columns */
+    .footer-main > div:nth-child(2) {
+        display: contents !important;
+    }
+
+    .footer-main > div:first-child,
+    .footer-main > div:nth-child(2) > div,
+    .footer-main > div:last-child {
+        grid-column: auto !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        text-align: left !important;
+        justify-self: stretch !important;
+    }
+
+    .footer-main > div:first-child > div:first-child {
+        justify-content: flex-start !important;
+    }
+
+    .footer-main > div:first-child p {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        text-align: left !important;
+    }
+
+    .footer-main > div:first-child > div:last-child {
+        justify-content: flex-start !important;
+    }
+
+    .footer-main h2 {
+        font-size: 16px !important;
+        margin-bottom: 16px !important;
+    }
+
+    .footer-list li {
+        font-size: 12px !important;
+    }
+
+    .contact-list li {
+        grid-template-columns: 60px minmax(0, 1fr) !important;
+        gap: 5px !important;
+    }
+}
+
+/* =========================================
+   LARGE DESKTOP
+========================================= */
+
+@media (min-width: 1280px) {
+
+    .footer-main {
+        grid-template-columns:
+            minmax(0, 1.2fr)
+            minmax(0, 0.8fr)
+            minmax(0, 1fr)
+            minmax(0, 1.2fr) !important;
+        gap: 36px !important;
+    }
+
+    .footer-main h2 {
+        font-size: 19px !important;
+    }
+
+    .footer-list li,
+    .contact-list li {
+        font-size: 14px !important;
+    }
+}
+
+  </style>
 </head>
 
-
-
-<body  class="bg-[#f3f4f6]">
-
-
-
-  <!-- ================= PAGE CONTENT ================= -->
+<body class="bg-[#f3f4f6]">
   {% block content %}
   {% endblock %}
 
-  <!-- NEWSLETTER + FOOTER WRAPPER -->
-  <section class="w-full max-w-[1440px] px-4  mx-auto mt-24">
-    <!-- OUTER CARD -->
-    <div class="w-full bg-gradient-to-br from-[#FFFFFF] to-[#D2DAFF]
-             rounded-[40px]
-             flex flex-col
-             overflow-hidden border-white border-[5px]">
+  <section class="w-full max-w-[1440px] mx-auto mt-12 sm:mt-16 lg:mt-24 px-3 sm:px-5 lg:px-6 pb-4">
 
-      <!-- NEWSLETTER (TOP) -->
-      <div class="py-20 px-6 text-center rounded-t-[40px]">
-        <h2 class="text-[30px] md:text-[36px] font-semibold text-black">
+    <div class="w-full overflow-hidden rounded-[24px] sm:rounded-[32px] lg:rounded-[40px] border-[3px] sm:border-[5px] border-white bg-gradient-to-br from-white to-[#D2DAFF]">
+
+      <div class="w-full px-4 py-10 sm:px-8 sm:py-14 md:py-16 lg:px-12 lg:py-20 text-center">
+
+        <h2 class="text-[26px] sm:text-[30px] md:text-[34px] lg:text-[36px] font-semibold leading-tight text-black">
           Join Our Newsletter
         </h2>
 
-        <p class="mt-4 text-[16px] text-black font-medium max-w-xl mx-auto">
+        <p class="mx-auto mt-4 max-w-xl text-sm sm:text-base font-medium leading-relaxed text-black">
           Subscribe to our newsletter so we can update you with services and offers.
         </p>
+        <div class="mx-auto mt-7 sm:mt-9 flex w-full max-w-[600px] flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center sm:gap-4">
 
-        <!-- INPUT + BUTTON -->
-        <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <div class="flex items-center bg-white rounded-full px-6 py-3
-                    w-full sm:w-[360px]
-                    shadow-[0_4px_8px_rgba(0,0,0,0.08)]">
-            <!-- ICON -->
-            <img src="./static/images/msg.png" class="w-[24px] h-[24px]">
+          <label class="flex min-h-[50px] sm:min-h-[54px] w-full min-w-0 flex-1 items-center gap-3 rounded-full bg-white px-4 sm:px-6 py-3 shadow-[0_4px_8px_rgba(0,0,0,0.08)]">
 
-            <input type="email" placeholder="Enter your email"
-              class="w-full outline-none text-[14px] pl-4 font-manrope text-[#BBBBBB] placeholder-gray-400" />
-          </div>
+            <img
+              src="{% static 'images/msg.png' %}"
+              alt=""
+              aria-hidden="true"
+              class="h-5 w-5 sm:h-6 sm:w-6 flex-shrink-0 object-contain"
+            >
 
-          <button class="px-10 py-3 rounded-full
-                       bg-gradient-to-r from-[#5b6cff] to-[#3b4bff]
-                       text-white font-semibold text-[16px]
-                       shadow-[0_6px_12px_rgba(59,75,255,0.35)]
-                       hover:opacity-90 transition">
+            <input
+              type="email"
+              name="newsletter_email"
+              placeholder="Enter your email"
+              aria-label="Email address"
+              autocomplete="email"
+              class="newsletter-input text-sm sm:text-base"
+            >
+          </label>
+          <button
+            type="button"
+            class="newsletter-button min-h-[50px] sm:min-h-[54px] w-full sm:w-auto rounded-full bg-gradient-to-r from-[#5b6cff] to-[#3b4bff] px-8 sm:px-10 py-3 text-sm sm:text-base font-semibold text-white shadow-[0_6px_12px_rgba(59,75,255,0.35)] transition hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3b4bff]"
+          >
             Subscribe
           </button>
+
         </div>
       </div>
 
-      <!-- FOOTER (BOTTOM) -->
-      <footer class="bg-black text-white px-4 sm:px-20 py-16 mt-auto rounded-[40px]">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 md:gap-[40px] text-center sm:text-left">
+      <footer class="w-full rounded-t-[24px] sm:rounded-t-[32px] lg:rounded-t-[40px] bg-black px-5 py-10 text-white sm:px-8 sm:py-12 md:px-10 lg:px-12 xl:px-16 lg:py-16">
 
-          <!-- BRAND -->
-          <div class="mx-auto sm:mx-0 w-[294px] md:w-[315px]">
-            <div
-              class="flex flex-col sm:flex-row items-center sm:items-start justify-center sm:justify-start gap-3 mb-5">
-              <div class="w-[77px] h-[56px] ">
-                <img src="./static/images/footer_logo.png">
+        <div class="footer-main grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 md:gap-x-8 md:gap-y-12 lg:grid-cols-4 lg:gap-x-8 xl:gap-x-10">
+
+          <div class="w-full min-w-0 text-center sm:text-left">
+
+            <div class="mb-5 flex flex-col items-center justify-center gap-3 sm:flex-row sm:justify-start sm:gap-3">
+
+              <div class="flex h-12 w-[66px] flex-shrink-0 items-center justify-center sm:h-14 sm:w-[72px]">
+                <img
+                  src="{% static 'images/footer_logo.png' %}"
+                  alt="N-Me App logo"
+                  class="max-h-full max-w-full object-contain"
+                  loading="lazy"
+                >
               </div>
-              <h3 class="text-[21.29px] md:text-[30px] font-roboto font-bold">N - ME APP</h3>
+
+              <h2 class="text-xl font-bold leading-tight sm:text-[24px] xl:text-[28px]">
+                N - ME APP
+              </h2>
+
             </div>
 
-            <h1 class="text-[14px] md:text-[16px] text-white font-medium   mx-auto sm:mx-0">
+            <p class="mx-auto max-w-[320px] text-sm font-medium leading-6 text-white sm:mx-0 md:text-[15px]">
               All your needs are simplified, secure and just a tap away in one app
-            </h1>
+            </p>
 
-            <div class="flex justify-center sm:justify-start gap-4 mt-6 text-gray-400 text-lg">
-  <!-- Instagram -->
-  <a href="https://www.instagram.com/nme_app/?hl=en" target="_blank" rel="noopener noreferrer" class="w-[20px] h-[20px]">
-    <img src="./static/images/instagram.png" alt="Instagram">
-  </a>
+            <div class="mt-6 flex items-center justify-center gap-5 text-gray-400 sm:justify-start">
 
-  <!-- Facebook -->
-  <a href="https://www.facebook.com/profile.php?id=100076151802998" target="_blank" rel="noopener noreferrer" class="w-[20px] h-[20px]">
-    <img src="./static/images/facebook.png" alt="Facebook">
-  </a>
+              <a
+                href="https://www.instagram.com/nme_app/?hl=en"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                class="footer-social-link h-5 w-5"
+              >
+                <img
+                  src="{% static 'images/instagram.png' %}"
+                  alt=""
+                  loading="lazy"
+                >
+              </a>
 
-  <!-- Twitter -->
-  <a href="https://x.com/nmeapp" target="_blank" rel="noopener noreferrer" class="w-[20px] h-[20px]">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 14 14"><g fill="none"><g clip-path="url(#SVGG1Ot4cAD)"><path fill="#fff" d="M11.025.656h2.147L8.482 6.03L14 13.344H9.68L6.294 8.909l-3.87 4.435H.275l5.016-5.75L0 .657h4.43L7.486 4.71zm-.755 11.4h1.19L3.78 1.877H2.504z"/></g><defs><clipPath id="SVGG1Ot4cAD"><path fill="#fff" d="M0 0h14v14H0z"/></clipPath></defs></g></svg>
-  </a>
+              <a
+                href="https://www.facebook.com/profile.php?id=100076151802998"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                class="footer-social-link h-5 w-5"
+              >
+                <img
+                  src="{% static 'images/facebook.png' %}"
+                  alt=""
+                  loading="lazy"
+                >
+              </a>
 
-  <!-- YouTube -->
-  <a href="https://youtube.com/@nme-app?si=F8sHQuXpcUrIpbdx" target="_blank" rel="noopener noreferrer" class="w-[24px] h-[24px]">
-    <img src="./static/images/youtube.png" alt="YouTube">
-  </a>
-</div>
+              <a
+                href="https://x.com/nmeapp"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="X"
+                class="footer-social-link h-5 w-5"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path
+                    fill="currentColor"
+                    d="M11.025.656h2.147L8.482 6.03L14 13.344H9.68L6.294 8.909l-3.87 4.435H.275l5.016-5.75L0 .657h4.43L7.486 4.71zm-.755 11.4h1.19L3.78 1.877H2.504z"
+                  />
+                </svg>
+              </a>
 
+              <a
+                href="https://youtube.com/@nme-app?si=F8sHQuXpcUrIpbdx"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube"
+                class="footer-social-link h-6 w-6"
+              >
+                <img
+                  src="{% static 'images/youtube.png' %}"
+                  alt=""
+                  loading="lazy"
+                >
+              </a>
+
+            </div>
           </div>
 
-          <!-- MOBILE ROW WRAPPER -->
-<div class="grid grid-cols-2 gap-4 sm:contents text-center sm:text-left max-md:mr-[3rem]">
+          <div class="grid min-w-0 grid-cols-2 gap-x-3 gap-y-8 sm:col-span-1 md:col-span-1 lg:contents">
 
-            <!-- QUICK LINKS -->
-<div class="sm:mx-0 md:ml-[4.5rem]">
-  <h2 class="font-semibold text-[16px] md:text-[24px] mb-5 ml-4">
-    Quick Links
-  </h2>
-<ul class="space-y-3 text-[14px] md:text-[16px] font-medium font-manrope 
-           md:text-left footer-list whitespace-nowrap">
-  <li><a href="{% url 'home' %}" class="transition-colors duration-200">Home</a></li>
-  <li><a href="{% url 'about' %}" class="transition-colors duration-200">About</a></li>
-  <li><a href="{% url 'blogs' %}" class="transition-colors duration-200">Blogs</a></li>
-  <li><a href="{% url 'faq' %}" class="transition-colors duration-200">FAQ</a></li>
-  <li><a href="{% url 'services' %}" class="transition-colors duration-200">Service</a></li>
-  <li><a href="{% url 'contact' %}" class="transition-colors duration-200">Contact</a></li>
-</ul>
-</div>
+            <div class="min-w-0 text-left">
 
+              <h2 class="mb-5 text-base font-semibold sm:text-lg xl:text-xl">
+                Quick Links
+              </h2>
 
-            <!-- SERVICES -->
-            <div class="mx-auto sm:mx-0">
-              <h2 class="max-md:w-[175.12px] font-semibold text-[16px] md:text-[24px] mb-5 md:ml-6">
+              <ul class="footer-list space-y-3 text-sm font-medium sm:text-[15px] xl:text-base">
+
+                <li>
+                  <a href="{% url 'home' %}" class="footer-link">Home</a>
+                </li>
+
+                <li>
+                  <a href="{% url 'about' %}" class="footer-link">About</a>
+                </li>
+
+                <li>
+                  <a href="{% url 'blogs' %}" class="footer-link">Blogs</a>
+                </li>
+
+                <li>
+                  <a href="{% url 'faq' %}" class="footer-link">FAQ</a>
+                </li>
+
+                <li>
+                  <a href="{% url 'services' %}" class="footer-link">Service</a>
+                </li>
+
+                <li>
+                  <a href="{% url 'contact' %}" class="footer-link">Contact</a>
+                </li>
+
+              </ul>
+            </div>
+
+            <div class="min-w-0 text-left">
+
+              <h2 class="mb-5 text-base font-semibold leading-snug sm:text-lg xl:text-xl">
                 Backend Offerings
               </h2>
-<ul class="space-y-3 text-[14px] sm:text-[16px] font-medium font-manrope 
-           footer-list whitespace-nowrap">
-  <li>Web Development</li>
-  <li>App Development</li>
-  <li>Digital Marketing</li>
-  <li>Graphic Designing</li>
-  <li>Branding</li>
-</ul>
+
+              <ul class="footer-list space-y-3 text-sm font-medium sm:text-[15px] xl:text-base">
+
+                <li>Web Development</li>
+                <li>App Development</li>
+                <li>Digital Marketing</li>
+                <li>Graphic Designing</li>
+                <li>Branding</li>
+
+              </ul>
             </div>
 
           </div>
 
-          <!-- CONTACT -->
-          <div class="mx-auto sm:mx-0 ">
-            <h2 class="font-semibold text-[16px] md:text-[24px] mb-5">Get in Touch</h2>
-            <ul class="space-y-5 text-[14px] sm:text-[16px] font-medium font-manrope text-white text-left no-bullet">
-  <!-- Email -->
-  <li class="grid grid-cols-[80px_1fr] sm:grid-cols-[90px_1fr] gap-0 items-start">
-    <span class="whitespace-nowrap">Email:</span>
-    <div class="flex flex-col">
-      <span>info@nmeapp.in,</span>
-      <span>cybexeltechnologies@gmail.com</span>
-    </div>
-  </li>
+          <div class="min-w-0 text-left sm:col-span-2 lg:col-span-1">
 
-  <!-- Phone -->
-  <li class="grid grid-cols-[80px_1fr] sm:grid-cols-[90px_1fr] gap-0 items-start">
-    <span class="whitespace-nowrap">Phone:</span>
-    <div class="flex flex-col">
-      <span>+91 9072919991,</span>
-      <span>+91 9745109190</span>
-    </div>
-  </li>
+            <h2 class="mb-5 text-base font-semibold sm:text-lg xl:text-xl">
+              Get in Touch
+            </h2>
 
-  <!-- Location -->
-  <li class="grid grid-cols-[80px_1fr] sm:grid-cols-[90px_1fr] gap-0 items-start">
-    <span class="whitespace-nowrap">Location:</span>
-    <div class="flex flex-col leading-relaxed">
-      <span>Kochi,</span>
-      <span>Thiruvananthapuram</span>
-      <span>Coimbatore, Chennai, Bengaluru</span>
-      <span>Dubai</span>
-    </div>
-  </li>
-</ul>
+            <ul class="contact-list space-y-5 text-sm font-medium leading-6 sm:text-[15px] xl:text-base">
 
+              <li>
+                <span class="whitespace-nowrap">Email:</span>
 
+                <div class="contact-value flex min-w-0 flex-col gap-1">
+                  <a href="mailto:info@nmeapp.in" class="footer-link">
+                    info@nmeapp.in
+                  </a>
+
+                  <a href="mailto:cybexeltechnologies@gmail.com" class="footer-link">
+                    cybexeltechnologies@gmail.com
+                  </a>
+                </div>
+              </li>
+
+              <li>
+                <span class="whitespace-nowrap">Phone:</span>
+
+                <div class="contact-value flex min-w-0 flex-col gap-1">
+                  <a href="tel:+919072919991" class="footer-link">
+                    +91 9072919991
+                  </a>
+
+                  <a href="tel:+919745109190" class="footer-link">
+                    +91 9745109190
+                  </a>
+                </div>
+              </li>
+
+              <li>
+                <span class="whitespace-nowrap">Location:</span>
+
+                <div class="contact-value flex min-w-0 flex-col leading-relaxed">
+                  <span>Kochi,</span>
+                  <span>Thiruvananthapuram</span>
+                  <span>Coimbatore, Chennai, Bengaluru</span>
+                  <span>Dubai</span>
+                </div>
+              </li>
+
+            </ul>
           </div>
+
         </div>
 
-        <!-- DIVIDER -->
-        <div class="mt-12 pt-6 text-center  text-white ">
-          <div class="mx-auto w-full sm:w-[95%] border-t-[0.5px] md:border-t-[2px] border-white mb-6"></div>
-         <p class="font-roboto md:text-[16px] text-[8.2px]"> © 2025 N-me App. All rights reserved.</p>
+        <div class="mt-10 pt-6 text-center sm:mt-12 md:mt-14">
+
+          <div class="mx-auto mb-5 w-full border-t border-white/50 sm:mb-6 sm:w-[95%]"></div>
+
+          <p class="text-[10px] font-medium leading-relaxed text-white/90 sm:text-xs md:text-sm">
+            &copy; 2025 N-Me App. All rights reserved.
+          </p>
+
         </div>
 
       </footer>
-
     </div>
   </section>
-<style>
-.footer-list li {
-  position: relative;
-  padding-left: 1.5rem; /* Space for the bullet */
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
 
-/* Bullet hidden initially */
-.footer-list li::before {
-  content: "•";
-  position: absolute;
-  left: 0;               /* Place bullet at left edge */
-  top: 50%;
-  transform: translateY(-50%);
-  color: white;
-  font-size: 1.2rem;     /* Increase bullet size (adjust as needed) */
-  opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
+  <script src="{% static 'js/script.js' %}"></script>
 
-/* On hover: move text right and show bullet */
-.footer-list li:hover {
-  transform: translateX(0.5rem); /* Slide text slightly right */
-}
-
-.footer-list li:hover::before {
-  opacity: 1;
-  transform: translateY(-50%) translateX(0); /* Bullet slides in */
-}
-</style>
-
-
-
-
-<script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

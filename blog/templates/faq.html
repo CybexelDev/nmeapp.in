@@ -844,9 +844,620 @@ faqCards.forEach(card => {
 });
 </script>
 
+<script>
+
+/* ==========================================
+   FIXED MOBILE + TABLET HAMBURGER MENU
+   HTML DOES NOT NEED TO CHANGE
+========================================== */
+
+(function () {
+    function initHamburgerMenu() {
+        const menuBtn = document.getElementById("menuBtn");
+        const mobileMenu = document.getElementById("mobileMenu");
+
+        if (!menuBtn || !mobileMenu) {
+            console.error(
+                "Hamburger menu: #menuBtn or #mobileMenu was not found."
+            );
+            return;
+        }
+
+        // Avoid registering this script more than once.
+        if (menuBtn.dataset.hamburgerReady === "true") return;
+        menuBtn.dataset.hamburgerReady = "true";
+
+        const tabletBreakpoint = 1024;
+
+        menuBtn.setAttribute("type", "button");
+        menuBtn.setAttribute("aria-controls", "mobileMenu");
+        menuBtn.setAttribute("aria-expanded", "false");
+
+        // Remember the original display value.
+        const originalDisplay = mobileMenu.style.display;
+
+        function isMobileOrTablet() {
+            return window.innerWidth < tabletBreakpoint;
+        }
+
+        function setMenuState(open) {
+            const canShowMenu = isMobileOrTablet();
+            const shouldOpen = open && canShowMenu;
+
+            mobileMenu.classList.toggle("menu-open", shouldOpen);
+
+            mobileMenu.classList.toggle("scale-y-0", !shouldOpen);
+            mobileMenu.classList.toggle("scale-y-100", shouldOpen);
+
+            mobileMenu.classList.toggle("opacity-0", !shouldOpen);
+            mobileMenu.classList.toggle("opacity-100", shouldOpen);
+
+            mobileMenu.classList.toggle(
+                "pointer-events-none",
+                !shouldOpen
+            );
+            mobileMenu.classList.toggle(
+                "pointer-events-auto",
+                shouldOpen
+            );
+
+            // Override the existing md:hidden class on tablets.
+            if (canShowMenu) {
+                mobileMenu.style.setProperty("display", "block", "important");
+            } else {
+                mobileMenu.style.removeProperty("display");
+            }
+
+            mobileMenu.setAttribute("aria-hidden", String(!shouldOpen));
+            menuBtn.setAttribute("aria-expanded", String(shouldOpen));
+        }
+
+        // Start with the menu closed.
+        setMenuState(false);
+
+        // Open or close on hamburger click.
+        menuBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const currentlyOpen =
+                mobileMenu.classList.contains("menu-open");
+
+            setMenuState(!currentlyOpen);
+        });
+
+        // Close when a navigation link is selected.
+        mobileMenu.querySelectorAll("a").forEach(function (link) {
+            link.addEventListener("click", function () {
+                setMenuState(false);
+            });
+        });
+
+        // Close when clicking outside the menu.
+        document.addEventListener("click", function (event) {
+            if (
+                mobileMenu.classList.contains("menu-open") &&
+                !mobileMenu.contains(event.target) &&
+                !menuBtn.contains(event.target)
+            ) {
+                setMenuState(false);
+            }
+        });
+
+        // Close when Escape is pressed.
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                setMenuState(false);
+            }
+        });
+
+        // Recalculate on orientation change or resize.
+        window.addEventListener("resize", function () {
+            if (!isMobileOrTablet()) {
+                setMenuState(false);
+            } else if (mobileMenu.classList.contains("menu-open")) {
+                setMenuState(true);
+            } else {
+                mobileMenu.style.setProperty("display", "block", "important");
+                setMenuState(false);
+            }
+        });
+
+        console.log("Mobile/tablet hamburger menu initialized.");
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            initHamburgerMenu,
+            { once: true }
+        );
+    } else {
+        initHamburgerMenu();
+    }
+})();
+
+</script>
+
+<style>
+  /* =========================================
+   COMMON MOBILE HAMBURGER MENU FIX
+========================================= */
+
+@media (max-width: 1023px) {
+
+    #mobileMenu {
+        display: block !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        transform: translateY(-8px) scaleY(0) !important;
+        transform-origin: top center !important;
+        transition: opacity 0.3s ease,
+                    transform 0.3s ease,
+                    visibility 0.3s ease !important;
+    }
+
+    #mobileMenu.menu-open {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        transform: translateY(0) scaleY(1) !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    #mobileMenu,
+    #menuBtn {
+        display: none !important;
+    }
+}
+
+/* =====================================
+   RESPONSIVE HERO TEXT
+===================================== */
+
+/* Main hero text container */
+#animatedHero {
+    max-width: 100%;
+    font-size: clamp(26px, 4vw, 48px) !important;
+    line-height: 1.2 !important;
+    text-align: center;
+    overflow-wrap: break-word;
+}
+
+/* Hero paragraph */
+#animatedHeroPara {
+    max-width: 90%;
+    font-size: clamp(13px, 1.4vw, 16px) !important;
+    line-height: 1.6 !important;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Animated letters */
+#animatedHero .letter {
+    display: inline-block;
+    white-space: pre;
+}
+
+/* =====================================
+   MOBILE DEVICES
+===================================== */
+
+@media (max-width: 480px) {
+
+    #animatedHero {
+        font-size: 27px !important;
+        line-height: 1.25 !important;
+        padding: 0 12px;
+    }
+
+    #animatedHeroPara {
+        font-size: 13px !important;
+        line-height: 1.6 !important;
+        padding: 0 15px;
+        max-width: 100%;
+    }
+
+    #animatedHeroPara br {
+        display: none;
+    }
+
+    #animatedHero {
+        margin-top: 0;
+    }
+}
+
+/* =====================================
+   LARGE MOBILE DEVICES
+===================================== */
+
+@media (min-width: 481px) and (max-width: 767px) {
+
+    #animatedHero {
+        font-size: 34px !important;
+        line-height: 1.25 !important;
+    }
+
+    #animatedHeroPara {
+        font-size: 14px !important;
+        padding: 0 20px;
+    }
+
+    #animatedHeroPara br {
+        display: none;
+    }
+}
+
+/* =====================================
+   TABLETS
+===================================== */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+
+    #animatedHero {
+        font-size: 42px !important;
+        line-height: 1.2 !important;
+    }
+
+    #animatedHeroPara {
+        font-size: 15px !important;
+        max-width: 85%;
+    }
+}
+
+/* =====================================
+   LAPTOPS AND DESKTOPS
+===================================== */
+
+@media (min-width: 1024px) {
+
+    #animatedHero {
+        font-size: 48px !important;
+        line-height: 1.2 !important;
+    }
+
+    #animatedHeroPara {
+        font-size: 16px !important;
+        max-width: 100%;
+    }
+}
+
+/* =====================================
+   SMALL HEIGHT DEVICES
+===================================== */
+
+@media (max-height: 650px) and (min-width: 768px) {
+
+    #animatedHero {
+        margin-top: 40px !important;
+    }
+}
+
+/* Prevent hero heading words from breaking */
+#animatedHero {
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+}
+
+#animatedHero .letter {
+    display: inline-block;
+    white-space: pre !important;
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    #animatedHero {
+        font-size: 25px !important;
+        white-space: normal !important;
+        word-break: keep-all !important;
+        overflow-wrap: normal !important;
+    }
+}
+
+/* =========================================
+   CUSTOMER & USER CARDS - RESPONSIVE
+========================================= */
+
+/* OUTER SECTION */
+section:has(img[src*="customer.png"]) {
+    position: relative;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+
+    /* Outer left and right spacing */
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+
+    display: flex !important;
+    justify-content: center !important;
+
+    /* Keep original HTML top positioning */
+    margin-bottom: 0 !important;
+}
+
+/* INNER CONTAINER */
+section:has(img[src*="customer.png"]) > div {
+    width: 100% !important;
+    max-width: 1025px !important;
+    margin-left: 20px !important;
+    margin-right: 20px !important;
+
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+
+    /* Space between cards */
+    gap: 32px !important;
+
+    box-sizing: border-box !important;
+}
+
+/* INDIVIDUAL CARDS */
+section:has(img[src*="customer.png"]) > div > div {
+    width: calc(50% - 16px) !important;
+    max-width: 491px !important;
+    min-width: 0 !important;
+
+    height: 407px !important;
+    flex: 1 1 0 !important;
+
+    box-sizing: border-box !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    text-align: center !important;
+    padding: 25px 30px !important;
+    gap: 16px !important;
+
+    border-radius: 29.95px !important;
+}
+
+/* IMAGES */
+section:has(img[src*="customer.png"]) img {
+    width: 104px !important;
+    height: 104px !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
+}
+
+/* TITLES */
+section:has(img[src*="customer.png"]) h2 {
+    font-size: 32px !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
+}
+
+/* DESCRIPTIONS */
+section:has(img[src*="customer.png"]) p {
+    max-width: 292px !important;
+    font-size: 18px !important;
+    line-height: 25px !important;
+    margin: 0 !important;
+}
+
+/* =========================================
+   SMALL MOBILE - 320px TO 480px
+========================================= */
+@media (max-width: 480px) {
+
+    section:has(img[src*="customer.png"]) {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
+    section:has(img[src*="customer.png"]) > div {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 22px !important;
+    }
+
+    section:has(img[src*="customer.png"]) > div > div {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        min-height: 260px !important;
+        flex: none !important;
+
+        padding: 25px 18px !important;
+        gap: 13px !important;
+        border-radius: 24px !important;
+    }
+
+    section:has(img[src*="customer.png"]) img {
+        width: 80px !important;
+        height: 80px !important;
+    }
+
+    section:has(img[src*="customer.png"]) h2 {
+        font-size: 25px !important;
+    }
+
+    section:has(img[src*="customer.png"]) p {
+        max-width: 290px !important;
+        font-size: 14px !important;
+        line-height: 22px !important;
+    }
+}
+
+/* =========================================
+   LARGE MOBILE - 481px TO 767px
+========================================= */
+@media (min-width: 481px) and (max-width: 767px) {
+
+    section:has(img[src*="customer.png"]) {
+        padding-left: 25px !important;
+        padding-right: 25px !important;
+    }
+
+    section:has(img[src*="customer.png"]) > div {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 25px !important;
+    }
+
+    section:has(img[src*="customer.png"]) > div > div {
+        width: 100% !important;
+        max-width: 440px !important;
+        height: auto !important;
+        min-height: 300px !important;
+        flex: none !important;
+
+        padding: 28px 25px !important;
+        gap: 15px !important;
+    }
+
+    section:has(img[src*="customer.png"]) img {
+        width: 90px !important;
+        height: 90px !important;
+    }
+
+    section:has(img[src*="customer.png"]) h2 {
+        font-size: 28px !important;
+    }
+
+    section:has(img[src*="customer.png"]) p {
+        font-size: 16px !important;
+        line-height: 23px !important;
+    }
+}
+
+/* =========================================
+   TABLETS - 768px TO 1023px
+========================================= */
+@media (min-width: 768px) and (max-width: 1023px) {
+
+    section:has(img[src*="customer.png"]) {
+        padding-left: 28px !important;
+        padding-right: 28px !important;
+    }
+
+    section:has(img[src*="customer.png"]) > div {
+        flex-direction: row !important;
+        gap: 24px !important;
+    }
+
+    section:has(img[src*="customer.png"]) > div > div {
+        width: calc(50% - 12px) !important;
+        height: 350px !important;
+        min-height: 0 !important;
+        padding: 22px 18px !important;
+        gap: 14px !important;
+    }
+
+    section:has(img[src*="customer.png"]) img {
+        width: 90px !important;
+        height: 90px !important;
+    }
+
+    section:has(img[src*="customer.png"]) h2 {
+        font-size: 28px !important;
+    }
+
+    section:has(img[src*="customer.png"]) p {
+        font-size: 15px !important;
+        line-height: 22px !important;
+    }
+}
+
+/* =========================================
+   LAPTOPS AND DESKTOPS - 1024px+
+========================================= */
+@media (min-width: 1024px) {
+
+    section:has(img[src*="customer.png"]) {
+        padding-left: 30px !important;
+        padding-right: 30px !important;
+    }
+
+    section:has(img[src*="customer.png"]) > div {
+        flex-direction: row !important;
+        gap: 40px !important;
+    }
+
+    section:has(img[src*="customer.png"]) > div > div {
+        height: 407px !important;
+    }
+}
 
 
+/* =========================================
+   FAQ SECTION - SIMPLE RESPONSIVE FIX
+========================================= */
 
+section:has(#faqList) {
+    width: 100%;
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+}
+
+/* CATEGORY HEADERS */
+section:has(#faqList) .category-tab {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    white-space: nowrap;
+}
+
+/* FAQ QUESTIONS */
+#faqList button {
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    line-height: 1.5 !important;
+}
+
+/* FAQ ANSWERS */
+#faqList p {
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    line-height: 1.7 !important;
+}
+
+/* MOBILE */
+@media (max-width: 767px) {
+
+    section:has(#faqList) {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    section:has(#faqList) .category-tab {
+        font-size: 14px !important;
+        font-weight: 600 !important;
+    }
+
+    #faqList button {
+        font-size: 14px !important;
+        font-weight: 500 !important;
+    }
+
+    #faqList p {
+        font-size: 13px !important;
+    }
+}
+
+/* TABLET AND DESKTOP */
+@media (min-width: 768px) {
+
+    section:has(#faqList) .category-tab {
+        font-size: 16px !important;
+    }
+
+    #faqList button {
+        font-size: 15px !important;
+    }
+}
+
+</style>
 
 
 {% endblock %}

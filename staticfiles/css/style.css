@@ -1,0 +1,431 @@
+/* @media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+} */
+
+
+.hamburger-line {
+  transition: all 0.3s ease;
+}
+
+.hamburger.active .line-1 {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger.active .line-2 {
+  opacity: 0;
+}
+
+.hamburger.active .line-3 {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+
+html, body {
+  overflow-x: hidden;
+}
+h2,label{
+    font-family: 'Poppins', sans-serif;
+
+}
+
+
+h1,input,p {
+    font-family: 'Manrope', sans-serif;
+}
+.digit {
+    display: flex;
+    overflow: hidden;
+    height: 28px;
+    width: 12px;     /* reduced spacing */
+    margin: 0;
+    padding: 0;
+}
+
+.digit div {
+    transition: transform 1s ease-out;
+}
+
+.digit span {
+    display: block;
+    height: 28px;
+    line-height: 28px;
+    margin: 0;
+    padding: 0;
+}
+
+.comma {
+    margin: 0 1px;   /* tighter */
+}
+.white-smoke-line {
+      position: fixed;       /* fixed over entire viewport */
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 60px;          /* thick enough to see */
+      background: rgba(255,255,255,0.25); /* soft white streak */
+      filter: blur(30px);    /* smoky effect */
+      transform: rotate(-45deg) translateX(-200%);
+      animation: moveSmoke 5s linear infinite;
+      pointer-events: none;  /* allow clicks */
+      z-index: 9999;         /* on top of everything */
+    }
+
+    @keyframes moveSmoke {
+      0% {
+        transform: rotate(-45deg) translateX(-200%);
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: rotate(-45deg) translateX(200%);
+        opacity: 0;
+      }
+    }
+
+
+.border-fade::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 40px; /* match card rounding */
+  pointer-events: none;
+
+  /* Fake white border */
+  border: 5px solid rgba(255, 255, 255);
+
+  /* Fade top only */
+  -webkit-mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+
+
+
+
+
+.scroll-track {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+  animation: scroll 25s linear infinite;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Optional: pause on hover */
+.scroll-track:hover {
+  animation-play-state: paused;
+}
+
+
+
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-scroll {
+  display: flex;
+  gap: 2rem;
+  animation: scroll 10s linear infinite;
+}
+
+/* ================= PILL STYLES ================= */
+.pill-neu {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    inset 5px 5px 10px rgba(255, 255, 255, 0.9),
+    inset -5px -5px 10px rgba(136, 150, 163, 0.25);
+  background-color: rgba(136, 150, 163, 0.07);
+  border-radius: 9999px;
+  flex-shrink: 0;
+  width: 272px;
+  height: 66px;
+}
+
+/* ================= DESKTOP HORIZONTAL MARQUEE ================= */
+.marquee-track {
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ================= MOBILE AUTO VERTICAL MARQUEE ================= */
+@media (max-width: 768px) {
+
+  .marquee-track {
+    flex-direction: column;
+    animation: verticalMarquee 12s linear infinite;
+  }
+
+  /* wrapper shows ONLY one pill */
+  .relative.mt-16 {
+    height: 56px;
+    overflow: hidden;
+  }
+
+  .pill-neu {
+    width: 220px;
+    height: 56px;
+    margin: 0 auto;
+  }
+
+  @keyframes verticalMarquee {
+    0%   { transform: translateY(0); }
+    100% { transform: translateY(-336px); }
+    /* 56px × 6 pills = 336px */
+  }
+}
+@media (max-width: 768px) {
+
+  /* CENTER THE WHOLE FEATURE PILLS SECTION */
+  .relative.mt-16 {
+    display: flex;
+    justify-content: center;
+  }
+
+  .pill-container {
+    width: 220px;          /* same as pill width */
+    margin: 0 auto;
+  }
+}
+
+
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+
+.ring-glow {
+  position: absolute;
+  inset: -3px;
+  border-radius: 9999px;
+
+  /* soft blue glass-like shade */
+  background:
+    conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(110,140,255,0.45) 0deg,
+      rgba(170,190,255,0.75) 110deg,
+      rgba(110,140,255,0.45) 0deg,
+      transparent 60deg
+    );
+
+  /* CLIP INSIDE RING */
+  -webkit-mask:
+    radial-gradient(
+      farthest-side,
+      transparent calc(100% - 18px),
+      black calc(100% - 10px),
+      transparent 100%
+    );
+  mask:
+    radial-gradient(
+      farthest-side,
+      transparent calc(100% - 18px),
+      black calc(100% - 10px),
+      transparent 100%
+    );
+
+  pointer-events: none;
+}
+.hero-cut {
+  -webkit-mask-image: radial-gradient(
+    circle 230px at 50% -124px,
+    transparent 99%,
+    black 100%
+  );
+  mask-image: radial-gradient(
+    circle 230px at 50% -124px,
+    transparent 99%,
+    black 100%
+  );
+}
+
+
+
+@keyframes floatLR {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(50px); /* 👈 increase distance */
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+
+  .float-lr {
+    animation: floatLR 4s ease-in-out infinite;
+  }
+
+  .float-lr-slow {
+    animation: floatLR 6s ease-in-out infinite;
+  }
+
+  .float-lr-fast {
+    animation: floatLR 3s ease-in-out infinite;
+  }
+
+.cards-scale-wrapper {
+  width: 100vw;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  transform-origin: top center;
+}
+@media (max-width: 640px) {
+  section {
+    overflow-x: hidden;
+  }
+}
+
+
+
+  
+   
+  
+.letter {
+  opacity: 0;
+  transform: translateX(-20px);
+  display: inline-block;
+  transition: all 0.4s ease;
+  font-weight: 600;
+}
+.bg-move-box::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  border-radius: inherit; /* 🔥 THIS IS CRITICAL */
+  background: radial-gradient(
+    circle at center,
+    rgba(255,255,255,0.85),
+    transparent 60%
+  );
+  animation: moveEverywhere 6s ease-in-out infinite alternate;
+}
+
+
+@keyframes moveEverywhere {
+  0%   { transform: translate(-20%, -20%); }
+  25%  { transform: translate(20%, -10%); }
+  50%  { transform: translate(10%, 20%); }
+  75%  { transform: translate(-10%, 10%); }
+  100% { transform: translate(20%, 20%); }
+}
+
+/* OPTIONAL SHIMMER */
+.shimmer {
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.25),
+    transparent
+  );
+}
+
+
+.hero-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 40px;
+  padding: 5px; /* thickness */
+  pointer-events: none;
+  z-index: 30;
+
+  /* Gradient only for top, left, right */
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,1) 0%,
+    rgba(255,255,255,0.75) 30%,
+    rgba(255,255,255,0.45) 60%,
+    rgba(255,255,255,0.0) 95%  /* fade almost at bottom */
+  );
+
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+
+  /* Clip bottom completely */
+  clip-path: inset(0 0 10px 0 round 40px);
+}
+
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+/* ensure left content stays at top */
+#featureSection > div.hidden.lg\:block {
+  top: 0; /* optional if sticky */
+  position: relative; /* GSAP will pin it */
+}
+
+
+  #cardTrack {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem; /* or your current gap */
+    will-change: transform;
+  }
+  
+
+.tab-toggle {
+  transition: 
+    background 0.35s ease,
+    color 0.35s ease,
+    transform 0.25s ease,
+    box-shadow 0.35s ease;
+}
+
+.tab-toggle:not(.active) {
+  background: transparent;
+}
+
+.tab-toggle.active {
+  box-shadow: 0 6px 14px rgba(60,79,255,0.35);
+  transform: scale(1.03);
+}
