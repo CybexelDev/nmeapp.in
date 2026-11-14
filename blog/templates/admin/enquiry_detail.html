@@ -1,0 +1,369 @@
+
+{% extends 'admin/admin_base.html' %}
+{% load static %}
+
+{% block title %}Enquiry Details | N-ME Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+.enquiry-detail-page {
+    width: 100%;
+    min-height: 100vh;
+    padding: 30px;
+    color: #171326;
+    animation: detailEnter .65s ease both;
+}
+
+@keyframes detailEnter {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.detail-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 30px;
+    border-radius: 25px;
+    color: white;
+    background: linear-gradient(120deg, #5b21b6, #7c3aed, #a78bfa);
+    box-shadow: 0 15px 40px rgba(109,40,217,.18);
+    isolation: isolate;
+}
+
+.detail-hero::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 230px;
+    height: 230px;
+    top: -140px;
+    right: 10%;
+    border-radius: 50%;
+    background: rgba(255,255,255,.17);
+    animation: detailFloat 8s ease-in-out infinite;
+}
+
+@keyframes detailFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(25px); }
+}
+
+.detail-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 22px;
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    opacity: .9;
+    transition: .25s ease;
+}
+
+.detail-back:hover {
+    opacity: 1;
+    transform: translateX(-4px);
+}
+
+.detail-hero h1 {
+    font-size: clamp(25px, 3vw, 34px);
+    font-weight: 800;
+}
+
+.detail-hero p {
+    margin-top: 7px;
+    color: rgba(255,255,255,.85);
+    font-size: 14px;
+}
+
+.detail-glass {
+    max-width: 1050px;
+    margin: 27px auto 0;
+    padding: 30px;
+    border: 1px solid rgba(139,92,246,.16);
+    border-radius: 25px;
+    background: rgba(255,255,255,.86);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 15px 45px rgba(35,20,70,.07);
+    animation: detailCardIn .8s ease both;
+}
+
+@keyframes detailCardIn {
+    from { opacity: 0; transform: translateY(22px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.detail-heading {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid #eee8f6;
+}
+
+.detail-avatar {
+    width: 55px;
+    height: 55px;
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 17px;
+    color: #6d28d9;
+    background: #f0e8ff;
+    font-size: 22px;
+}
+
+.detail-heading h2 {
+    color: #211536;
+    font-size: 21px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.detail-heading p {
+    margin-top: 4px;
+    color: #81788e;
+    font-size: 13px;
+}
+
+.detail-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 25px;
+}
+
+.detail-field {
+    min-width: 0;
+    padding: 19px;
+    border: 1px solid #eee8f6;
+    border-radius: 16px;
+    background: rgba(250,248,255,.8);
+    transition: .25s ease;
+}
+
+.detail-field:hover {
+    border-color: #c4b5fd;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(109,40,217,.07);
+}
+
+.detail-field label {
+    display: block;
+    margin-bottom: 9px;
+    color: #7c3aed;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+}
+
+.detail-field p {
+    color: #171326;
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.detail-message {
+    grid-column: 1 / -1;
+    min-height: 170px;
+}
+
+.detail-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.detail-back-button,
+.detail-delete-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 44px;
+    padding: 0 19px;
+    border: none;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 750;
+    text-decoration: none;
+    cursor: pointer;
+    transition: .25s ease;
+}
+
+.detail-back-button {
+    color: #5b21b6;
+    background: #f1eaff;
+}
+
+.detail-back-button:hover {
+    background: #e7d9ff;
+    transform: translateY(-2px);
+}
+
+.detail-delete-button {
+    color: white;
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    box-shadow: 0 6px 15px rgba(220,38,38,.16);
+}
+
+.detail-delete-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 9px 20px rgba(220,38,38,.23);
+}
+
+@media (max-width: 650px) {
+    .enquiry-detail-page {
+        padding: 16px;
+    }
+
+    .detail-hero {
+        padding: 23px 20px;
+        border-radius: 20px;
+    }
+
+    .detail-glass {
+        padding: 19px;
+        border-radius: 20px;
+    }
+
+    .detail-fields {
+        grid-template-columns: 1fr;
+        gap: 13px;
+    }
+
+    .detail-message {
+        grid-column: auto;
+    }
+
+    .detail-actions {
+        flex-direction: column;
+    }
+
+    .detail-back-button,
+    .detail-delete-button {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .enquiry-detail-page *,
+    .enquiry-detail-page *::before,
+    .enquiry-detail-page *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="enquiry-detail-page">
+
+    <section class="detail-hero">
+
+        <a href="{% url 'admin_enquiry' %}" class="detail-back">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to all enquiries
+        </a>
+
+        <h1>Enquiry Details</h1>
+
+        <p>Read the complete message submitted through the contact form.</p>
+
+    </section>
+
+
+    <section class="detail-glass">
+
+        <div class="detail-heading">
+
+            <div class="detail-avatar">
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div>
+                <h2>{{ enquiry.name }}</h2>
+                <p>Contact enquiry information</p>
+            </div>
+
+        </div>
+
+
+        <div class="detail-fields">
+
+            <div class="detail-field">
+                <label>Full Name</label>
+                <p>{{ enquiry.name|default:"Not provided" }}</p>
+            </div>
+
+            <div class="detail-field">
+                <label>Email Address</label>
+                <p>
+                    <a href="mailto:{{ enquiry.email }}"
+                       style="color:#6d28d9;text-decoration:none;">
+                        {{ enquiry.email|default:"Not provided" }}
+                    </a>
+                </p>
+            </div>
+
+            <div class="detail-field">
+                <label>Phone Number</label>
+                <p>
+                    {% if enquiry.phone %}
+                        <a href="tel:{{ enquiry.phone }}"
+                           style="color:#171326;text-decoration:none;">
+                            {{ enquiry.phone }}
+                        </a>
+                    {% else %}
+                        Not provided
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="detail-field">
+                <label>Subject</label>
+                <p>{{ enquiry.subject|default:"No subject" }}</p>
+            </div>
+
+            <div class="detail-field detail-message">
+                <label>Complete Message</label>
+                <p>{{ enquiry.message|default:"No message provided" }}</p>
+            </div>
+
+        </div>
+
+
+        <div class="detail-actions">
+
+            <a href="{% url 'admin_enquiry' %}"
+               class="detail-back-button">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Enquiries
+            </a>
+
+            <form method="POST"
+                  action="{% url 'delete_enquiry' enquiry.id %}"
+                  onsubmit="return confirm('Are you sure you want to permanently delete this enquiry?');">
+                {% csrf_token %}
+
+                <button type="submit" class="detail-delete-button">
+                    <i class="fa-solid fa-trash"></i>
+                    Delete Enquiry
+                </button>
+            </form>
+
+        </div>
+
+    </section>
+
+</div>
+{% endblock %}

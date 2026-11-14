@@ -1,0 +1,1171 @@
+
+{% extends "admin/admin_base.html" %}
+{% load static %}
+
+{% block title %}Manage Testimonials | N-ME Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+/* =========================================
+   TESTIMONIAL PAGE
+========================================= */
+
+.testimonial-page {
+    width: 100%;
+    min-height: 100vh;
+    padding: 32px;
+    color: #211a2d;
+    background:
+        radial-gradient(circle at 5% 5%, rgba(196,181,253,.28), transparent 30%),
+        radial-gradient(circle at 95% 15%, rgba(221,214,254,.35), transparent 28%),
+        #faf9ff;
+    overflow: hidden;
+}
+
+.testimonial-hero {
+    position: relative;
+    padding: 34px;
+    margin-bottom: 26px;
+    border: 1px solid rgba(255,255,255,.85);
+    border-radius: 26px;
+    background: linear-gradient(125deg,rgba(255,255,255,.94),rgba(237,231,255,.82));
+    box-shadow: 0 15px 45px rgba(91,55,145,.09);
+    overflow: hidden;
+    animation: testimonialRise .65s ease both;
+}
+
+.testimonial-hero::after {
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    right: -65px;
+    top: -110px;
+    border-radius: 50%;
+    background: rgba(167,139,250,.17);
+    filter: blur(5px);
+}
+
+.testimonial-hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.testimonial-hero h1 {
+    margin: 0 0 9px;
+    font-size: clamp(25px,3vw,35px);
+    font-weight: 800;
+    color: #241638;
+}
+
+.testimonial-hero p {
+    margin: 0;
+    color: #6b6478;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.testimonial-hero-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 16px;
+    color: #7041bd;
+    background: #eee7ff;
+    border-radius: 16px;
+    font-size: 23px;
+}
+
+/* =========================================
+   TOOLBAR
+========================================= */
+
+.testimonial-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.testimonial-heading h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 800;
+    color: #251a35;
+}
+
+.testimonial-heading p {
+    margin: 5px 0 0;
+    font-size: 13px;
+    color: #777083;
+}
+
+.testimonial-toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.testimonial-search {
+    position: relative;
+}
+
+.testimonial-search i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8a7a9f;
+}
+
+.testimonial-search input {
+    width: 250px;
+    height: 45px;
+    padding: 0 15px 0 42px;
+    border: 1px solid #e5ddf2;
+    border-radius: 13px;
+    background: rgba(255,255,255,.85);
+    color: #241a31;
+    outline: none;
+    transition: .25s ease;
+}
+
+.testimonial-search input:focus {
+    border-color: #9b76df;
+    box-shadow: 0 0 0 4px rgba(139,92,246,.12);
+}
+
+.testimonial-add-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 45px;
+    padding: 0 20px;
+    border: 0;
+    border-radius: 13px;
+    background: linear-gradient(135deg,#8052c9,#6034a5);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(112,65,189,.22);
+    transition: .25s ease;
+}
+
+.testimonial-add-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(112,65,189,.3);
+}
+
+/* =========================================
+   TESTIMONIAL CARDS
+========================================= */
+
+.testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(3,minmax(0,1fr));
+    gap: 22px;
+}
+
+.testimonial-card {
+    min-width: 0;
+    padding: 22px;
+    border: 1px solid rgba(255,255,255,.9);
+    border-radius: 23px;
+    background: rgba(255,255,255,.84);
+    box-shadow: 0 12px 35px rgba(63,39,91,.07);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: transform .3s ease, box-shadow .3s ease;
+    animation: testimonialRise .55s ease both;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(91,55,145,.13);
+}
+
+.testimonial-card-top {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-width: 0;
+}
+
+.testimonial-avatar {
+    width: 54px;
+    height: 54px;
+    flex-shrink: 0;
+    border-radius: 17px;
+    object-fit: cover;
+    border: 2px solid #e8dcff;
+    background: #f0eaff;
+}
+
+.testimonial-person {
+    min-width: 0;
+    flex: 1;
+}
+
+.testimonial-person h3 {
+    margin: 0;
+    color: #251a35;
+    font-size: 16px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.testimonial-rating {
+    margin-top: 5px;
+    color: #e7a522;
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+.testimonial-opinion {
+    min-height: 76px;
+    margin: 19px 0;
+    color: #686174;
+    font-size: 14px;
+    line-height: 1.75;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.testimonial-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #eee9f5;
+}
+
+.testimonial-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 37px;
+    padding: 0 13px;
+    border: 0;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.testimonial-edit-btn {
+    background: #eee8ff;
+    color: #7041bd;
+}
+
+.testimonial-edit-btn:hover {
+    background: #dfd2ff;
+    transform: translateY(-2px);
+}
+
+.testimonial-delete-btn {
+    background: #fff0f0;
+    color: #dc4242;
+}
+
+.testimonial-delete-btn:hover {
+    background: #ffe0e0;
+    transform: translateY(-2px);
+}
+
+.testimonial-empty {
+    grid-column: 1 / -1;
+    padding: 55px 20px;
+    text-align: center;
+    border: 1px dashed #d8c9ef;
+    border-radius: 22px;
+    background: rgba(255,255,255,.7);
+}
+
+.testimonial-empty i {
+    display: block;
+    margin-bottom: 13px;
+    color: #9b7bca;
+    font-size: 35px;
+}
+
+.testimonial-empty h3 {
+    margin: 0 0 7px;
+    color: #302341;
+    font-size: 18px;
+}
+
+.testimonial-empty p {
+    margin: 0;
+    color: #81788e;
+    font-size: 13px;
+}
+
+/* =========================================
+   MODALS
+========================================= */
+
+.testimonial-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .28s ease, visibility .28s ease;
+}
+
+.testimonial-modal.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.testimonial-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(30,17,48,.58);
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
+}
+
+.testimonial-modal-panel {
+    position: relative;
+    z-index: 1;
+    width: min(100%,540px);
+    max-height: 90vh;
+    max-height: 90dvh;
+    overflow-y: auto;
+    padding: 28px;
+    border: 1px solid rgba(255,255,255,.8);
+    border-radius: 25px;
+    background: linear-gradient(145deg,rgba(255,255,255,.98),rgba(246,241,255,.96));
+    box-shadow: 0 28px 90px rgba(20,8,40,.3);
+    transform: translateY(25px) scale(.96);
+    transition: transform .3s cubic-bezier(.2,.8,.2,1);
+}
+
+.testimonial-modal.active .testimonial-modal-panel {
+    transform: translateY(0) scale(1);
+}
+
+.testimonial-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 23px;
+}
+
+.testimonial-modal-header h2 {
+    margin: 0;
+    color: #251a35;
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.testimonial-modal-header p {
+    margin: 6px 0 0;
+    color: #81788e;
+    font-size: 13px;
+}
+
+.testimonial-modal-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 37px;
+    height: 37px;
+    flex-shrink: 0;
+    border: 0;
+    border-radius: 11px;
+    background: #eee8f8;
+    color: #55416e;
+    font-size: 17px;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.testimonial-modal-close:hover {
+    color: #fff;
+    background: #7144b8;
+    transform: rotate(90deg);
+}
+
+/* FORM */
+
+.testimonial-form {
+    display: grid;
+    gap: 17px;
+}
+
+.testimonial-field label {
+    display: block;
+    margin-bottom: 8px;
+    color: #40334f;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.testimonial-field input,
+.testimonial-field select,
+.testimonial-field textarea {
+    display: block;
+    width: 100%;
+    min-height: 46px;
+    padding: 11px 14px;
+    border: 1px solid #e4dced;
+    border-radius: 12px;
+    outline: none;
+    background: rgba(255,255,255,.9);
+    color: #241a31;
+    font-family: inherit;
+    font-size: 14px;
+    transition: .2s ease;
+}
+
+.testimonial-field textarea {
+    min-height: 115px;
+    resize: vertical;
+}
+
+.testimonial-field input:focus,
+.testimonial-field select:focus,
+.testimonial-field textarea:focus {
+    border-color: #9b76df;
+    box-shadow: 0 0 0 4px rgba(139,92,246,.11);
+}
+
+.testimonial-image-preview {
+    display: none;
+    width: 88px;
+    height: 88px;
+    margin-top: 12px;
+    border: 3px solid #e8dcff;
+    border-radius: 17px;
+    object-fit: cover;
+    box-shadow: 0 6px 18px rgba(91,55,145,.12);
+}
+
+.testimonial-image-preview.visible {
+    display: block;
+    animation: testimonialRise .3s ease both;
+}
+
+.testimonial-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.testimonial-cancel-btn,
+.testimonial-save-btn {
+    min-height: 43px;
+    padding: 0 19px;
+    border: 0;
+    border-radius: 11px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.testimonial-cancel-btn {
+    background: #eeeaf3;
+    color: #51465e;
+}
+
+.testimonial-save-btn {
+    background: linear-gradient(135deg,#8052c9,#6034a5);
+    color: white;
+    box-shadow: 0 7px 18px rgba(112,65,189,.2);
+}
+
+.testimonial-cancel-btn:hover,
+.testimonial-save-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@keyframes testimonialRise {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 1100px) {
+    .testimonial-grid {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+    }
+}
+
+@media (max-width: 767px) {
+    .testimonial-page {
+        padding: 19px 14px 30px;
+    }
+
+    .testimonial-hero {
+        padding: 24px 20px;
+        border-radius: 21px;
+    }
+
+    .testimonial-toolbar {
+        align-items: stretch;
+    }
+
+    .testimonial-toolbar-actions {
+        width: 100%;
+    }
+
+    .testimonial-search {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .testimonial-search input {
+        width: 100%;
+    }
+
+    .testimonial-add-btn {
+        padding: 0 14px;
+        white-space: nowrap;
+    }
+
+    .testimonial-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .testimonial-card {
+        padding: 19px;
+    }
+
+    .testimonial-modal {
+        padding: 12px;
+        align-items: center;
+    }
+
+    .testimonial-modal-panel {
+        padding: 22px 18px;
+        border-radius: 21px;
+        max-height: 92vh;
+        max-height: 92dvh;
+    }
+
+    .testimonial-modal-header h2 {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 380px) {
+    .testimonial-toolbar-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .testimonial-add-btn {
+        width: 100%;
+    }
+
+    .testimonial-modal-actions > button {
+        flex: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .testimonial-page *,
+    .testimonial-page *::before,
+    .testimonial-modal *,
+    .testimonial-modal *::before {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+    }
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="testimonial-page">
+
+    <!-- HERO -->
+    <section class="testimonial-hero">
+        <div class="testimonial-hero-content">
+            <div class="testimonial-hero-icon">
+                <i class="fa-solid fa-star"></i>
+            </div>
+
+            <h1>Testimonials</h1>
+
+            <p>
+                Manage customer feedback and testimonials displayed
+                on your N-ME website.
+            </p>
+        </div>
+    </section>
+
+
+    <!-- TOOLBAR -->
+    <section class="testimonial-toolbar">
+
+        <div class="testimonial-heading">
+            <h2>Customer Testimonials</h2>
+            <p>View, add, edit and manage customer reviews.</p>
+        </div>
+
+        <div class="testimonial-toolbar-actions">
+
+            <div class="testimonial-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input
+                    type="search"
+                    id="testimonialSearch"
+                    placeholder="Search testimonials..."
+                    aria-label="Search testimonials">
+            </div>
+
+            <button type="button"
+                    class="testimonial-add-btn"
+                    onclick="openTestimonialModal()">
+                <i class="fa-solid fa-plus"></i>
+                Add Testimonial
+            </button>
+
+        </div>
+    </section>
+
+
+    <!-- TESTIMONIAL CARDS -->
+    <section class="testimonial-grid" id="testimonialGrid">
+
+        {% for t in testimonials %}
+
+        <article class="testimonial-card">
+
+            <div class="testimonial-card-top">
+
+                {% if t.image %}
+                <img src="{{ t.image.url }}"
+                     alt="{{ t.name }}"
+                     class="testimonial-avatar">
+                {% else %}
+                <div class="testimonial-avatar"></div>
+                {% endif %}
+
+                <div class="testimonial-person">
+                    <h3>{{ t.name }}</h3>
+
+                    <div class="testimonial-rating">
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= t.rating|add:0 %}
+                                <i class="fa-solid fa-star"></i>
+                            {% else %}
+                                <i class="fa-regular fa-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="testimonial-opinion">
+                {{ t.opinion }}
+            </div>
+
+            <div class="testimonial-card-actions">
+
+                <!-- EDIT -->
+                <button
+                    type="button"
+                    class="testimonial-action-btn testimonial-edit-btn"
+                    onclick="openEditTestimonialModal(this)"
+                    data-id="{{ t.id }}"
+                    data-name="{{ t.name|escape }}"
+                    data-rating="{{ t.rating }}"
+                    data-opinion="{{ t.opinion|escape }}"
+                    data-image="{% if t.image %}{{ t.image.url|escape }}{% endif %}">
+
+                    <i class="fa-solid fa-pen"></i>
+                    Edit
+                </button>
+
+                <!-- DELETE -->
+                <form method="POST"
+                      action="{% url 'delete_testimonial' t.id %}"
+                      onsubmit="return confirm('Are you sure you want to delete this testimonial?');">
+
+                    {% csrf_token %}
+
+                    <button type="submit"
+                            class="testimonial-action-btn testimonial-delete-btn">
+                        <i class="fa-solid fa-trash"></i>
+                        Delete
+                    </button>
+
+                </form>
+
+            </div>
+
+        </article>
+
+        {% empty %}
+
+        <div class="testimonial-empty" id="testimonialEmpty">
+            <i class="fa-regular fa-star"></i>
+            <h3>No testimonials yet</h3>
+            <p>Add your first customer testimonial to get started.</p>
+        </div>
+
+        {% endfor %}
+
+        <div class="testimonial-empty"
+             id="testimonialNoResults"
+             style="display:none;">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <h3>No matching testimonials</h3>
+            <p>Try searching with another name or opinion.</p>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- =====================================
+     ADD TESTIMONIAL MODAL
+===================================== -->
+
+<div class="testimonial-modal"
+     id="testimonialAddModal"
+     aria-hidden="true">
+
+    <div class="testimonial-modal-backdrop"
+         onclick="closeTestimonialModal()"></div>
+
+    <div class="testimonial-modal-panel"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="addTestimonialTitle">
+
+        <div class="testimonial-modal-header">
+            <div>
+                <h2 id="addTestimonialTitle">Add Testimonial</h2>
+                <p>Add a new customer review to your website.</p>
+            </div>
+
+            <button type="button"
+                    class="testimonial-modal-close"
+                    onclick="closeTestimonialModal()"
+                    aria-label="Close modal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <form method="POST"
+              action="{% url 'add_testimonial' %}"
+              enctype="multipart/form-data"
+              class="testimonial-form">
+
+            {% csrf_token %}
+
+            <div class="testimonial-field">
+                <label for="addName">Customer Name</label>
+                <input type="text"
+                       id="addName"
+                       name="name"
+                       placeholder="Enter customer name"
+                       required>
+            </div>
+
+            <div class="testimonial-field">
+                <label for="addImage">Customer Image</label>
+                <input type="file"
+                       id="addImage"
+                       name="image"
+                       accept="image/*"
+                       onchange="previewTestimonialImage(this, 'addImagePreview')"
+                       required>
+
+                <img id="addImagePreview"
+                     class="testimonial-image-preview"
+                     alt="Selected image preview">
+            </div>
+
+            <div class="testimonial-field">
+                <label for="addRating">Rating</label>
+                <select id="addRating" name="rating" required>
+                    <option value="">Select rating</option>
+                    <option value="5">★★★★★ - 5 Stars</option>
+                    <option value="4">★★★★ - 4 Stars</option>
+                    <option value="3">★★★ - 3 Stars</option>
+                    <option value="2">★★ - 2 Stars</option>
+                    <option value="1">★ - 1 Star</option>
+                </select>
+            </div>
+
+            <div class="testimonial-field">
+                <label for="addOpinion">Customer Opinion</label>
+                <textarea id="addOpinion"
+                          name="opinion"
+                          placeholder="Write the customer's feedback..."
+                          required></textarea>
+            </div>
+
+            <div class="testimonial-modal-actions">
+                <button type="button"
+                        class="testimonial-cancel-btn"
+                        onclick="closeTestimonialModal()">
+                    Cancel
+                </button>
+
+                <button type="submit"
+                        class="testimonial-save-btn">
+                    <i class="fa-solid fa-check"></i>
+                    Save Testimonial
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+
+<!-- =====================================
+     EDIT TESTIMONIAL MODAL
+===================================== -->
+
+<div class="testimonial-modal"
+     id="testimonialEditModal"
+     aria-hidden="true">
+
+    <div class="testimonial-modal-backdrop"
+         onclick="closeEditTestimonialModal()"></div>
+
+    <div class="testimonial-modal-panel"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="editTestimonialTitle">
+
+        <div class="testimonial-modal-header">
+            <div>
+                <h2 id="editTestimonialTitle">Edit Testimonial</h2>
+                <p>Update the customer's information and feedback.</p>
+            </div>
+
+            <button type="button"
+                    class="testimonial-modal-close"
+                    onclick="closeEditTestimonialModal()"
+                    aria-label="Close modal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <form method="POST"
+              id="editTestimonialForm"
+              enctype="multipart/form-data"
+              class="testimonial-form">
+
+            {% csrf_token %}
+
+            <div class="testimonial-field">
+                <label for="editName">Customer Name</label>
+                <input type="text"
+                       id="editName"
+                       name="name"
+                       required>
+            </div>
+
+            <div class="testimonial-field">
+                <label for="editImage">Customer Image</label>
+
+                <input type="file"
+                       id="editImage"
+                       name="image"
+                       accept="image/*"
+                       onchange="previewTestimonialImage(this, 'editImagePreview')">
+
+                <img id="editImagePreview"
+                     class="testimonial-image-preview"
+                     alt="Current testimonial image">
+
+                <small style="display:block;margin-top:8px;color:#81788e;">
+                    Leave empty to keep the current image.
+                </small>
+            </div>
+
+            <div class="testimonial-field">
+                <label for="editRating">Rating</label>
+                <select id="editRating" name="rating" required>
+                    <option value="5">★★★★★ - 5 Stars</option>
+                    <option value="4">★★★★ - 4 Stars</option>
+                    <option value="3">★★★ - 3 Stars</option>
+                    <option value="2">★★ - 2 Stars</option>
+                    <option value="1">★ - 1 Star</option>
+                </select>
+            </div>
+
+            <div class="testimonial-field">
+                <label for="editOpinion">Customer Opinion</label>
+                <textarea id="editOpinion"
+                          name="opinion"
+                          required></textarea>
+            </div>
+
+            <div class="testimonial-modal-actions">
+                <button type="button"
+                        class="testimonial-cancel-btn"
+                        onclick="closeEditTestimonialModal()">
+                    Cancel
+                </button>
+
+                <button type="submit"
+                        class="testimonial-save-btn">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Update Testimonial
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const addModal = document.getElementById("testimonialAddModal");
+    const editModal = document.getElementById("testimonialEditModal");
+    const editForm = document.getElementById("editTestimonialForm");
+
+    const searchInput = document.getElementById("testimonialSearch");
+    const grid = document.getElementById("testimonialGrid");
+    const noResults = document.getElementById("testimonialNoResults");
+
+    let previousFocus = null;
+    let activeModal = null;
+
+
+    /* =====================================
+       MODAL HELPERS
+    ===================================== */
+
+    function openModal(modal) {
+
+        if (!modal) return;
+
+        previousFocus = document.activeElement;
+        activeModal = modal;
+
+        // Close the other modal if open
+        [addModal, editModal].forEach(function (item) {
+            if (item && item !== modal) {
+                item.classList.remove("active");
+                item.setAttribute("aria-hidden", "true");
+            }
+        });
+
+        modal.classList.add("active");
+        modal.setAttribute("aria-hidden", "false");
+
+        document.body.style.overflow = "hidden";
+
+        const closeButton = modal.querySelector(".testimonial-modal-close");
+
+        if (closeButton) {
+            closeButton.focus();
+        }
+    }
+
+    function closeModal(modal) {
+
+        if (!modal) return;
+
+        modal.classList.remove("active");
+        modal.setAttribute("aria-hidden", "true");
+
+        if (activeModal === modal) {
+            activeModal = null;
+            document.body.style.overflow = "";
+
+            if (previousFocus && document.contains(previousFocus)) {
+                previousFocus.focus();
+            }
+        }
+    }
+
+
+    /* =====================================
+       ADD MODAL
+    ===================================== */
+
+    window.openTestimonialModal = function () {
+
+        const form = addModal.querySelector("form");
+
+        if (form) {
+            form.reset();
+        }
+
+        const preview = document.getElementById("addImagePreview");
+
+        if (preview) {
+            preview.src = "";
+            preview.classList.remove("visible");
+        }
+
+        openModal(addModal);
+    };
+
+    window.closeTestimonialModal = function () {
+        closeModal(addModal);
+    };
+
+
+    /* =====================================
+       EDIT MODAL
+    ===================================== */
+
+    window.openEditTestimonialModal = function (button) {
+
+        if (!button || !editForm) return;
+
+        const data = button.dataset;
+
+        const id = data.id;
+
+        document.getElementById("editName").value = data.name || "";
+        document.getElementById("editRating").value = data.rating || "5";
+        document.getElementById("editOpinion").value = data.opinion || "";
+
+        const preview = document.getElementById("editImagePreview");
+
+        if (data.image) {
+            preview.src = data.image;
+            preview.classList.add("visible");
+        } else {
+            preview.src = "";
+            preview.classList.remove("visible");
+        }
+
+        // Build the correct URL using the ID
+        const editUrlTemplate = "{% url 'edit_testimonial' 0 %}";
+        editForm.action = editUrlTemplate.replace("/0/", "/" + encodeURIComponent(id) + "/");
+
+        openModal(editModal);
+    };
+
+    window.closeEditTestimonialModal = function () {
+        closeModal(editModal);
+    };
+
+
+    /* =====================================
+       IMAGE PREVIEW
+    ===================================== */
+
+    window.previewTestimonialImage = function (input, previewId) {
+
+        const preview = document.getElementById(previewId);
+
+        if (!preview || !input.files || !input.files[0]) return;
+
+        const file = input.files[0];
+
+        if (!file.type.startsWith("image/")) {
+            alert("Please select a valid image.");
+            input.value = "";
+            preview.src = "";
+            preview.classList.remove("visible");
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+            preview.src = event.target.result;
+            preview.classList.add("visible");
+        };
+
+        reader.readAsDataURL(file);
+    };
+
+
+    /* =====================================
+       SEARCH TESTIMONIALS
+    ===================================== */
+
+    if (searchInput && grid) {
+
+        const cards = Array.from(
+            grid.querySelectorAll(".testimonial-card")
+        );
+
+        searchInput.addEventListener("input", function () {
+
+            const searchValue = this.value.trim().toLowerCase();
+
+            let visibleCount = 0;
+
+            cards.forEach(function (card) {
+
+                const cardText = card.textContent.toLowerCase();
+
+                const matches = cardText.includes(searchValue);
+
+                card.style.display = matches ? "" : "none";
+
+                if (matches) {
+                    visibleCount++;
+                }
+
+            });
+
+            if (noResults) {
+                noResults.style.display =
+                    cards.length > 0 && visibleCount === 0
+                        ? "block"
+                        : "none";
+            }
+
+        });
+    }
+
+
+    /* =====================================
+       ESCAPE KEY
+    ===================================== */
+
+    document.addEventListener("keydown", function (event) {
+
+        if (event.key === "Escape" && activeModal) {
+            closeModal(activeModal);
+        }
+
+    });
+
+});
+</script>
+{% endblock %}

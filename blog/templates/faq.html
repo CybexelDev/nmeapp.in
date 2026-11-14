@@ -130,7 +130,7 @@ me,uber taxi near me{% endblock %}
   <a href="{% url 'faq' %}" class="block font-manrope text-[16px] px-6 py-3 text-blue-600">FAQs</a>
   <a href="{% url 'services' %}" class="block font-manrope text-[16px] px-6 py-3 hover:text-blue-600">Services</a>
   <a href="{% url 'contact' %}" class="block font-manrope text-[16px] px-6 py-3 hover:text-blue-600">Contact</a>
-
+  <a href="{% url 'message' %}" class="block font-manrope text-[16px] px-6 py-3 hover:text-blue-600">Message</a>
 </div>
     </div>
   </nav>
@@ -851,6 +851,133 @@ faqCards.forEach(card => {
    HTML DOES NOT NEED TO CHANGE
 ========================================== */
 
+// (function () {
+//     function initHamburgerMenu() {
+//         const menuBtn = document.getElementById("menuBtn");
+//         const mobileMenu = document.getElementById("mobileMenu");
+
+//         if (!menuBtn || !mobileMenu) {
+//             console.error(
+//                 "Hamburger menu: #menuBtn or #mobileMenu was not found."
+//             );
+//             return;
+//         }
+
+//         // Avoid registering this script more than once.
+//         if (menuBtn.dataset.hamburgerReady === "true") return;
+//         menuBtn.dataset.hamburgerReady = "true";
+
+//         const tabletBreakpoint = 1024;
+
+//         menuBtn.setAttribute("type", "button");
+//         menuBtn.setAttribute("aria-controls", "mobileMenu");
+//         menuBtn.setAttribute("aria-expanded", "false");
+
+//         // Remember the original display value.
+//         const originalDisplay = mobileMenu.style.display;
+
+//         function isMobileOrTablet() {
+//             return window.innerWidth < tabletBreakpoint;
+//         }
+
+//         function setMenuState(open) {
+//             const canShowMenu = isMobileOrTablet();
+//             const shouldOpen = open && canShowMenu;
+
+//             mobileMenu.classList.toggle("menu-open", shouldOpen);
+
+//             mobileMenu.classList.toggle("scale-y-0", !shouldOpen);
+//             mobileMenu.classList.toggle("scale-y-100", shouldOpen);
+
+//             mobileMenu.classList.toggle("opacity-0", !shouldOpen);
+//             mobileMenu.classList.toggle("opacity-100", shouldOpen);
+
+//             mobileMenu.classList.toggle(
+//                 "pointer-events-none",
+//                 !shouldOpen
+//             );
+//             mobileMenu.classList.toggle(
+//                 "pointer-events-auto",
+//                 shouldOpen
+//             );
+
+//             // Override the existing md:hidden class on tablets.
+//             if (canShowMenu) {
+//                 mobileMenu.style.setProperty("display", "block", "important");
+//             } else {
+//                 mobileMenu.style.removeProperty("display");
+//             }
+
+//             mobileMenu.setAttribute("aria-hidden", String(!shouldOpen));
+//             menuBtn.setAttribute("aria-expanded", String(shouldOpen));
+//         }
+
+//         // Start with the menu closed.
+//         setMenuState(false);
+
+//         // Open or close on hamburger click.
+//         menuBtn.addEventListener("click", function (event) {
+//             event.preventDefault();
+//             event.stopPropagation();
+
+//             const currentlyOpen =
+//                 mobileMenu.classList.contains("menu-open");
+
+//             setMenuState(!currentlyOpen);
+//         });
+
+//         // Close when a navigation link is selected.
+//         mobileMenu.querySelectorAll("a").forEach(function (link) {
+//             link.addEventListener("click", function () {
+//                 setMenuState(false);
+//             });
+//         });
+
+//         // Close when clicking outside the menu.
+//         document.addEventListener("click", function (event) {
+//             if (
+//                 mobileMenu.classList.contains("menu-open") &&
+//                 !mobileMenu.contains(event.target) &&
+//                 !menuBtn.contains(event.target)
+//             ) {
+//                 setMenuState(false);
+//             }
+//         });
+
+//         // Close when Escape is pressed.
+//         document.addEventListener("keydown", function (event) {
+//             if (event.key === "Escape") {
+//                 setMenuState(false);
+//             }
+//         });
+
+//         // Recalculate on orientation change or resize.
+//         window.addEventListener("resize", function () {
+//             if (!isMobileOrTablet()) {
+//                 setMenuState(false);
+//             } else if (mobileMenu.classList.contains("menu-open")) {
+//                 setMenuState(true);
+//             } else {
+//                 mobileMenu.style.setProperty("display", "block", "important");
+//                 setMenuState(false);
+//             }
+//         });
+
+//         console.log("Mobile/tablet hamburger menu initialized.");
+//     }
+
+//     if (document.readyState === "loading") {
+//         document.addEventListener(
+//             "DOMContentLoaded",
+//             initHamburgerMenu,
+//             { once: true }
+//         );
+//     } else {
+//         initHamburgerMenu();
+//     }
+// })();
+
+
 (function () {
     function initHamburgerMenu() {
         const menuBtn = document.getElementById("menuBtn");
@@ -863,29 +990,185 @@ faqCards.forEach(card => {
             return;
         }
 
-        // Avoid registering this script more than once.
+        // Avoid duplicate initialization.
         if (menuBtn.dataset.hamburgerReady === "true") return;
         menuBtn.dataset.hamburgerReady = "true";
 
         const tabletBreakpoint = 1024;
 
+        // Save original hamburger icon.
+        const originalButtonHTML = menuBtn.innerHTML;
+
+        // Move menu outside existing containers.
+        document.body.appendChild(mobileMenu);
+
+        // ==========================================
+        // CURRENT PAGE HIGHLIGHTER
+        // ==========================================
+        function highlightCurrentMobilePage() {
+            const currentPath =
+                window.location.pathname.replace(/\/+$/, "") || "/";
+
+            mobileMenu.querySelectorAll("a[href]").forEach(function (link) {
+                const linkPath = new URL(
+                    link.getAttribute("href"),
+                    window.location.origin
+                ).pathname.replace(/\/+$/, "") || "/";
+
+                link.classList.remove("nav-active");
+                link.removeAttribute("aria-current");
+
+                if (currentPath === linkPath) {
+                    link.classList.add("nav-active");
+                    link.setAttribute("aria-current", "page");
+                }
+            });
+        }
+
+        // ==========================================
+        // HAMBURGER BUTTON SETTINGS
+        // ==========================================
         menuBtn.setAttribute("type", "button");
         menuBtn.setAttribute("aria-controls", "mobileMenu");
         menuBtn.setAttribute("aria-expanded", "false");
+        menuBtn.setAttribute("aria-label", "Open menu");
 
-        // Remember the original display value.
-        const originalDisplay = mobileMenu.style.display;
 
+function updateHamburgerIcon(isOpen) {
+    if (isOpen) {
+        menuBtn.innerHTML = `
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="26"
+                height="26"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#ffffff"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="
+                    display: block;
+                    width: 26px;
+                    height: 26px;
+                    min-width: 26px;
+                    min-height: 26px;
+                    margin: auto;
+                "
+                aria-hidden="true"
+            >
+                <path d="M18 6L6 18"></path>
+                <path d="M6 6L18 18"></path>
+            </svg>
+        `;
+
+        menuBtn.setAttribute("aria-label", "Close menu");
+
+    } else {
+        menuBtn.innerHTML = originalButtonHTML;
+        menuBtn.setAttribute("aria-label", "Open menu");
+    }
+}
+
+
+        // ==========================================
+        // RESPONSIVE SCREEN CHECK
+        // ==========================================
         function isMobileOrTablet() {
             return window.innerWidth < tabletBreakpoint;
         }
 
+        // ==========================================
+        // RESPONSIVE RIGHT SPACING
+        // ==========================================
+        function getMenuRightSpacing() {
+            if (window.innerWidth <= 480) {
+                return "10px";
+            }
+
+            if (window.innerWidth <= 767) {
+                return "25px";
+            }
+
+            return "50px";
+        }
+
+        // ==========================================
+        // MENU OPEN / CLOSE FUNCTION
+        // ==========================================
         function setMenuState(open) {
             const canShowMenu = isMobileOrTablet();
             const shouldOpen = open && canShowMenu;
 
             mobileMenu.classList.toggle("menu-open", shouldOpen);
 
+            if (canShowMenu) {
+
+                const menuStyles = {
+                    position: "fixed",
+                    top: "120px",
+                    right: getMenuRightSpacing(),
+                    left: "auto",
+                    bottom: "auto",
+
+                    width: "min(335px, calc(100vw - 16px))",
+
+                    height: "auto",
+                    minHeight: "0",
+                    maxHeight: "calc(100dvh - 140px)",
+
+                    overflowX: "hidden",
+                    overflowY: "auto",
+
+                    boxSizing: "border-box",
+                    display: "flex",
+                    flexDirection: "column",
+
+                    zIndex: "2147483647"
+                };
+
+                Object.keys(menuStyles).forEach(function (property) {
+                    const cssProperty = property.replace(
+                        /[A-Z]/g,
+                        function (letter) {
+                            return "-" + letter.toLowerCase();
+                        }
+                    );
+
+                    mobileMenu.style.setProperty(
+                        cssProperty,
+                        menuStyles[property],
+                        "important"
+                    );
+                });
+
+            } else {
+
+                // Reset mobile positioning on desktop.
+                [
+                    "position",
+                    "top",
+                    "right",
+                    "left",
+                    "bottom",
+                    "width",
+                    "height",
+                    "min-height",
+                    "max-height",
+                    "overflow-x",
+                    "overflow-y",
+                    "box-sizing",
+                    "display",
+                    "flex-direction",
+                    "z-index"
+                ].forEach(function (property) {
+                    mobileMenu.style.removeProperty(property);
+                });
+            }
+
+            // ======================================
+            // MENU ANIMATION
+            // ======================================
             mobileMenu.classList.toggle("scale-y-0", !shouldOpen);
             mobileMenu.classList.toggle("scale-y-100", shouldOpen);
 
@@ -896,26 +1179,40 @@ faqCards.forEach(card => {
                 "pointer-events-none",
                 !shouldOpen
             );
+
             mobileMenu.classList.toggle(
                 "pointer-events-auto",
                 shouldOpen
             );
 
-            // Override the existing md:hidden class on tablets.
-            if (canShowMenu) {
-                mobileMenu.style.setProperty("display", "block", "important");
-            } else {
-                mobileMenu.style.removeProperty("display");
-            }
+            // ======================================
+            // ACCESSIBILITY STATES
+            // ======================================
+            mobileMenu.setAttribute(
+                "aria-hidden",
+                String(!shouldOpen)
+            );
 
-            mobileMenu.setAttribute("aria-hidden", String(!shouldOpen));
-            menuBtn.setAttribute("aria-expanded", String(shouldOpen));
+            menuBtn.setAttribute(
+                "aria-expanded",
+                String(shouldOpen)
+            );
+
+            // Update hamburger / X icon.
+            updateHamburgerIcon(shouldOpen);
         }
 
-        // Start with the menu closed.
+        // ==========================================
+        // INITIALIZE CURRENT PAGE HIGHLIGHT
+        // ==========================================
+        highlightCurrentMobilePage();
+
+        // Start with menu closed.
         setMenuState(false);
 
-        // Open or close on hamburger click.
+        // ==========================================
+        // HAMBURGER BUTTON CLICK
+        // ==========================================
         menuBtn.addEventListener("click", function (event) {
             event.preventDefault();
             event.stopPropagation();
@@ -926,14 +1223,18 @@ faqCards.forEach(card => {
             setMenuState(!currentlyOpen);
         });
 
-        // Close when a navigation link is selected.
+        // ==========================================
+        // CLOSE AFTER NAVIGATION LINK CLICK
+        // ==========================================
         mobileMenu.querySelectorAll("a").forEach(function (link) {
             link.addEventListener("click", function () {
                 setMenuState(false);
             });
         });
 
-        // Close when clicking outside the menu.
+        // ==========================================
+        // CLOSE WHEN CLICKING OUTSIDE
+        // ==========================================
         document.addEventListener("click", function (event) {
             if (
                 mobileMenu.classList.contains("menu-open") &&
@@ -944,21 +1245,26 @@ faqCards.forEach(card => {
             }
         });
 
-        // Close when Escape is pressed.
+        // ==========================================
+        // CLOSE WHEN ESCAPE IS PRESSED
+        // ==========================================
         document.addEventListener("keydown", function (event) {
             if (event.key === "Escape") {
                 setMenuState(false);
             }
         });
 
-        // Recalculate on orientation change or resize.
+        // ==========================================
+        // HANDLE SCREEN RESIZE
+        // ==========================================
         window.addEventListener("resize", function () {
             if (!isMobileOrTablet()) {
                 setMenuState(false);
+
             } else if (mobileMenu.classList.contains("menu-open")) {
                 setMenuState(true);
+
             } else {
-                mobileMenu.style.setProperty("display", "block", "important");
                 setMenuState(false);
             }
         });
@@ -976,6 +1282,7 @@ faqCards.forEach(card => {
         initHamburgerMenu();
     }
 })();
+
 
 </script>
 
@@ -1457,6 +1764,251 @@ section:has(#faqList) .category-tab {
     }
 }
 
+/* =====================================================
+   FAQ HERO CONTAINER RESPONSIVENESS
+   400px - 767px
+   Based on the actual FAQ HTML structure
+===================================================== */
+
+@media (min-width: 400px) and (max-width: 767px) {
+
+    /* MAIN HERO OUTER CONTAINER */
+    .hero-border {
+        width: calc(100% - 24px) !important;
+        max-width: 600px !important;
+
+        height: clamp(620px, 105vw, 720px) !important;
+        min-height: 620px !important;
+
+        margin: 16px auto 0 !important;
+
+        border-radius: clamp(24px, 5vw, 40px) !important;
+
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    /* GRADIENT BACKGROUND */
+    .hero-border > .absolute {
+        border-radius: inherit !important;
+    }
+
+    /* HERO CONTENT */
+    .hero-border > .relative.z-50 {
+        width: 100% !important;
+        height: 100% !important;
+
+        padding: clamp(16px, 3.5vw, 26px) !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+
+        box-sizing: border-box !important;
+    }
+
+    /* NAVBAR */
+    .hero-border nav {
+        width: 100% !important;
+
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+
+        gap: 10px !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* LOGO */
+    .hero-border nav > a img {
+        width: auto !important;
+        height: clamp(34px, 8vw, 46px) !important;
+        max-width: 125px !important;
+        object-fit: contain !important;
+    }
+
+    /* NAV RIGHT SIDE */
+    .hero-border nav > div {
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+    }
+
+    /* HAMBURGER */
+    #menuBtn {
+        display: flex !important;
+
+        width: clamp(40px, 10vw, 46px) !important;
+        height: clamp(40px, 10vw, 46px) !important;
+
+        flex-shrink: 0 !important;
+    }
+
+    /* MOBILE DROPDOWN */
+    #mobileMenu {
+        width: min(335px, calc(100vw - 48px)) !important;
+        max-width: 100% !important;
+
+        height: auto !important;
+
+        left: 50% !important;
+        top: 60px !important;
+
+        transform-origin: top center !important;
+        z-index: 100 !important;
+    }
+
+    /* HERO HEADING WRAPPER */
+    .hero-border nav + div {
+        width: 100% !important;
+        max-width: 100% !important;
+
+        margin-top: clamp(75px, 15vw, 115px) !important;
+
+        margin-left: auto !important;
+        margin-right: auto !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        text-align: center !important;
+    }
+
+    /* HEADING */
+    #animatedHero {
+        width: 100% !important;
+        max-width: 100% !important;
+
+        font-size: clamp(28px, 5.5vw, 40px) !important;
+
+        line-height: 1.2 !important;
+
+        text-align: center !important;
+
+        white-space: normal !important;
+        word-break: keep-all !important;
+        overflow-wrap: normal !important;
+
+        margin: 0 auto !important;
+        padding: 0 4px !important;
+    }
+
+    #animatedHero .letter {
+        display: inline-block !important;
+        white-space: pre !important;
+    }
+
+    /* PARAGRAPH */
+    #animatedHeroPara {
+        width: 100% !important;
+        max-width: 430px !important;
+
+        margin: 16px auto 0 !important;
+
+        padding: 0 clamp(8px, 2vw, 16px) !important;
+
+        font-size: clamp(13px, 2.2vw, 15px) !important;
+
+        line-height: 1.6 !important;
+        text-align: center !important;
+    }
+
+    #animatedHeroPara br {
+        display: none !important;
+    }
+}
+
+
+/* =====================================================
+   400px - 480px
+   SMALL MOBILE
+===================================================== */
+
+@media (min-width: 400px) and (max-width: 480px) {
+
+    .hero-border {
+        width: calc(100% - 24px) !important;
+        height: 650px !important;
+        min-height: 650px !important;
+    }
+
+    .hero-border nav + div {
+        margin-top: 85px !important;
+    }
+
+    #animatedHero {
+        font-size: clamp(27px, 6vw, 30px) !important;
+    }
+
+    #animatedHeroPara {
+        font-size: 13px !important;
+    }
+}
+
+
+/* =====================================================
+   481px - 600px
+   LARGE MOBILE
+===================================================== */
+
+@media (min-width: 481px) and (max-width: 600px) {
+
+    .hero-border {
+        width: calc(100% - 30px) !important;
+        height: 680px !important;
+    }
+
+    .hero-border nav + div {
+        margin-top: 95px !important;
+    }
+
+    #animatedHero {
+        font-size: clamp(32px, 5.5vw, 36px) !important;
+    }
+
+    #animatedHeroPara {
+        font-size: 14px !important;
+    }
+}
+
+
+/* =====================================================
+   601px - 767px
+   SMALL TABLET
+===================================================== */
+
+@media (min-width: 601px) and (max-width: 768px) {
+
+    .hero-border {
+        width: calc(100% - 40px) !important;
+        max-width: 700px !important;
+
+        height: 720px !important;
+    }
+
+    .hero-border nav + div {
+        margin-top: 105px !important;
+    }
+
+    #animatedHero {
+        font-size: clamp(37px, 5.5vw, 42px) !important;
+    }
+
+    #animatedHeroPara {
+        font-size: 15px !important;
+        max-width: 460px !important;
+    }
+}
+
+/* Active mobile navigation link */
+#mobileMenu a.nav-active {
+    color: #2563eb !important;
+    background: rgba(59, 130, 246, 0.13) !important;
+    font-weight: 700 !important;
+    border-radius: 10px;
+}
 </style>
 
 

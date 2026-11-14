@@ -21,26 +21,81 @@ urlpatterns = [
     path('contact', views.contact, name='contact'),
     path("contact-submit/", views.contact_submit, name="contact_submit"),
     path('dashboard/', views.admin_panel, name='dashboard'),
-path("enquiry/delete/<int:id>/", views.delete_enquiry, name="delete_enquiry"),
+    path("enquiry/delete/<int:id>/", views.delete_enquiry, name="delete_enquiry"),
     path('delete_message/<int:id>/', views.delete_message, name='delete_message'),
 
-path("team/add/", views.add_team_member, name="add_team_member"),
+    path("team/add/", views.add_team_member, name="add_team_member"),
     path("team/update/<int:id>/", views.update_team_member, name="update_team_member"),
     path("team/delete/<int:id>/", views.delete_team_member, name="delete_team_member"),
     path('faq', views.faq, name='faq'),
     path('blogs', views.blogs, name='blogs'),
     path('blogs/<int:id>/', views.blog_detail, name='blog_detail'),
-    path('testimonials/add/', views.add_testimonial, name='add_testimonial'),
-    path('testimonials/edit/', views.edit_testimonial, name='edit_testimonial'),
-    path('testimonials/delete/<int:id>/', views.delete_testimonial, name='delete_testimonial'),
+    # path('testimonials/add/', views.add_testimonial, name='add_testimonial'),
+    # path('testimonials/edit/', views.edit_testimonial, name='edit_testimonial'),
+    # path('testimonials/delete/<int:id>/', views.delete_testimonial, name='delete_testimonial'),
+
+    path(
+        "testimonials/",
+        views.admin_testimonials,
+        name="admin_testimonials"
+    ),
+
+    path(
+        "testimonials/add/",
+        views.add_testimonial,
+        name="add_testimonial"
+    ),
+
+    path(
+        "testimonials/edit/<int:id>/",
+        views.edit_testimonial,
+        name="edit_testimonial"
+    ),
+
+    path(
+        "testimonials/delete/<int:id>/",
+        views.delete_testimonial,
+        name="delete_testimonial"
+    ),
     path('privacy_nmeapp', views.privacy, name='privacy_nmeapp'),
     path('blog_post', views.blog_post, name='blog_post'),
     path('update_blog', views.update_blog, name='update_blog'),
     path('delete_blog/<int:id>', views.delete_blog, name='delete_blog'),
+    path('admin-blogs/', views.admin_blogs, name='admin_blogs'),
     path('delete_contact/<int:id>', views.delete_contact, name='delete_contact'),
     # path('sitemap', views.sitemap, name='sitemap'),
     path('login', views.login, name='login'),
     path('logout/', views.logout, name='logout'), 
+
+    path(
+        "admin-enquiry/",
+        views.admin_enquiry,
+        name="admin_enquiry"
+    ),
+
+    path(
+        "admin-enquiry/<int:id>/",
+        views.enquiry_detail,
+        name="enquiry_detail"
+    ),
+
+    path(
+        "enquiry/delete/<int:id>/",
+        views.delete_enquiry,
+        name="delete_enquiry"
+    ),
+
+    path(
+        "messages/",
+        views.admin_messages,
+        name="admin_messages"
+    ),
+
+    path(
+        "delete_message/<int:id>/",
+        views.delete_message,
+        name="delete_message"
+    ),
     # path('admin_register/', views.admin_register, name='admin_register'),
 
     # re_path(r'^.*$', views.home, name='catch_all'),

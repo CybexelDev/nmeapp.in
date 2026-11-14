@@ -22,6 +22,361 @@ travel agent near me,near me travel agency
 
 {% block content %}
 
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="success-alert">
+
+            <!-- Animated Gradient Border -->
+            <div class="success-alert-inner">
+
+                <!-- Success Icon -->
+                <div class="success-icon">
+                    <svg class="w-5 h-5"
+                         fill="none"
+                         stroke="currentColor"
+                         viewBox="0 0 24 24">
+
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2.5"
+                              d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+
+                <!-- Success Message -->
+                <p class="success-message">
+                    {{ message }}
+                </p>
+
+                <!-- Close Button -->
+                <button type="button"
+                        onclick="closeSuccessAlert(this)"
+                        class="success-close"
+                        aria-label="Close notification">
+                    &times;
+                </button>
+
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
+
+
+<style>
+
+/* =========================================
+   PREMIUM SUCCESS NOTIFICATION
+========================================= */
+
+.success-alert {
+    position: fixed !important;
+    top: 110px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: calc(100% - 32px);
+    max-width: 460px;
+
+    padding: 2px;
+    border-radius: 22px;
+
+    z-index: 999999;
+
+    /* Animated gradient border */
+    background: linear-gradient(
+        120deg,
+        #2563eb,
+        #818cf8,
+        #a855f7,
+        #6366f1,
+        #2563eb
+    );
+
+    background-size: 300% 300%;
+
+    animation:
+        successAppear 0.5s ease-out forwards,
+        gradientMove 5s ease infinite;
+
+    /* Premium outer glowing light */
+    box-shadow:
+        0 0 8px rgba(59, 130, 246, 0.35),
+        0 0 18px rgba(99, 102, 241, 0.28),
+        0 0 30px rgba(139, 92, 246, 0.20);
+}
+
+
+/* =========================================
+   INNER WHITE BOX
+========================================= */
+
+.success-alert-inner {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 76px;
+    width: 100%;
+
+    padding: 20px 48px;
+
+    border-radius: 20px;
+    background: #ffffff;
+}
+
+
+/* =========================================
+   SUCCESS ICON
+========================================= */
+
+.success-icon {
+    position: absolute;
+    left: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+
+    border-radius: 50%;
+
+    color: #4f46e5;
+
+    background: linear-gradient(
+        135deg,
+        #dbeafe,
+        #ede9fe
+    );
+}
+
+
+/* =========================================
+   MESSAGE TEXT
+========================================= */
+
+.success-message {
+    margin: 0;
+
+    color: #1f2937;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    letter-spacing: 0.3px;
+    line-height: 1.5;
+
+    text-align: center;
+}
+
+
+/* =========================================
+   CLOSE BUTTON
+========================================= */
+
+.success-close {
+    position: absolute;
+
+    right: 12px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 28px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #9ca3af;
+
+    font-size: 23px;
+    font-weight: 400;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+.success-close:hover {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+
+/* =========================================
+   RUNNING GRADIENT BORDER
+========================================= */
+
+@keyframes gradientMove {
+
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+
+}
+
+
+/* =========================================
+   ENTRANCE ANIMATION
+========================================= */
+
+@keyframes successAppear {
+
+    from {
+        opacity: 0;
+        transform: translate(-50%, -15px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
+    }
+
+}
+
+
+/* =========================================
+   EXIT ANIMATION
+========================================= */
+
+.success-alert.hide-alert {
+    opacity: 0;
+    transform: translate(-50%, -15px) scale(0.96);
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.4s ease,
+        transform 0.4s ease;
+}
+
+
+/* =========================================
+   MOBILE RESPONSIVENESS
+========================================= */
+
+@media (max-width: 480px) {
+
+    .success-alert {
+        top: 90px;
+
+        width: calc(100% - 28px);
+        max-width: 460px;
+    }
+
+    .success-alert-inner {
+        min-height: 70px;
+
+        padding: 16px 44px;
+        border-radius: 19px;
+    }
+
+    .success-message {
+        font-size: 13px;
+    }
+
+    .success-icon {
+        left: 10px;
+
+        width: 31px;
+        height: 31px;
+    }
+
+    .success-close {
+        right: 8px;
+    }
+
+}
+
+
+/* =========================================
+   SMALL SCREEN FIX
+========================================= */
+
+@media (max-width: 350px) {
+
+    .success-alert-inner {
+        padding-left: 40px;
+        padding-right: 38px;
+    }
+
+    .success-message {
+        font-size: 12px;
+    }
+
+}
+
+</style>
+
+
+<script>
+
+/* =========================================
+   CLOSE NOTIFICATION
+========================================= */
+
+function closeSuccessAlert(button) {
+
+    const alert = button.closest('.success-alert');
+
+    if (alert) {
+
+        alert.classList.add('hide-alert');
+
+        setTimeout(() => {
+            alert.remove();
+        }, 400);
+
+    }
+
+}
+
+
+/* =========================================
+   AUTOMATIC CLOSE AFTER 5 SECONDS
+========================================= */
+
+document.querySelectorAll('.success-alert').forEach(alert => {
+
+    setTimeout(() => {
+
+        if (alert.isConnected) {
+
+            alert.classList.add('hide-alert');
+
+            setTimeout(() => {
+                alert.remove();
+            }, 400);
+
+        }
+
+    }, 5000);
+
+});
+
+</script>
+
+
+
 <!-- ================= TOP VIDEO HERO ================= -->
 <div
   class="hero-border relative max-w-[363px] md:max-w-[1400px] mx-auto mt-4 h-[720px]
@@ -130,6 +485,7 @@ travel agent near me,near me travel agency
   <a href="{% url 'faq' %}" class="block font-manrope text-[16px] px-6 py-3 hover:text-blue-600">FAQs</a>
   <a href="{% url 'services' %}" class="block font-manrope text-[16px] px-6 py-3 hover:text-blue-600">Services</a>
   <a href="{% url 'contact' %}" class="block font-manrope text-[16px] px-6 py-3 text-blue-600">Contact</a>
+  <a href="{% url 'message' %}" class="block font-manrope text-[16px] px-6 py-3 text-blue-600">Message</a>
 
 </div>
   </div>
@@ -204,28 +560,64 @@ Let's connect! Whether it's feedback, inquiries, or collaboration <br>ideas, we'
 <form method="POST" action="{% url 'contact_submit' %}" class="space-y-6">
   {% csrf_token %}
 
+  {% if field_errors %}
+    {% for field, errors in field_errors.items %}
+        {% if field != 'phone' %}
+            {% for error in errors %}
+                <div class="mb-3 rounded-xl border border-red-200
+                            bg-white px-5 py-3 text-center
+                            text-sm font-medium text-red-600">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+{% endif %} 
+
   <div>
     <label class="block mb-2 font-semibold">Name</label>
     <input type="text" name="name" required
+    value="{{ submitted_values.name|default:'' }}"
       class="w-full h-[56px] px-6 rounded-[20px] border focus:ring-2">
   </div>
 
   <div>
     <label class="block mb-2 font-semibold">Email</label>
     <input type="email" name="email" required
+    value="{{ submitted_values.email|default:'' }}"
       class="w-full h-[56px] px-6 rounded-[20px] border focus:ring-2">
   </div>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-    <div>
+    <!-- <div>
       <label class="block mb-2 font-semibold">Phone</label>
       <input type="text" name="phone"
         class="w-full h-[56px] px-6 rounded-[20px] border">
-    </div>
+    </div> -->
+    
+<div>
+    <label class="block mb-2 font-semibold">Phone</label>
+
+    <input
+        type="text"
+        name="phone"
+        value="{{ submitted_values.phone|default:'' }}"
+        class="w-full h-[56px] px-6 rounded-[20px] border
+        {% if field_errors.phone %}border-red-500{% endif %}"
+    >
+
+    {% if field_errors.phone %}
+        <p class="mt-2 text-sm text-red-600 font-medium">
+            {{ field_errors.phone.0 }}
+        </p>
+    {% endif %}
+</div>
+
 
     <div>
       <label class="block mb-2 font-semibold">Subject</label>
       <input type="text" name="subject" required
+        value="{{ submitted_values.subject|default:'' }}"
         class="w-full h-[56px] px-6 rounded-[20px] border">
     </div>
   </div>
@@ -233,7 +625,7 @@ Let's connect! Whether it's feedback, inquiries, or collaboration <br>ideas, we'
   <div>
     <label class="block mb-2 font-semibold">Write Something</label>
     <textarea name="message" rows="4" required
-      class="w-full px-6 py-4 rounded-[20px] border resize-none"></textarea>
+      class="w-full px-6 py-4 rounded-[20px] border resize-none">{{ submitted_values.message|default:'' }}</textarea>
   </div>
 
   <button type="submit"
@@ -520,6 +912,8 @@ data-link="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3927.2560412050
   </div>
 </section>
 
+
+
 <script>
   
 (function () {
@@ -636,11 +1030,39 @@ data-link="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3927.2560412050
         }
     }
 
+    // ==========================================
+// MOBILE HAMBURGER ACTIVE PAGE HIGHLIGHTER
+// ==========================================
+function highlightCurrentMobilePage() {
+
+    const currentPath = window.location.pathname
+        .replace(/\/+$/, "") || "/";
+
+    const menuLinks = document.querySelectorAll(
+        "#mobileMenu a[href]"
+    );
+
+    menuLinks.forEach(function (link) {
+
+        const linkPath = new URL(
+            link.getAttribute("href"),
+            window.location.origin
+        ).pathname.replace(/\/+$/, "") || "/";
+
+        // Remove previous active class
+        link.classList.remove("nav-active");
+
+        if (currentPath === linkPath) {
+            link.classList.add("nav-active");
+        }
+    });
+}
+
     function initializeMenu() {
         const { btn, menu } = getElements();
 
         if (!btn || !menu) return;
-
+        highlightCurrentMobilePage();
         // Avoid registering duplicate listeners.
         if (initialized) return;
         initialized = true;
@@ -1216,7 +1638,133 @@ section.max-w-\[1400px\] > .grid.grid-cols-1.md\:grid-cols-3 > div p {
         font-size: 13px !important;
     }
 }
+/* ==========================================
+   CONTACT HERO RESPONSIVENESS
+   400px - 767px
+========================================== */
 
+@media (min-width: 400px) and (max-width: 767px) {
+
+    /* Main hero container */
+    .hero-border {
+        width: calc(100% - clamp(24px, 5vw, 40px)) !important;
+        max-width: 700px !important;
+        height: 720px !important;
+        min-height: 720px !important;
+        margin: 16px auto 0 !important;
+        overflow: hidden !important;
+        border-radius: 32px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Inner content */
+    .hero-border > .relative.z-50 {
+        width: 100% !important;
+        height: 100% !important;
+        padding: clamp(16px, 3.5vw, 28px) !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Navbar */
+    .hero-border nav {
+        width: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 10px !important;
+    }
+
+    /* Logo */
+    .hero-border nav > a img {
+        height: clamp(36px, 6vw, 48px) !important;
+        width: auto !important;
+        max-width: 130px !important;
+        object-fit: contain !important;
+    }
+
+    /* Navbar right side */
+    .hero-border nav > div {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 10px !important;
+        margin-left: auto !important;
+    }
+
+    /* Mobile menu button */
+    #menuBtn {
+        display: flex !important;
+        flex-shrink: 0 !important;
+        width: 44px !important;
+        height: 44px !important;
+        border-radius: 12px !important;
+    }
+
+    /* Mobile dropdown menu */
+    #mobileMenu {
+        width: min(335px, calc(100vw - 48px)) !important;
+        max-width: calc(100vw - 48px) !important;
+        height: auto !important;
+        min-height: 294px !important;
+        top: 60px !important;
+        left: 50% !important;
+        box-sizing: border-box !important;
+        z-index: 9999 !important;
+    }
+
+    /* Contact hero text wrapper */
+    .hero-border nav + div {
+        width: 100% !important;
+        max-width: 550px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        margin-top: clamp(70px, 12vw, 110px) !important;
+        padding: 0 8px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Contact heading */
+    .hero-border nav + div h2 {
+        width: 100% !important;
+        font-size: clamp(28px, 5vw, 40px) !important;
+        line-height: 1.25 !important;
+        font-weight: 600 !important;
+        text-align: center !important;
+        white-space: normal !important;
+        overflow-wrap: normal !important;
+        word-break: normal !important;
+    }
+
+    /* Contact paragraph */
+    .hero-border nav + div p {
+        width: 100% !important;
+        max-width: 460px !important;
+        margin-top: 16px !important;
+        font-size: clamp(13px, 2.2vw, 15px) !important;
+        line-height: 1.7 !important;
+        font-weight: 500 !important;
+        text-align: center !important;
+        overflow-wrap: break-word !important;
+    }
+
+    /* Allow paragraph to wrap naturally */
+    .hero-border nav + div p br {
+        display: none !important;
+    }
+}
+
+/* Active mobile navigation link */
+#mobileMenu a.nav-active {
+    color: #2563eb !important;
+    background: rgba(59, 130, 246, 0.13) !important;
+    font-weight: 700 !important;
+    border-radius: 10px;
+}
 </style>
 
 {% endblock %}

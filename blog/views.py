@@ -12,7 +12,7 @@ from django.db.models.functions import Cast
 from django.db.models import CharField
 from django.urls import reverse
 from django.contrib import messages
-
+from datetime import datetime
 
 
 # Create your views here.
@@ -22,25 +22,154 @@ def home(request):
     testimonials = Testimonial.objects.all()
     return render(request, "index.html", {"testimonials": testimonials})
 
-def message(request):
-    if request.method == "POST":
-        try:
-            Enquiry.objects.create(
-                full_name=request.POST.get("full_name"),
-                email=request.POST.get("email"),
-                phone=request.POST.get("phone"),
-                business_name=request.POST.get("business_name"),
-                business_category=request.POST.get("business_category"),
-                subject=request.POST.get("subject"),
-                message=request.POST.get("message"),
-            )
-            return JsonResponse({"success": True})
+# def message(request):
+#     if request.method == "POST":
+#         try:
+#             Enquiry.objects.create(
+#                 full_name=request.POST.get("full_name"),
+#                 email=request.POST.get("email"),
+#                 phone=request.POST.get("phone"),
+#                 business_name=request.POST.get("business_name"),
+#                 business_category=request.POST.get("business_category"),
+#                 subject=request.POST.get("subject"),
+#                 message=request.POST.get("message"),
+#             )
+#             return JsonResponse({"success": True})
 
-        except Exception as e:
-            return JsonResponse({
-                "success": False,
-                "errors": {"server": str(e)}
-            }, status=400)
+#         except Exception as e:
+#             return JsonResponse({
+#                 "success": False,
+#                 "errors": {"server": str(e)}
+#             }, status=400)
+
+#     return render(request, "message.html")
+
+import re
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+
+from .models import Enquiry
+
+
+def message(request):
+
+    if request.method == "POST":
+
+        submitted_values = {
+            "full_name": request.POST.get("full_name", "").strip(),
+            "email": request.POST.get("email", "").strip(),
+            "phone": request.POST.get("phone", "").strip(),
+            "business_name": request.POST.get("business_name", "").strip(),
+            "business_category": request.POST.get("business_category", "").strip(),
+            "subject": request.POST.get("subject", "").strip(),
+            "message": request.POST.get("message", "").strip(),
+        }
+
+        errors = {}
+
+        # Full name validation
+        if len(submitted_values["full_name"]) < 2:
+            errors["full_name"] = ["Name must contain at least 2 characters."]
+        elif not re.fullmatch(r"[A-Za-z\s.'-]+", submitted_values["full_name"]):
+            errors["full_name"] = [
+                "Name can contain only letters, spaces, dots, apostrophes and hyphens."
+            ]
+
+        # Email validation
+        try:
+            validate_email(submitted_values["email"])
+        except ValidationError:
+            errors["email"] = ["Enter a valid email address."]
+
+        # Phone validation
+        if not re.fullmatch(r'^\+?[0-9]{7,15}$', submitted_values["phone"]):
+            errors["phone"] = [
+                "Enter a valid phone number with 7 to 15 digits."
+            ]
+
+        # Business name validation
+        if len(submitted_values["business_name"]) < 2:
+            errors["business_name"] = [
+                "Business name must contain at least 2 characters."
+            ]
+        elif "<" in submitted_values["business_name"] or ">" in submitted_values["business_name"]:
+            errors["business_name"] = [
+                "HTML tags and scripts are not allowed."
+            ]
+
+        # Business category validation
+        if len(submitted_values["business_category"]) < 2:
+            errors["business_category"] = [
+                "Business category must contain at least 2 characters."
+            ]
+        elif "<" in submitted_values["business_category"] or ">" in submitted_values["business_category"]:
+            errors["business_category"] = [
+                "HTML tags and scripts are not allowed."
+            ]
+
+        # Subject validation
+        if len(submitted_values["subject"]) < 3:
+            errors["subject"] = [
+                "Subject must contain at least 3 characters."
+            ]
+        elif "<" in submitted_values["subject"] or ">" in submitted_values["subject"]:
+            errors["subject"] = [
+                "HTML tags and scripts are not allowed."
+            ]
+
+        # Message validation
+        if len(submitted_values["message"]) < 10:
+            errors["message"] = [
+                "Message must contain at least 10 characters."
+            ]
+        elif "<" in submitted_values["message"] or ">" in submitted_values["message"]:
+            errors["message"] = [
+                "HTML tags and scripts are not allowed."
+            ]
+
+        # Prevent control characters
+        for field, value in submitted_values.items():
+            if re.search(r'[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]', value):
+                errors[field] = ["Invalid characters are not allowed."]
+
+        # Return to same page if validation fails
+        if errors:
+            return render(
+                request,
+                "message.html",
+                {
+                    "errors": errors,
+                    "submitted_values": submitted_values,
+                },
+                status=400
+            )
+
+        # Save only after successful validation
+        try:
+            Enquiry.objects.create(**submitted_values)
+
+            messages.success(
+                request,
+                "Your enquiry has been submitted successfully!"
+            )
+
+            return redirect("message")
+
+        except Exception:
+            messages.error(
+                request,
+                "Something went wrong. Please try again."
+            )
+
+            return render(
+                request,
+                "message.html",
+                {"submitted_values": submitted_values},
+                status=500
+            )
 
     return render(request, "message.html")
 
@@ -118,7 +247,7 @@ def blogs(request):
             date_filter
         ).distinct()
 
-    paginator = Paginator(blogs, 8)
+    paginator = Paginator(blogs, 7)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -171,17 +300,76 @@ def contact(request):
     return render(request, 'contact.html', {'form': form})
 
 
+# def contact_submit(request):
+#     if request.method == "POST":
+#         Contact.objects.create(
+#             name=request.POST.get("name"),
+#             email=request.POST.get("email"),
+#             phone=request.POST.get("phone"),
+#             subject=request.POST.get("subject"),
+#             message=request.POST.get("message"),
+#         )
+#         # redirect to your custom admin panel instead of contact page
+#         # return redirect("dashboard")  # your admin_panel URL name
+
+#         messages.success(request, "Your message has been submitted successfully!")
+#         return redirect("contact")
+#     return redirect("contact")
+
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.core.exceptions import ValidationError
+from .models import Contact
+
+
 def contact_submit(request):
+
     if request.method == "POST":
-        Contact.objects.create(
-            name=request.POST.get("name"),
-            email=request.POST.get("email"),
-            phone=request.POST.get("phone"),
-            subject=request.POST.get("subject"),
-            message=request.POST.get("message"),
-        )
-        # redirect to your custom admin panel instead of contact page
-        return redirect("dashboard")  # your admin_panel URL name
+
+        name = request.POST.get("name", "").strip()
+        email = request.POST.get("email", "").strip()
+        phone = request.POST.get("phone", "").strip()
+        subject = request.POST.get("subject", "").strip()
+        message = request.POST.get("message", "").strip()
+
+        try:
+            Contact.objects.create(
+                name=name,
+                email=email,
+                phone=phone or None,
+                subject=subject,
+                message=message,
+            )
+
+            messages.success(
+                request,
+                "Your message has been submitted successfully!"
+            )
+
+            return redirect("contact")
+
+        except ValidationError as e:
+
+            field_errors = getattr(e, "message_dict", {})
+
+            submitted_values = {
+                "name": name,
+                "email": email,
+                "phone": phone,
+                "subject": subject,
+                "message": message,
+            }
+
+            return render(
+                request,
+                "contact.html",
+                {
+                    "submitted_values": submitted_values,
+                    "field_errors": field_errors,
+                }
+            )
+
     return redirect("contact")
 
 
@@ -190,6 +378,60 @@ def delete_enquiry(request, id):
         Contact.objects.filter(id=id).delete()  # delete the enquiry
     return redirect("dashboard")  # redirect to admin panel
  # reload admin panel
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Contact
+
+
+def admin_enquiry(request):
+    is_superuser = (
+        request.user.is_authenticated and
+        request.user.is_superuser
+    )
+    is_custom_user = "name" in request.session
+
+    if not is_superuser and not is_custom_user:
+        return redirect("login")
+
+    contact = Contact.objects.all().order_by("-id")
+
+    return render(request, "admin/enquiry.html", {
+        "contact": contact,
+    })
+
+
+def enquiry_detail(request, id):
+    is_superuser = (
+        request.user.is_authenticated and
+        request.user.is_superuser
+    )
+    is_custom_user = "name" in request.session
+
+    if not is_superuser and not is_custom_user:
+        return redirect("login")
+
+    enquiry = get_object_or_404(Contact, id=id)
+
+    return render(request, "admin/enquiry_detail.html", {
+        "enquiry": enquiry,
+    })
+
+
+def delete_enquiry(request, id):
+    is_superuser = (
+        request.user.is_authenticated and
+        request.user.is_superuser
+    )
+    is_custom_user = "name" in request.session
+
+    if not is_superuser and not is_custom_user:
+        return redirect("login")
+
+    if request.method == "POST":
+        enquiry = get_object_or_404(Contact, id=id)
+        enquiry.delete()
+
+    return redirect("admin_enquiry")
 
 def blog_post(request):
     if request.method == "POST":
@@ -218,9 +460,19 @@ def blog_post(request):
         # Add message
         messages.success(request, "Blog added successfully!")
         return redirect('dashboard')  
+
 def admin_panel(request):
-    if "name" not in request.session:
-        return render(request, 'login.html')
+    is_superuser = (
+        request.user.is_authenticated and
+        request.user.is_superuser
+    )
+    # if "name" not in request.session:
+    #     return render(request, 'login.html')
+
+    is_custom_user = "name" in request.session
+
+    if not is_superuser and not is_custom_user:
+        return redirect('login')
 
     blog = Post.objects.all()
     contact = Contact.objects.all()
@@ -241,7 +493,8 @@ def admin_panel(request):
     }
 
     # ✅ THIS LINE WAS MISSING
-    return render(request, "admin_panel.html", context)
+    return render(request, "admin/dashboard.html", context)
+
 def delete_message(request, id):
     if request.method == "POST":
         msg = get_object_or_404(Enquiry, id=id)
@@ -249,45 +502,110 @@ def delete_message(request, id):
         return redirect("dashboard")
     return redirect("dashboard")  # redirect for GET requests
 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
+from .models import Testimonial
 
-    
+
+def admin_testimonials(request):
+    testimonials = Testimonial.objects.all().order_by("-id")
+
+    return render(
+        request,
+        "admin/admin_testimonials.html",
+        {
+            "testimonials": testimonials
+        }
+    )
+
+
+@require_POST
 def add_testimonial(request):
-    if request.method == "POST":
-        name = request.POST.get('name')
-        rating = request.POST.get('rating')
-        opinion = request.POST.get('opinion')
-        image = request.FILES.get('image')
 
+    name = request.POST.get("name", "").strip()
+    rating = request.POST.get("rating")
+    opinion = request.POST.get("opinion", "").strip()
+    image = request.FILES.get("image")
+
+    if name and rating and opinion and image:
         Testimonial.objects.create(
             name=name,
             rating=rating,
             opinion=opinion,
             image=image
         )
-    return redirect('dashboard')  # or testimonials_page
+
+    return redirect("admin_testimonials")
 
 
+@require_POST
 def edit_testimonial(request, id):
-    testimonial = Testimonial.objects.get(id=id)
 
-    if request.method == "POST":
-        testimonial.name = request.POST.get("name")
-        testimonial.rating = request.POST.get("rating")
-        testimonial.opinion = request.POST.get("opinion")
+    testimonial = get_object_or_404(Testimonial, id=id)
+
+    name = request.POST.get("name", "").strip()
+    rating = request.POST.get("rating")
+    opinion = request.POST.get("opinion", "").strip()
+
+    if name and rating and opinion:
+
+        testimonial.name = name
+        testimonial.rating = rating
+        testimonial.opinion = opinion
 
         if request.FILES.get("image"):
-            testimonial.image = request.FILES.get("image")
+            testimonial.image = request.FILES["image"]
 
         testimonial.save()
-        return redirect("dashboard")  # change if needed
+
+    return redirect("admin_testimonials")
 
 
-
-# Delete testimonial
+@require_POST
 def delete_testimonial(request, id):
+
     testimonial = get_object_or_404(Testimonial, id=id)
     testimonial.delete()
-    return redirect('dashboard')
+
+    return redirect("admin_testimonials")
+
+# def add_testimonial(request):
+#     if request.method == "POST":
+#         name = request.POST.get('name')
+#         rating = request.POST.get('rating')
+#         opinion = request.POST.get('opinion')
+#         image = request.FILES.get('image')
+
+#         Testimonial.objects.create(
+#             name=name,
+#             rating=rating,
+#             opinion=opinion,
+#             image=image
+#         )
+#     return redirect('dashboard')  # or testimonials_page
+
+
+# def edit_testimonial(request, id):
+#     testimonial = Testimonial.objects.get(id=id)
+
+#     if request.method == "POST":
+#         testimonial.name = request.POST.get("name")
+#         testimonial.rating = request.POST.get("rating")
+#         testimonial.opinion = request.POST.get("opinion")
+
+#         if request.FILES.get("image"):
+#             testimonial.image = request.FILES.get("image")
+
+#         testimonial.save()
+#         return redirect("dashboard")  # change if needed
+
+
+
+# # Delete testimonial
+# def delete_testimonial(request, id):
+#     testimonial = get_object_or_404(Testimonial, id=id)
+#     testimonial.delete()
+#     return redirect('dashboard')
 def add_team_member(request):
     if request.method == "POST":
         TeamMember.objects.create(
@@ -388,86 +706,297 @@ def admin_register(request):
     return render(request, 'admin_register.html')
 
 
+# from django.utils import timezone
+# from datetime import timedelta
+# from datetime import datetime
+# def login(request):
+#     print("Login view HIT!", request.method)
+#     if request.method == 'POST':
+#         username = request.POST.get('username')
+#         raw_password = request.POST.get('password')
+
+#         print(username, raw_password)
+#         if "name" in request.session:
+#             print('haaaaaaiiii')
+#         else:
+#             print('loggiinnn pageee')
+
+#         holder = Login.objects.first()
+
+#         current_time = timezone.now()
+#         if holder.last_failed_login is not None:
+#             if timezone.is_naive(holder.last_failed_login):
+#                 # Assume naive datetime is in your current timezone (e.g., Asia/Kolkata)
+#                 aware_last_failed_login = timezone.make_aware(holder.last_failed_login, timezone.get_current_timezone())
+#             else:
+#                 aware_last_failed_login = holder.last_failed_login
+
+#             if current_time < aware_last_failed_login + timedelta(hours=2) and holder.rate_limit == 5:
+#                 print('Wait for a 2 hour time period')
+#                 return render(request, 'login.html', {'ratelimit': True})
+        
+#             else:
+#                 if holder.rate_limit >=5:
+#                     holder.rate_limit = 0
+#                     holder.save()
+                
+#                 try:
+#                     user = Login.objects.get(username=username)
+#                 except Login.DoesNotExist:
+#                     holder.rate_limit +=1
+#                     holder.last_failed_login = timezone.now()
+#                     holder.save()
+#                     return render(request, 'login.html', {'show_alert': True})
+#                     # return render(request, 'login.html', {'show_alert': True})
+
+                
+#                 if check_password(raw_password, user.password):
+#                     request.session["name"] = username
+#                     # print(request.session['name'],'nameeeeee')
+#                     holder.rate_limit = 0
+#                     holder.save()
+#                     response = redirect('dashboard')
+#                     response['Cache-Control'] = 'no-store, no-cache, must-revalidate, proxy-revalidate'
+#                     response['Pragma'] = 'no-cache'
+#                     response['Expires'] = '0'
+#                     print("Login successful, session name:", request.session.get("name"))
+
+#                     return redirect('dashboard')
+#                 else:
+#                     holder = Login.objects.first()
+                    
+#                     holder.rate_limit +=1
+#                     holder.last_failed_login = timezone.now()
+#                     holder.save()
+#                     # print('the rate limit :',user.rate_limit)
+#                     return render(request, 'login.html', {'error': 'Invalid credentials'})
+#         else:
+#             holder.last_failed_login = current_time
+#             holder.save()
+#             return redirect('login')
+
+#     else:
+#         if "name" in request.session:
+#             return redirect('dashboard')
+#         else:
+#             print("Login attempt")
+#             response = render(request, 'login.html')
+#             response['Cache-Control'] = 'no-store, no-cache, must-revalidate, proxy-revalidate'
+#             response['Pragma'] = 'no-cache'
+#             response['Expires'] = '0'
+#             return response
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth.hashers import check_password
 from django.utils import timezone
 from datetime import timedelta
-from datetime import datetime
-def login(request):
-    print("Login view HIT!", request.method)
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        raw_password = request.POST.get('password')
 
-        print(username, raw_password)
-        if "name" in request.session:
-            print('haaaaaaiiii')
-        else:
-            print('loggiinnn pageee')
+
+def login(request):
+
+    print("Login view HIT!", request.method)
+
+    if request.method == 'POST':
+
+        username = request.POST.get('username', '').strip()
+        raw_password = request.POST.get('password', '')
+
+        # =====================================
+        # 1. CHECK DJANGO SUPERUSER LOGIN
+        # =====================================
+
+        django_user = authenticate(
+            request,
+            username=username,
+            password=raw_password
+        )
+
+        if django_user is not None and django_user.is_superuser:
+
+            auth_login(request, django_user)
+
+            print("Django superuser login successful!")
+
+            response = redirect('dashboard')
+
+            response['Cache-Control'] = (
+                'no-store, no-cache, must-revalidate, proxy-revalidate'
+            )
+            response['Pragma'] = 'no-cache'
+            response['Expires'] = '0'
+
+            return response
+
+        # =====================================
+        # 2. CHECK YOUR CUSTOM LOGIN MODEL
+        # =====================================
 
         holder = Login.objects.first()
 
+        if holder is None:
+            return render(
+                request,
+                'login.html',
+                {'error': 'Login configuration not found'}
+            )
+
         current_time = timezone.now()
-        if holder.last_failed_login is not None:
-            if timezone.is_naive(holder.last_failed_login):
-                # Assume naive datetime is in your current timezone (e.g., Asia/Kolkata)
-                aware_last_failed_login = timezone.make_aware(holder.last_failed_login, timezone.get_current_timezone())
-            else:
-                aware_last_failed_login = holder.last_failed_login
 
-            if current_time < aware_last_failed_login + timedelta(hours=2) and holder.rate_limit == 5:
-                print('Wait for a 2 hour time period')
-                return render(request, 'login.html', {'ratelimit': True})
-        
-            else:
-                if holder.rate_limit >=5:
-                    holder.rate_limit = 0
-                    holder.save()
-                
-                try:
-                    user = Login.objects.get(username=username)
-                except Login.DoesNotExist:
-                    holder.rate_limit +=1
-                    holder.last_failed_login = timezone.now()
-                    holder.save()
-                    return render(request, 'login.html', {'show_alert': True})
-                    # return render(request, 'login.html', {'show_alert': True})
+        # =====================================
+        # 3. CHECK RATE LIMIT
+        # =====================================
 
-                
-                if check_password(raw_password, user.password):
-                    request.session["name"] = username
-                    # print(request.session['name'],'nameeeeee')
-                    holder.rate_limit = 0
-                    holder.save()
-                    response = redirect('dashboard')
-                    response['Cache-Control'] = 'no-store, no-cache, must-revalidate, proxy-revalidate'
-                    response['Pragma'] = 'no-cache'
-                    response['Expires'] = '0'
-                    print("Login successful, session name:", request.session.get("name"))
+        if holder.rate_limit >= 5:
 
-                    return redirect('dashboard')
-                else:
-                    holder = Login.objects.first()
-                    
-                    holder.rate_limit +=1
-                    holder.last_failed_login = timezone.now()
-                    holder.save()
-                    # print('the rate limit :',user.rate_limit)
-                    return render(request, 'login.html', {'error': 'Invalid credentials'})
-        else:
+            if holder.last_failed_login is not None:
+
+                last_failed = holder.last_failed_login
+
+                if timezone.is_naive(last_failed):
+                    last_failed = timezone.make_aware(
+                        last_failed,
+                        timezone.get_current_timezone()
+                    )
+
+                if current_time < last_failed + timedelta(hours=2):
+
+                    return render(
+                        request,
+                        'login.html',
+                        {'ratelimit': True}
+                    )
+
+            # Reset expired rate limit
+            holder.rate_limit = 0
+            holder.save()
+
+        # =====================================
+        # 4. CUSTOM USER AUTHENTICATION
+        # =====================================
+
+        try:
+            user = Login.objects.get(username=username)
+
+        except Login.DoesNotExist:
+
+            holder.rate_limit += 1
             holder.last_failed_login = current_time
             holder.save()
-            return redirect('login')
 
-    else:
-        if "name" in request.session:
-            return redirect('dashboard')
-        else:
-            print("Login attempt")
-            response = render(request, 'login.html')
-            response['Cache-Control'] = 'no-store, no-cache, must-revalidate, proxy-revalidate'
+            return render(
+                request,
+                'login.html',
+                {'show_alert': True}
+            )
+
+        if check_password(raw_password, user.password):
+
+            request.session['name'] = username
+
+            holder.rate_limit = 0
+            holder.last_failed_login = None
+            holder.save()
+
+            print("Custom login successful:", username)
+
+            response = redirect('dashboard')
+
+            response['Cache-Control'] = (
+                'no-store, no-cache, must-revalidate, proxy-revalidate'
+            )
             response['Pragma'] = 'no-cache'
             response['Expires'] = '0'
+
             return response
+
+        else:
+
+            holder.rate_limit += 1
+            holder.last_failed_login = current_time
+            holder.save()
+
+            return render(
+                request,
+                'login.html',
+                {'error': 'Invalid credentials'}
+            )
+
+    # =====================================
+    # 5. GET REQUEST
+    # =====================================
+
+    else:
+
+        if request.user.is_authenticated or 'name' in request.session:
+            return redirect('dashboard')
+
+        response = render(request, 'login.html')
+
+        response['Cache-Control'] = (
+            'no-store, no-cache, must-revalidate, proxy-revalidate'
+        )
+        response['Pragma'] = 'no-cache'
+        response['Expires'] = '0'
+
+        return response
+
 
 def logout(request):
     request.session.flush()  # Clears all session data
     return redirect('login')
+
+def admin_blogs(request):
+
+    is_superuser = (
+        request.user.is_authenticated and
+        request.user.is_superuser
+    )
+
+    is_custom_user = "name" in request.session
+
+    if not is_superuser and not is_custom_user:
+        return redirect('login')
+
+    blog = Post.objects.all().order_by('-date')
+
+    return render(request, 'admin/added_blogs.html', {
+        'blog': blog,
+    })
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
+from .models import Enquiry
+
+
+def admin_messages(request):
+
+    is_superuser = (
+        request.user.is_authenticated and
+        request.user.is_superuser
+    )
+
+    is_custom_user = "name" in request.session
+
+    if not is_superuser and not is_custom_user:
+        return redirect("login")
+
+    messages = Enquiry.objects.all().order_by("-id")
+
+    return render(
+        request,
+        "admin/admin_messages.html",
+        {
+            "messages": messages
+        }
+    )
+
+
+@require_POST
+def delete_message(request, id):
+
+    msg = get_object_or_404(Enquiry, id=id)
+
+    msg.delete()
+
+    return redirect("admin_messages")

@@ -1,0 +1,1282 @@
+
+{% extends 'admin/admin_base.html' %}
+{% load static %}
+
+{% block title %}User Enquiries | N-ME Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+/* =====================================
+   ENQUIRY PAGE
+===================================== */
+
+.enquiry-page {
+    width: 100%;
+    min-height: 100vh;
+    padding: 30px;
+    color: #171326;
+    animation: enquiryPageIn .65s ease both;
+}
+
+@keyframes enquiryPageIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* HERO */
+
+.enquiry-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 34px;
+    border-radius: 26px;
+    color: white;
+    background: linear-gradient(120deg, #4c1d95, #7c3aed, #a78bfa);
+    box-shadow: 0 18px 45px rgba(109,40,217,.2);
+    isolation: isolate;
+}
+
+.enquiry-hero::before,
+.enquiry-hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.enquiry-hero::before {
+    width: 260px;
+    height: 260px;
+    right: 8%;
+    top: -150px;
+    background: rgba(255,255,255,.18);
+    animation: enquiryFloat 8s ease-in-out infinite;
+}
+
+.enquiry-hero::after {
+    width: 190px;
+    height: 190px;
+    right: 30%;
+    bottom: -140px;
+    background: rgba(255,255,255,.12);
+    animation: enquiryFloat 10s ease-in-out infinite reverse;
+}
+
+@keyframes enquiryFloat {
+    0%, 100% { transform: translate(0,0); }
+    50% { transform: translate(-20px,25px); }
+}
+
+.enquiry-hero-icon {
+    width: 58px;
+    height: 58px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 18px;
+    background: rgba(255,255,255,.17);
+    backdrop-filter: blur(12px);
+    font-size: 25px;
+}
+
+.enquiry-hero h1 {
+    font-size: clamp(25px,3vw,36px);
+    font-weight: 800;
+}
+
+.enquiry-hero p {
+    margin-top: 9px;
+    color: rgba(255,255,255,.85);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* SUMMARY */
+
+.enquiry-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin: 25px 0;
+    padding: 21px 24px;
+    border: 1px solid rgba(139,92,246,.17);
+    border-radius: 20px;
+    background: rgba(255,255,255,.78);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 10px 35px rgba(40,20,80,.06);
+}
+
+.enquiry-summary-label {
+    color: #777083;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.enquiry-summary-count {
+    margin-top: 5px;
+    color: #5b21b6;
+    font-size: 29px;
+    font-weight: 800;
+}
+
+.enquiry-summary-icon {
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border-radius: 16px;
+    color: #6d28d9;
+    background: #f1eaff;
+    font-size: 21px;
+}
+
+/* GLASS TABLE */
+
+.enquiry-glass {
+    padding: 25px;
+    border: 1px solid rgba(139,92,246,.15);
+    border-radius: 25px;
+    background: rgba(255,255,255,.84);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 15px 45px rgba(35,20,70,.07);
+    animation: enquiryCardIn .8s ease both;
+}
+
+@keyframes enquiryCardIn {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.enquiry-card-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 22px;
+}
+
+.enquiry-card-heading h2 {
+    color: #171326;
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.enquiry-card-heading p {
+    margin-top: 5px;
+    color: #777083;
+    font-size: 13px;
+}
+
+/* SEARCH */
+
+.enquiry-search-wrap {
+    position: relative;
+    width: min(100%,320px);
+}
+
+.enquiry-search-wrap i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8b7da5;
+}
+
+.enquiry-search {
+    width: 100%;
+    height: 45px;
+    padding: 0 15px 0 42px;
+    border: 1px solid #e8e1f2;
+    border-radius: 13px;
+    outline: none;
+    background: white;
+    color: #171326;
+    font-size: 13px;
+    transition: .25s ease;
+}
+
+.enquiry-search:focus {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 4px rgba(139,92,246,.11);
+}
+
+/* TABLE */
+
+.enquiry-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #eee9f5;
+    border-radius: 17px;
+}
+
+.enquiry-table {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.enquiry-table thead {
+    background: #f5f0ff;
+}
+
+.enquiry-table th {
+    padding: 16px 18px;
+    color: #5b21b6;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    white-space: nowrap;
+}
+
+.enquiry-table td {
+    padding: 17px 18px;
+    color: #252033;
+    font-size: 13px;
+    border-top: 1px solid #f0edf4;
+    vertical-align: middle;
+}
+
+.enquiry-table tbody tr {
+    transition: background .25s ease;
+}
+
+.enquiry-table tbody tr:hover {
+    background: #faf7ff;
+}
+
+.enquiry-name {
+    font-weight: 750;
+    color: #211536;
+}
+
+.enquiry-email {
+    color: #6d28d9;
+    overflow-wrap: anywhere;
+}
+
+.enquiry-subject,
+.enquiry-message {
+    max-width: 190px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.enquiry-message {
+    color: #777083;
+}
+
+.enquiry-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.enquiry-view-btn,
+.enquiry-delete-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 36px;
+    padding: 0 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .25s ease;
+}
+
+.enquiry-view-btn {
+    color: white;
+    background: linear-gradient(135deg,#6d28d9,#8b5cf6);
+    box-shadow: 0 5px 13px rgba(109,40,217,.17);
+}
+
+.enquiry-view-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(109,40,217,.25);
+}
+
+.enquiry-delete-btn {
+    color: #dc2626;
+    background: #fff0f0;
+}
+
+.enquiry-delete-btn:hover {
+    color: white;
+    background: #dc2626;
+    transform: translateY(-2px);
+}
+
+/* EMPTY STATE */
+
+.enquiry-empty {
+    padding: 55px 20px !important;
+    text-align: center;
+}
+
+.enquiry-empty i {
+    display: block;
+    margin-bottom: 12px;
+    color: #8b5cf6;
+    font-size: 30px;
+}
+
+.enquiry-empty strong {
+    display: block;
+    color: #211536;
+    font-size: 16px;
+}
+
+.enquiry-empty span {
+    display: block;
+    margin-top: 7px;
+    color: #8b8495;
+}
+
+/* =====================================
+   ENQUIRY DETAIL MODAL
+===================================== */
+
+.enquiry-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(20,10,40,.62);
+    backdrop-filter: blur(9px);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition: opacity .3s ease, visibility .3s ease;
+}
+
+.enquiry-modal.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.enquiry-modal-card {
+    position: relative;
+    width: min(100%,700px);
+    max-height: 90vh;
+    overflow-y: auto;
+    border: 1px solid rgba(255,255,255,.7);
+    border-radius: 25px;
+    background: rgba(255,255,255,.96);
+    box-shadow: 0 30px 90px rgba(0,0,0,.25);
+    transform: translateY(35px) scale(.96);
+    opacity: 0;
+    transition: transform .35s cubic-bezier(.2,.8,.2,1),
+                opacity .35s ease;
+}
+
+.enquiry-modal.active .enquiry-modal-card {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+.enquiry-modal-header {
+    position: relative;
+    overflow: hidden;
+    padding: 28px;
+    color: white;
+    background: linear-gradient(120deg,#4c1d95,#7c3aed,#a78bfa);
+}
+
+.enquiry-modal-header::after {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    top: -115px;
+    right: 15%;
+    border-radius: 50%;
+    background: rgba(255,255,255,.15);
+    pointer-events: none;
+}
+
+.enquiry-modal-header-content {
+    position: relative;
+    z-index: 1;
+    padding-right: 35px;
+}
+
+.enquiry-modal-header h2 {
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.enquiry-modal-header p {
+    margin-top: 6px;
+    color: rgba(255,255,255,.85);
+    font-size: 13px;
+}
+
+.enquiry-modal-close {
+    position: absolute;
+    top: 19px;
+    right: 19px;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(255,255,255,.4);
+    border-radius: 11px;
+    color: white;
+    background: rgba(255,255,255,.16);
+    cursor: pointer;
+    transition: .25s ease;
+}
+
+.enquiry-modal-close:hover {
+    color: #5b21b6;
+    background: white;
+    transform: rotate(90deg);
+}
+
+.enquiry-modal-body {
+    padding: 27px;
+}
+
+.enquiry-modal-grid {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 15px;
+}
+
+.enquiry-detail-field {
+    min-width: 0;
+    padding: 17px;
+    border: 1px solid #eee8f6;
+    border-radius: 15px;
+    background: rgba(250,248,255,.9);
+    transition: .25s ease;
+}
+
+.enquiry-detail-field:hover {
+    border-color: #c4b5fd;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(109,40,217,.06);
+}
+
+.enquiry-detail-field label {
+    display: block;
+    margin-bottom: 8px;
+    color: #7c3aed;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .7px;
+    text-transform: uppercase;
+}
+
+.enquiry-detail-field p {
+    color: #171326;
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+.enquiry-detail-field a {
+    color: #6d28d9;
+    text-decoration: none;
+}
+
+.enquiry-detail-field a:hover {
+    text-decoration: underline;
+}
+
+.enquiry-full-message {
+    grid-column: 1 / -1;
+}
+
+.enquiry-full-message p {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+.enquiry-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 0 27px 27px;
+}
+
+.enquiry-modal-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 0 17px;
+    border: none;
+    border-radius: 11px;
+    font-size: 13px;
+    font-weight: 750;
+    cursor: pointer;
+    transition: .25s ease;
+}
+
+.enquiry-modal-dismiss {
+    color: #5b21b6;
+    background: #f1eaff;
+}
+
+.enquiry-modal-dismiss:hover {
+    background: #e7d9ff;
+}
+
+.enquiry-modal-delete {
+    color: white;
+    background: linear-gradient(135deg,#dc2626,#ef4444);
+    box-shadow: 0 6px 15px rgba(220,38,38,.16);
+}
+
+.enquiry-modal-delete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 9px 20px rgba(220,38,38,.23);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+    .enquiry-page {
+        padding: 22px;
+    }
+}
+
+@media (max-width: 600px) {
+    .enquiry-page {
+        padding: 15px;
+    }
+
+    .enquiry-hero {
+        padding: 24px 20px;
+        border-radius: 20px;
+    }
+
+    .enquiry-summary {
+        padding: 17px;
+        margin: 17px 0;
+    }
+
+    .enquiry-glass {
+        padding: 17px;
+        border-radius: 19px;
+    }
+
+    .enquiry-card-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .enquiry-search-wrap {
+        width: 100%;
+    }
+
+    .enquiry-modal {
+        padding: 10px;
+    }
+
+    .enquiry-modal-card {
+        max-height: 94vh;
+        border-radius: 19px;
+    }
+
+    .enquiry-modal-header {
+        padding: 24px 19px;
+    }
+
+    .enquiry-modal-header h2 {
+        font-size: 21px;
+    }
+
+    .enquiry-modal-body {
+        padding: 17px;
+    }
+
+    .enquiry-modal-grid {
+        grid-template-columns: 1fr;
+        gap: 11px;
+    }
+
+    .enquiry-full-message {
+        grid-column: auto;
+    }
+
+    .enquiry-modal-footer {
+        padding: 0 17px 18px;
+        flex-direction: column;
+    }
+
+    .enquiry-modal-action {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .enquiry-page *,
+    .enquiry-modal *,
+    .enquiry-page *::before,
+    .enquiry-modal *::before {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="enquiry-page">
+
+    <!-- HERO -->
+    <section class="enquiry-hero">
+        <div class="enquiry-hero-icon">
+            <i class="fa-solid fa-envelope-open-text"></i>
+        </div>
+
+        <h1>User Enquiries</h1>
+
+        <p>
+            Manage and review messages submitted by visitors
+            through the N-ME contact form.
+        </p>
+    </section>
+
+
+    <!-- SUMMARY -->
+    <section class="enquiry-summary">
+        <div>
+            <div class="enquiry-summary-label">
+                Total Enquiries Received
+            </div>
+
+            <div class="enquiry-summary-count">
+                {{ contact|length }}
+            </div>
+        </div>
+
+        <div class="enquiry-summary-icon">
+            <i class="fa-solid fa-inbox"></i>
+        </div>
+    </section>
+
+
+    <!-- TABLE -->
+    <section class="enquiry-glass">
+
+        <div class="enquiry-card-heading">
+            <div>
+                <h2>All Enquiries</h2>
+                <p>View the complete details or delete an enquiry.</p>
+            </div>
+
+            <div class="enquiry-search-wrap">
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="search"
+                    id="enquirySearch"
+                    class="enquiry-search"
+                    placeholder="Search enquiries..."
+                    aria-label="Search enquiries">
+            </div>
+        </div>
+
+
+        <div class="enquiry-table-wrap">
+            <table class="enquiry-table">
+
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Subject</th>
+                        <th>Message</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="enquiryTableBody">
+
+                    {% for c in contact %}
+                    <tr class="enquiry-row">
+
+                        <td>
+                            <div class="enquiry-name">{{ c.name }}</div>
+                        </td>
+
+                        <td>
+                            <div class="enquiry-email">{{ c.email }}</div>
+                        </td>
+
+                        <td>{{ c.phone }}</td>
+
+                        <td>
+                            <div class="enquiry-subject">
+                                {{ c.subject|default:"No subject" }}
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="enquiry-message">
+                                {{ c.message }}
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="enquiry-actions">
+
+                                <!-- VIEW MODAL BUTTON -->
+                                <button
+                                    type="button"
+                                    class="enquiry-view-btn"
+                                    onclick="openEnquiryModal(this)"
+                                    data-name="{{ c.name }}"
+                                    data-email="{{ c.email }}"
+                                    data-phone="{{ c.phone }}"
+                                    data-subject="{{ c.subject }}"
+                                    data-message="{{ c.message }}"
+                                    data-delete-url="{% url 'delete_enquiry' c.id %}">
+
+                                    <i class="fa-solid fa-eye"></i>
+                                    View
+                                </button>
+
+
+                                <!-- DELETE -->
+                                <form method="POST"
+                                      action="{% url 'delete_enquiry' c.id %}"
+                                      onsubmit="return confirm('Are you sure you want to delete this enquiry?');">
+
+                                    {% csrf_token %}
+
+                                    <button type="submit"
+                                            class="enquiry-delete-btn"
+                                            aria-label="Delete enquiry">
+
+                                        <i class="fa-solid fa-trash"></i>
+
+                                    </button>
+                                </form>
+
+                            </div>
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td colspan="6" class="enquiry-empty">
+                            <i class="fa-regular fa-envelope"></i>
+                            <strong>No enquiries yet</strong>
+                            <span>New contact form submissions will appear here.</span>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                    <tr id="enquiryNoResults" style="display:none;">
+                        <td colspan="6" class="enquiry-empty">
+                            <strong>No matching enquiries</strong>
+                            <span>Try another name, email or subject.</span>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- =====================================
+     ENQUIRY DETAIL MODAL
+===================================== -->
+
+<div class="enquiry-modal"
+     id="enquiryModal"
+     aria-hidden="true"
+     onclick="handleEnquiryBackdrop(event)">
+
+    <div class="enquiry-modal-card"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="enquiryModalTitle">
+
+        <div class="enquiry-modal-header">
+
+            <button type="button"
+                    class="enquiry-modal-close"
+                    onclick="closeEnquiryModal()"
+                    aria-label="Close modal">
+
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="enquiry-modal-header-content">
+
+                <h2 id="enquiryModalTitle">
+                    Enquiry Details
+                </h2>
+
+                <p>
+                    Complete information submitted through the contact form.
+                </p>
+
+            </div>
+        </div>
+
+
+        <div class="enquiry-modal-body">
+
+            <div class="enquiry-modal-grid">
+
+                <div class="enquiry-detail-field">
+                    <label>Full Name</label>
+                    <p id="modalEnquiryName">-</p>
+                </div>
+
+                <div class="enquiry-detail-field">
+                    <label>Email Address</label>
+                    <p>
+                        <a id="modalEnquiryEmail"
+                           href="#"></a>
+                    </p>
+                </div>
+
+                <div class="enquiry-detail-field">
+                    <label>Phone Number</label>
+                    <p>
+                        <a id="modalEnquiryPhone"
+                           href="#"></a>
+                    </p>
+                </div>
+
+                <div class="enquiry-detail-field">
+                    <label>Subject</label>
+                    <p id="modalEnquirySubject">-</p>
+                </div>
+
+                <div class="enquiry-detail-field enquiry-full-message">
+                    <label>Complete Message</label>
+                    <p id="modalEnquiryMessage">-</p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="enquiry-modal-footer">
+
+            <button type="button"
+                    class="enquiry-modal-action enquiry-modal-dismiss"
+                    onclick="closeEnquiryModal()">
+
+                <i class="fa-solid fa-xmark"></i>
+                Close
+            </button>
+
+            <form id="modalEnquiryDeleteForm"
+                  method="POST"
+                  onsubmit="return confirm('Are you sure you want to permanently delete this enquiry?');">
+
+                {% csrf_token %}
+
+                <button type="submit"
+                        class="enquiry-modal-action enquiry-modal-delete">
+
+                    <i class="fa-solid fa-trash"></i>
+                    Delete Enquiry
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
+
+
+{% block extra_js %}
+<!-- <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const modal = document.getElementById("enquiryModal");
+    const searchInput = document.getElementById("enquirySearch");
+    const rows = document.querySelectorAll(".enquiry-row");
+    const noResults = document.getElementById("enquiryNoResults");
+
+    const modalName = document.getElementById("modalEnquiryName");
+    const modalEmail = document.getElementById("modalEnquiryEmail");
+    const modalPhone = document.getElementById("modalEnquiryPhone");
+    const modalSubject = document.getElementById("modalEnquirySubject");
+    const modalMessage = document.getElementById("modalEnquiryMessage");
+    const deleteForm = document.getElementById("modalEnquiryDeleteForm");
+
+    let previousFocus = null;
+
+
+    /* OPEN MODAL */
+
+    window.openEnquiryModal = function (button) {
+
+        if (!modal || !button) return;
+
+        previousFocus = document.activeElement;
+
+        const name = button.dataset.name || "Not provided";
+        const email = button.dataset.email || "";
+        const phone = button.dataset.phone || "";
+        const subject = button.dataset.subject || "No subject";
+        const message = button.dataset.message || "No message provided";
+        const deleteUrl = button.dataset.deleteUrl;
+
+        modalName.textContent = name;
+        modalSubject.textContent = subject;
+        modalMessage.textContent = message;
+
+        modalEmail.textContent = email || "Not provided";
+        modalEmail.href = email ? "mailto:" + email : "#";
+
+        modalPhone.textContent = phone || "Not provided";
+        modalPhone.href = phone ? "tel:" + phone : "#";
+
+        deleteForm.action = deleteUrl || "";
+
+        modal.classList.add("active");
+        modal.setAttribute("aria-hidden", "false");
+
+        document.body.style.overflow = "hidden";
+
+        const closeButton = modal.querySelector(".enquiry-modal-close");
+
+        if (closeButton) {
+            closeButton.focus();
+        }
+    };
+
+
+    /* CLOSE MODAL */
+
+    window.closeEnquiryModal = function () {
+
+        if (!modal) return;
+
+        modal.classList.remove("active");
+        modal.setAttribute("aria-hidden", "true");
+
+        document.body.style.overflow = "";
+
+        if (previousFocus && document.contains(previousFocus)) {
+            previousFocus.focus();
+        }
+    };
+
+
+    /* OUTSIDE CLICK */
+
+    window.handleEnquiryBackdrop = function (event) {
+
+        if (event.target === modal) {
+            closeEnquiryModal();
+        }
+    };
+
+
+    /* ESCAPE KEY */
+
+    document.addEventListener("keydown", function (event) {
+
+        if (event.key === "Escape" && modal.classList.contains("active")) {
+            closeEnquiryModal();
+        }
+    });
+
+
+    /* SEARCH */
+
+    if (searchInput) {
+
+        searchInput.addEventListener("input", function () {
+
+            const searchValue = this.value.toLowerCase().trim();
+            let visibleCount = 0;
+
+            rows.forEach(function (row) {
+
+                const matches = row.innerText
+                    .toLowerCase()
+                    .includes(searchValue);
+
+                row.style.display = matches ? "" : "none";
+
+                if (matches) {
+                    visibleCount++;
+                }
+            });
+
+            if (noResults) {
+                noResults.style.display =
+                    rows.length > 0 && visibleCount === 0
+                        ? ""
+                        : "none";
+            }
+
+        });
+    }
+
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const searchInput = document.getElementById("enquirySearch");
+    const tableBody = document.getElementById("enquiryTableBody");
+    const noResults = document.getElementById("enquiryNoResults");
+
+    if (!searchInput || !tableBody) {
+        console.error("Enquiry search elements not found.");
+        return;
+    }
+
+    const rows = Array.from(
+        tableBody.querySelectorAll("tr.enquiry-row")
+    );
+
+    searchInput.addEventListener("input", function () {
+
+        const searchText = this.value
+            .trim()
+            .toLowerCase();
+
+        let visibleCount = 0;
+
+        rows.forEach(function (row) {
+
+            // Search across all enquiry columns
+            const rowText = row.textContent
+                .toLowerCase()
+                .replace(/\s+/g, " ");
+
+            const isMatch = rowText.includes(searchText);
+
+            row.style.display = isMatch ? "" : "none";
+
+            if (isMatch) {
+                visibleCount++;
+            }
+        });
+
+        // Show or hide the no-results row
+        if (noResults) {
+            noResults.style.display =
+                rows.length > 0 && visibleCount === 0
+                    ? "table-row"
+                    : "none";
+        }
+
+    });
+
+});
+</script> -->
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const modal = document.getElementById("enquiryModal");
+    const searchInput = document.getElementById("enquirySearch");
+    const tableBody = document.getElementById("enquiryTableBody");
+    const noResults = document.getElementById("enquiryNoResults");
+
+    const modalName = document.getElementById("modalEnquiryName");
+    const modalEmail = document.getElementById("modalEnquiryEmail");
+    const modalPhone = document.getElementById("modalEnquiryPhone");
+    const modalSubject = document.getElementById("modalEnquirySubject");
+    const modalMessage = document.getElementById("modalEnquiryMessage");
+    const deleteForm = document.getElementById("modalEnquiryDeleteForm");
+
+    let previousFocus = null;
+
+    // Get enquiry rows once
+    const rows = tableBody
+        ? Array.from(tableBody.querySelectorAll("tr.enquiry-row"))
+        : [];
+
+
+    /* =====================================
+       OPEN MODAL
+    ===================================== */
+
+    window.openEnquiryModal = function (button) {
+
+        if (!modal || !button) return;
+
+        previousFocus = document.activeElement;
+
+        const data = button.dataset;
+
+        const name = data.name || "Not provided";
+        const email = data.email || "";
+        const phone = data.phone || "";
+        const subject = data.subject || "No subject";
+        const message = data.message || "No message provided";
+        const deleteUrl = data.deleteUrl || "";
+
+        if (modalName) modalName.textContent = name;
+
+        if (modalSubject) modalSubject.textContent = subject;
+        if (modalMessage) modalMessage.textContent = message;
+
+        if (modalEmail) {
+            modalEmail.textContent = email || "Not provided";
+            modalEmail.href = email ? "mailto:" + email : "#";
+        }
+
+        if (modalPhone) {
+            modalPhone.textContent = phone || "Not provided";
+            modalPhone.href = phone ? "tel:" + phone : "#";
+        }
+
+        if (deleteForm) {
+            deleteForm.action = deleteUrl;
+        }
+
+        modal.classList.add("active");
+        modal.setAttribute("aria-hidden", "false");
+
+        document.body.style.overflow = "hidden";
+
+        const closeButton = modal.querySelector(".enquiry-modal-close");
+
+        if (closeButton) {
+            closeButton.focus();
+        }
+    };
+
+
+    /* =====================================
+       CLOSE MODAL
+    ===================================== */
+
+    window.closeEnquiryModal = function () {
+
+        if (!modal) return;
+
+        modal.classList.remove("active");
+        modal.setAttribute("aria-hidden", "true");
+
+        document.body.style.overflow = "";
+
+        if (previousFocus && document.contains(previousFocus)) {
+            previousFocus.focus();
+        }
+    };
+
+
+    /* =====================================
+       OUTSIDE CLICK
+    ===================================== */
+
+    window.handleEnquiryBackdrop = function (event) {
+
+        if (event.target === modal) {
+            closeEnquiryModal();
+        }
+    };
+
+
+    /* =====================================
+       ESCAPE KEY
+    ===================================== */
+
+    document.addEventListener("keydown", function (event) {
+
+        if (
+            event.key === "Escape" &&
+            modal &&
+            modal.classList.contains("active")
+        ) {
+            closeEnquiryModal();
+        }
+
+    });
+
+
+    /* =====================================
+       SEARCH ENQUIRIES
+    ===================================== */
+
+    if (searchInput && tableBody) {
+
+        searchInput.addEventListener("input", function () {
+
+            const searchValue = this.value
+                .trim()
+                .toLowerCase();
+
+            let visibleCount = 0;
+
+            rows.forEach(function (row) {
+
+                const rowText = row.textContent
+                    .toLowerCase()
+                    .replace(/\s+/g, " ")
+                    .trim();
+
+                const matches = rowText.includes(searchValue);
+
+                row.style.display = matches ? "" : "none";
+
+                if (matches) {
+                    visibleCount++;
+                }
+
+            });
+
+            // Show no-results message only when there are no matches
+            if (noResults) {
+
+                noResults.style.display =
+                    rows.length > 0 && visibleCount === 0
+                        ? "table-row"
+                        : "none";
+
+            }
+
+        });
+
+    }
+
+});
+</script>
+
+{% endblock %}

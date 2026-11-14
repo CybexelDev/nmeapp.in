@@ -1,0 +1,1105 @@
+
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Messages | N-ME Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+/* =====================================
+   PAGE
+===================================== */
+
+.messages-page {
+    width: 100%;
+    min-height: 100vh;
+    padding: 35px;
+    color: #171329;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 5% 5%, rgba(196,181,253,.28), transparent 30%),
+        radial-gradient(circle at 95% 90%, rgba(221,214,254,.35), transparent 30%),
+        #faf9ff;
+}
+
+.messages-hero {
+    position: relative;
+    padding: 35px;
+    margin-bottom: 25px;
+    border-radius: 26px;
+    overflow: hidden;
+    background: linear-gradient(125deg, #ede9fe, #ffffff 55%, #ddd6fe);
+    border: 1px solid rgba(139,92,246,.18);
+    box-shadow: 0 15px 45px rgba(91,33,182,.09);
+    animation: messageFadeUp .7s ease both;
+}
+
+.messages-hero::after {
+    content: "";
+    position: absolute;
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    right: -70px;
+    top: -110px;
+    background: rgba(167,139,250,.22);
+    filter: blur(3px);
+    animation: messageFloat 6s ease-in-out infinite;
+}
+
+.messages-hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.messages-hero-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 55px;
+    height: 55px;
+    margin-bottom: 18px;
+    border-radius: 17px;
+    color: #6d28d9;
+    background: rgba(255,255,255,.85);
+    box-shadow: 0 8px 22px rgba(109,40,217,.12);
+    font-size: 23px;
+}
+
+.messages-hero h1 {
+    margin: 0;
+    font-size: clamp(25px, 3vw, 36px);
+    font-weight: 800;
+    color: #171329;
+}
+
+.messages-hero p {
+    margin-top: 9px;
+    color: #625b75;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* =====================================
+   SUMMARY
+===================================== */
+
+.messages-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 23px 27px;
+    margin-bottom: 25px;
+    border-radius: 21px;
+    background: rgba(255,255,255,.82);
+    border: 1px solid rgba(167,139,250,.23);
+    box-shadow: 0 10px 35px rgba(91,33,182,.07);
+    backdrop-filter: blur(15px);
+    animation: messageFadeUp .8s ease both;
+}
+
+.messages-summary-label {
+    color: #6b647b;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.messages-summary-count {
+    margin-top: 5px;
+    color: #5b21b6;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.messages-summary-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    color: #6d28d9;
+    background: #ede9fe;
+    font-size: 22px;
+}
+
+/* =====================================
+   TABLE CARD
+===================================== */
+
+.messages-glass {
+    padding: 27px;
+    border-radius: 25px;
+    background: rgba(255,255,255,.86);
+    border: 1px solid rgba(167,139,250,.22);
+    box-shadow: 0 15px 45px rgba(91,33,182,.08);
+    backdrop-filter: blur(18px);
+    animation: messageFadeUp .9s ease both;
+}
+
+.messages-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 23px;
+}
+
+.messages-heading h2 {
+    margin: 0;
+    color: #171329;
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.messages-heading p {
+    margin: 6px 0 0;
+    color: #777086;
+    font-size: 13px;
+}
+
+/* SEARCH */
+
+.messages-search-wrap {
+    position: relative;
+    width: min(100%, 310px);
+}
+
+.messages-search-wrap i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8b5cf6;
+}
+
+.messages-search {
+    width: 100%;
+    height: 45px;
+    padding: 0 15px 0 43px;
+    border: 1px solid #ddd6fe;
+    border-radius: 13px;
+    outline: none;
+    background: #faf9ff;
+    color: #171329;
+    font-size: 13px;
+    transition: .25s ease;
+}
+
+.messages-search:focus {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 4px rgba(139,92,246,.12);
+    background: white;
+}
+
+/* TABLE */
+
+.messages-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 16px;
+    border: 1px solid #eee9fa;
+}
+
+.messages-table {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.messages-table thead {
+    background: #f1edff;
+}
+
+.messages-table th {
+    padding: 16px 14px;
+    color: #4c347b;
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.messages-table td {
+    padding: 15px 14px;
+    border-top: 1px solid #f0edf7;
+    color: #332d40;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.messages-table tbody tr {
+    transition: background .25s ease;
+}
+
+.messages-table tbody tr:hover {
+    background: #faf8ff;
+}
+
+.message-name {
+    font-weight: 700;
+    color: #211936;
+}
+
+.message-email {
+    color: #6d28d9;
+    overflow-wrap: anywhere;
+}
+
+.message-subject {
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.message-preview {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.message-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+}
+
+.message-view-btn,
+.message-delete-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    transition: .25s ease;
+}
+
+.message-view-btn {
+    color: #6d28d9;
+    background: #ede9fe;
+}
+
+.message-view-btn:hover {
+    color: white;
+    background: #7c3aed;
+    transform: translateY(-2px);
+}
+
+.message-delete-btn {
+    width: 36px;
+    color: #dc2626;
+    background: #fee2e2;
+}
+
+.message-delete-btn:hover {
+    color: white;
+    background: #dc2626;
+    transform: translateY(-2px);
+}
+
+.messages-empty {
+    padding: 35px !important;
+    text-align: center;
+    color: #777086 !important;
+}
+
+.messages-empty i {
+    display: block;
+    margin-bottom: 10px;
+    color: #a78bfa;
+    font-size: 28px;
+}
+
+.messages-empty strong,
+.messages-empty span {
+    display: block;
+}
+
+.messages-empty strong {
+    color: #332d40;
+    margin-bottom: 5px;
+}
+
+/* =====================================
+   VIEW MODAL
+===================================== */
+
+.message-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .3s ease, visibility .3s ease;
+}
+
+.message-modal.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.message-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(25,12,48,.58);
+    backdrop-filter: blur(9px);
+}
+
+.message-modal-panel {
+    position: relative;
+    width: min(100%, 650px);
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 28px;
+    border-radius: 25px;
+    border: 1px solid rgba(255,255,255,.75);
+    background: rgba(255,255,255,.96);
+    box-shadow: 0 25px 90px rgba(30,15,60,.3);
+    transform: translateY(30px) scale(.96);
+    transition: transform .35s cubic-bezier(.2,.8,.2,1);
+}
+
+.message-modal.active .message-modal-panel {
+    transform: translateY(0) scale(1);
+}
+
+.message-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #eee9fa;
+}
+
+.message-modal-header h2 {
+    margin: 0;
+    color: #211936;
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.message-modal-header p {
+    margin: 5px 0 0;
+    color: #777086;
+    font-size: 12px;
+}
+
+.message-modal-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 39px;
+    height: 39px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 12px;
+    color: #6d28d9;
+    background: #ede9fe;
+    font-size: 17px;
+    cursor: pointer;
+    transition: .25s ease;
+}
+
+.message-modal-close:hover {
+    color: white;
+    background: #7c3aed;
+    transform: rotate(90deg);
+}
+
+.message-modal-person {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 0;
+}
+
+.message-modal-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 15px;
+    color: #6d28d9;
+    background: #ede9fe;
+    font-size: 20px;
+}
+
+.message-modal-person h3 {
+    margin: 0;
+    color: #211936;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.message-modal-person span {
+    color: #817990;
+    font-size: 12px;
+}
+
+.message-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 13px;
+}
+
+.message-detail-box {
+    min-width: 0;
+    padding: 15px;
+    border: 1px solid #eee9fa;
+    border-radius: 14px;
+    background: #faf9ff;
+}
+
+.message-detail-box.full {
+    grid-column: 1 / -1;
+}
+
+.message-detail-box label {
+    display: block;
+    margin-bottom: 7px;
+    color: #7c3aed;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.message-detail-box p {
+    margin: 0;
+    color: #282238;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.message-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+}
+
+.message-reply-btn,
+.message-close-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 10px 17px;
+    border: 0;
+    border-radius: 11px;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    transition: .25s ease;
+}
+
+.message-reply-btn {
+    color: white;
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+}
+
+.message-reply-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(109,40,217,.2);
+}
+
+.message-close-btn {
+    color: #51476a;
+    background: #ede9fe;
+}
+
+.message-close-btn:hover {
+    background: #ddd6fe;
+}
+
+/* =====================================
+   ANIMATIONS
+===================================== */
+
+@keyframes messageFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(22px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes messageFloat {
+    0%, 100% {
+        transform: translate(0,0);
+    }
+    50% {
+        transform: translate(-18px,18px);
+    }
+}
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media (max-width: 1023px) {
+    .messages-page {
+        padding: 25px;
+    }
+
+    .messages-hero {
+        padding: 28px;
+    }
+
+    .messages-glass {
+        padding: 22px;
+    }
+}
+
+@media (max-width: 767px) {
+    .messages-page {
+        padding: 17px 13px 30px;
+    }
+
+    .messages-hero {
+        padding: 23px 19px;
+        border-radius: 20px;
+    }
+
+    .messages-hero h1 {
+        font-size: 26px;
+    }
+
+    .messages-summary {
+        padding: 19px;
+    }
+
+    .messages-glass {
+        padding: 17px 13px;
+        border-radius: 19px;
+    }
+
+    .messages-heading {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .messages-search-wrap {
+        width: 100%;
+    }
+
+    .message-modal-panel {
+        padding: 21px 17px;
+        border-radius: 19px;
+        max-height: 90vh;
+    }
+
+    .message-modal-header h2 {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 420px) {
+    .message-details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .message-detail-box.full {
+        grid-column: auto;
+    }
+
+    .message-modal-footer {
+        flex-direction: column;
+    }
+
+    .message-reply-btn,
+    .message-close-btn {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .messages-page *,
+    .messages-page *::before,
+    .message-modal *,
+    .message-modal *::before {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+    }
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="messages-page">
+
+    <!-- HERO -->
+    <section class="messages-hero">
+        <div class="messages-hero-content">
+
+            <div class="messages-hero-icon">
+                <i class="fa-solid fa-message"></i>
+            </div>
+
+            <h1>Website Messages</h1>
+
+            <p>
+                Manage, review and respond to messages submitted
+                through the N-ME website.
+            </p>
+
+        </div>
+    </section>
+
+
+    <!-- SUMMARY -->
+    <section class="messages-summary">
+
+        <div>
+            <div class="messages-summary-label">
+                Total Messages Received
+            </div>
+
+            <div class="messages-summary-count">
+                {{ messages|length }}
+            </div>
+        </div>
+
+        <div class="messages-summary-icon">
+            <i class="fa-solid fa-inbox"></i>
+        </div>
+
+    </section>
+
+
+    <!-- TABLE -->
+    <section class="messages-glass">
+
+        <div class="messages-heading">
+
+            <div>
+                <h2>All Messages</h2>
+                <p>View complete message details or delete a message.</p>
+            </div>
+
+            <div class="messages-search-wrap">
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="search"
+                    id="messageSearch"
+                    class="messages-search"
+                    placeholder="Search name, email, phone..."
+                    aria-label="Search messages">
+            </div>
+
+        </div>
+
+
+        <div class="messages-table-wrap">
+
+            <table class="messages-table">
+
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Subject</th>
+                        <th>Message</th>
+                        <th style="text-align:center;">Actions</th>
+                    </tr>
+                </thead>
+
+
+                <tbody id="messagesTableBody">
+
+                    {% for msg in messages %}
+
+                    <tr class="message-row">
+
+                        <td>
+                            <div class="message-name">
+                                {{ msg.full_name|default:"Not provided" }}
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="message-email">
+                                {{ msg.email }}
+                            </div>
+                        </td>
+
+                        <td>{{ msg.phone|default:"Not provided" }}</td>
+
+                        <td>
+                            <div class="message-subject">
+                                {{ msg.subject|default:"No subject" }}
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="message-preview">
+                                {{ msg.message }}
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="message-actions">
+
+                                <!-- VIEW BUTTON -->
+                                <button
+                                    type="button"
+                                    class="message-view-btn"
+                                    onclick="openMessageModal(this)"
+                                    data-name="{{ msg.full_name|default_if_none:''|escape }}"
+                                    data-email="{{ msg.email|default_if_none:''|escape }}"
+                                    data-phone="{{ msg.phone|default_if_none:''|escape }}"
+                                    data-subject="{{ msg.subject|default_if_none:''|escape }}"
+                                    data-message="{{ msg.message|default_if_none:''|escape }}">
+
+                                    <i class="fa-solid fa-eye"></i>
+                                    View
+
+                                </button>
+
+
+                                <!-- DELETE -->
+                                <form
+                                    method="POST"
+                                    action="{% url 'delete_message' msg.id %}"
+                                    onsubmit="return confirm('Are you sure you want to delete this message?');">
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="message-delete-btn"
+                                        aria-label="Delete message">
+
+                                        <i class="fa-solid fa-trash"></i>
+
+                                    </button>
+
+                                </form>
+
+                            </div>
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td colspan="6" class="messages-empty">
+                            <i class="fa-regular fa-envelope"></i>
+                            <strong>No messages yet</strong>
+                            <span>New website messages will appear here.</span>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+
+                    <tr id="messageNoResults" style="display:none;">
+                        <td colspan="6" class="messages-empty">
+                            <strong>No matching messages</strong>
+                            <span>Try another name, email, phone or subject.</span>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- =====================================
+     MESSAGE DETAILS MODAL
+===================================== -->
+
+<div
+    id="messageModal"
+    class="message-modal"
+    aria-hidden="true">
+
+    <div
+        class="message-modal-backdrop"
+        onclick="closeMessageModal()">
+    </div>
+
+
+    <section
+        class="message-modal-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="messageModalTitle">
+
+        <div class="message-modal-header">
+
+            <div>
+                <h2 id="messageModalTitle">Message Details</h2>
+                <p>Complete information submitted through N-ME</p>
+            </div>
+
+            <button
+                type="button"
+                class="message-modal-close"
+                onclick="closeMessageModal()"
+                aria-label="Close modal">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <div class="message-modal-person">
+
+            <div class="message-modal-avatar">
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div>
+                <h3 id="modalMessageName">Name</h3>
+                <span>Website visitor</span>
+            </div>
+
+        </div>
+
+
+        <div class="message-details-grid">
+
+            <div class="message-detail-box">
+                <label>Email Address</label>
+                <p id="modalMessageEmail">Not provided</p>
+            </div>
+
+            <div class="message-detail-box">
+                <label>Phone Number</label>
+                <p id="modalMessagePhone">Not provided</p>
+            </div>
+
+            <div class="message-detail-box full">
+                <label>Subject</label>
+                <p id="modalMessageSubject">No subject</p>
+            </div>
+
+            <div class="message-detail-box full">
+                <label>Complete Message</label>
+                <p id="modalMessageContent">No message provided</p>
+            </div>
+
+        </div>
+
+
+        <div class="message-modal-footer">
+
+            <a
+                href="#"
+                id="modalMessageReply"
+                class="message-reply-btn">
+
+                <i class="fa-solid fa-envelope"></i>
+                Reply by Email
+
+            </a>
+
+            <button
+                type="button"
+                class="message-close-btn"
+                onclick="closeMessageModal()">
+
+                Close
+
+            </button>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* =====================================
+       SEARCH MESSAGES
+    ===================================== */
+
+    const searchInput = document.getElementById("messageSearch");
+    const tableBody = document.getElementById("messagesTableBody");
+    const noResults = document.getElementById("messageNoResults");
+
+    if (searchInput && tableBody) {
+
+        const rows = Array.from(
+            tableBody.querySelectorAll(".message-row")
+        );
+
+        searchInput.addEventListener("input", function () {
+
+            const searchText = this.value
+                .trim()
+                .toLowerCase()
+                .replace(/\s+/g, " ");
+
+            let visibleCount = 0;
+
+            rows.forEach(function (row) {
+
+                const rowText = row.textContent
+                    .toLowerCase()
+                    .replace(/\s+/g, " ");
+
+                const matches = rowText.includes(searchText);
+
+                row.style.display = matches ? "" : "none";
+
+                if (matches) {
+                    visibleCount++;
+                }
+
+            });
+
+            if (noResults) {
+                noResults.style.display =
+                    rows.length > 0 && visibleCount === 0
+                        ? "table-row"
+                        : "none";
+            }
+
+        });
+
+    }
+
+
+    /* =====================================
+       MESSAGE MODAL
+    ===================================== */
+
+    const modal = document.getElementById("messageModal");
+
+    const modalName = document.getElementById("modalMessageName");
+    const modalEmail = document.getElementById("modalMessageEmail");
+    const modalPhone = document.getElementById("modalMessagePhone");
+    const modalSubject = document.getElementById("modalMessageSubject");
+    const modalContent = document.getElementById("modalMessageContent");
+    const replyLink = document.getElementById("modalMessageReply");
+
+    let previousFocus = null;
+
+
+    window.openMessageModal = function (button) {
+
+        if (!modal || !button) return;
+
+        previousFocus = button;
+
+        const data = button.dataset;
+
+        modalName.textContent = data.name || "Not provided";
+
+        modalEmail.textContent = data.email || "Not provided";
+
+        modalPhone.textContent = data.phone || "Not provided";
+
+        modalSubject.textContent = data.subject || "No subject";
+
+        modalContent.textContent = data.message || "No message provided";
+
+
+        if (data.email) {
+            replyLink.href = "mailto:" + data.email;
+            replyLink.style.pointerEvents = "auto";
+            replyLink.style.opacity = "1";
+        } else {
+            replyLink.href = "#";
+            replyLink.style.pointerEvents = "none";
+            replyLink.style.opacity = ".5";
+        }
+
+
+        modal.classList.add("active");
+
+        modal.setAttribute("aria-hidden", "false");
+
+        document.body.style.overflow = "hidden";
+
+        const closeButton = modal.querySelector(".message-modal-close");
+
+        if (closeButton) {
+            closeButton.focus();
+        }
+
+    };
+
+
+    window.closeMessageModal = function () {
+
+        if (!modal) return;
+
+        modal.classList.remove("active");
+
+        modal.setAttribute("aria-hidden", "true");
+
+        document.body.style.overflow = "";
+
+        if (previousFocus && document.contains(previousFocus)) {
+            previousFocus.focus();
+        }
+
+    };
+
+
+    /* CLOSE WITH ESCAPE */
+
+    document.addEventListener("keydown", function (event) {
+
+        if (
+            event.key === "Escape" &&
+            modal &&
+            modal.classList.contains("active")
+        ) {
+            closeMessageModal();
+        }
+
+    });
+
+});
+</script>
+
+{% endblock %}

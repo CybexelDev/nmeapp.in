@@ -1,0 +1,682 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}N-ME Admin{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'output.css' %}">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --violet: #7c3aed;
+            --violet-dark: #6d28d9;
+            --violet-light: #a78bfa;
+            --violet-soft: #f3e8ff;
+            --text-dark: #171322;
+            --text-muted: #5b556b;
+            --glass-white: rgba(255, 255, 255, 0.72);
+            --glass-border: rgba(255, 255, 255, 0.85);
+            --glass-shadow: 0 12px 40px rgba(91, 33, 182, 0.09);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            color: var(--text-dark);
+            background:
+                radial-gradient(ellipse at 10% 10%, rgba(196, 181, 253, 0.45), transparent 38%),
+                radial-gradient(ellipse at 90% 20%, rgba(221, 214, 254, 0.55), transparent 35%),
+                radial-gradient(ellipse at 50% 100%, rgba(233, 213, 255, 0.48), transparent 42%),
+                linear-gradient(135deg, #faf8ff, #f4efff 48%, #ffffff);
+            background-attachment: fixed;
+            font-family: inherit;
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit;
+        }
+
+        button,
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* LIQUID GLASS BACKGROUND */
+
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+            isolation: isolate;
+        }
+
+        .admin-layout::before,
+        .admin-layout::after {
+            content: "";
+            position: fixed;
+            width: 380px;
+            height: 380px;
+            border-radius: 50%;
+            filter: blur(85px);
+            opacity: 0.30;
+            pointer-events: none;
+            z-index: -1;
+            animation: liquidFloat 13s ease-in-out infinite alternate;
+        }
+
+        .admin-layout::before {
+            top: 8%;
+            left: 18%;
+            background: rgba(167, 139, 250, 0.48);
+        }
+
+        .admin-layout::after {
+            right: 4%;
+            bottom: 4%;
+            background: rgba(216, 180, 254, 0.50);
+            animation-delay: -5s;
+        }
+
+        @keyframes liquidFloat {
+            0% {
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+            50% {
+                transform: translate3d(35px, 25px, 0) scale(1.12);
+            }
+            100% {
+                transform: translate3d(-25px, 45px, 0) scale(0.95);
+            }
+        }
+
+        /* SIDEBAR */
+
+        .admin-sidebar {
+            width: 256px;
+            min-width: 256px;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+
+            background: rgba(255, 255, 255, 0.74);
+            backdrop-filter: blur(28px) saturate(170%);
+            -webkit-backdrop-filter: blur(28px) saturate(170%);
+
+            border-right: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 8px 0 35px rgba(91, 33, 182, 0.07);
+
+            z-index: 100;
+        }
+
+        .admin-sidebar::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-right: 1px solid rgba(167, 139, 250, 0.10);
+            pointer-events: none;
+        }
+
+        .admin-sidebar nav {
+            flex: 1;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(124, 58, 237, 0.25) transparent;
+        }
+
+        .admin-sidebar nav::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .admin-sidebar nav::-webkit-scrollbar-thumb {
+            background: rgba(124, 58, 237, 0.25);
+            border-radius: 20px;
+        }
+
+        /* NAVIGATION LINKS */
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 13px;
+
+            color: #211a2d;
+            font-weight: 500;
+            text-decoration: none;
+
+            border: 1px solid transparent;
+            transition:
+                background 0.3s ease,
+                color 0.3s ease,
+                transform 0.3s ease,
+                box-shadow 0.3s ease,
+                border-color 0.3s ease;
+
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+            color: #7c3aed;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(243, 232, 255, 0.85);
+            color: #171322;
+            border-color: rgba(167, 139, 250, 0.35);
+            box-shadow: 0 5px 18px rgba(124, 58, 237, 0.09);
+            transform: translateX(3px);
+        }
+
+        .nav-link:hover i {
+            transform: scale(1.12);
+            color: #6d28d9;
+        }
+
+        .nav-link.active {
+            background:
+                linear-gradient(
+                    120deg,
+                    rgba(237, 233, 254, 0.98),
+                    rgba(250, 245, 255, 0.92)
+                );
+            color: #171322;
+            border-color: rgba(167, 139, 250, 0.42);
+            box-shadow:
+                0 5px 18px rgba(124, 58, 237, 0.10),
+                inset 0 1px 0 rgba(255, 255, 255, 0.95);
+            font-weight: 700;
+        }
+
+        .nav-link.active::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 20%;
+            height: 60%;
+            width: 3px;
+            border-radius: 0 5px 5px 0;
+            background: linear-gradient(180deg, #a78bfa, #6d28d9);
+        }
+
+        .nav-link.active i {
+            color: #6d28d9;
+        }
+
+        /* LOGO AREA */
+
+        .admin-sidebar .border-b {
+            border-color: rgba(167, 139, 250, 0.16);
+        }
+
+        .admin-sidebar img {
+            object-fit: contain;
+            filter: drop-shadow(0 3px 8px rgba(124, 58, 237, 0.10));
+        }
+
+        /* LOGOUT */
+
+        .admin-sidebar .border-t {
+            border-color: rgba(167, 139, 250, 0.18);
+        }
+
+        .admin-sidebar .border-t a {
+            color: #211a2d;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.25s ease;
+        }
+
+        .admin-sidebar .border-t a:hover {
+            color: #dc2626;
+            transform: translateX(3px);
+        }
+
+        /* MAIN CONTENT */
+
+        .admin-main {
+            flex: 1;
+            min-width: 0;
+            width: 100%;
+            position: relative;
+            color: var(--text-dark);
+        }
+
+        .mobile-topbar,
+        .mobile-sidebar-header,
+        .sidebar-overlay {
+            display: none;
+        }
+
+        /* GENERAL GLASS SURFACES FOR CHILD PAGES */
+
+        .admin-main .bg-white,
+        .admin-main .bg-white\/90,
+        .admin-main .bg-white\/95 {
+            background: rgba(255, 255, 255, 0.72) !important;
+            backdrop-filter: blur(22px) saturate(160%);
+            -webkit-backdrop-filter: blur(22px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.88);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .admin-main .shadow,
+        .admin-main .shadow-md,
+        .admin-main .shadow-lg,
+        .admin-main .shadow-xl {
+            box-shadow: var(--glass-shadow);
+        }
+
+        .admin-main h1,
+        .admin-main h2,
+        .admin-main h3,
+        .admin-main h4,
+        .admin-main p,
+        .admin-main label,
+        .admin-main td,
+        .admin-main th,
+        .admin-main span {
+            color: inherit;
+        }
+
+        /* TABLET */
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .admin-sidebar {
+                width: 210px;
+                min-width: 210px;
+            }
+
+            .admin-sidebar nav {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .nav-link {
+                padding: 11px 12px;
+                gap: 10px;
+                font-size: 14px;
+            }
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 767px) {
+
+            .admin-sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+
+                width: min(290px, 85vw);
+                min-width: 0;
+                height: 100vh;
+                height: 100dvh;
+
+                background: rgba(255, 255, 255, 0.91);
+                backdrop-filter: blur(30px) saturate(180%);
+                -webkit-backdrop-filter: blur(30px) saturate(180%);
+
+                transform: translateX(-105%);
+                visibility: hidden;
+
+                transition:
+                    transform 0.3s ease,
+                    visibility 0.3s ease;
+
+                z-index: 110;
+                overflow-y: auto;
+            }
+
+            .admin-sidebar.mobile-open {
+                transform: translateX(0);
+                visibility: visible;
+            }
+
+            .mobile-sidebar-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 18px;
+                border-bottom: 1px solid rgba(167, 139, 250, 0.20);
+                color: #171322;
+                font-weight: 700;
+            }
+
+            .sidebar-close {
+                width: 36px;
+                height: 36px;
+                border: 1px solid rgba(167, 139, 250, 0.25);
+                border-radius: 10px;
+                background: rgba(243, 232, 255, 0.8);
+                color: #6d28d9;
+                cursor: pointer;
+                font-size: 18px;
+                transition: 0.25s ease;
+            }
+
+            .sidebar-close:hover {
+                background: #7c3aed;
+                color: white;
+                transform: rotate(90deg);
+            }
+
+            .mobile-topbar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                height: 64px;
+                padding: 0 16px;
+
+                background: rgba(255, 255, 255, 0.78);
+                backdrop-filter: blur(24px) saturate(170%);
+                -webkit-backdrop-filter: blur(24px) saturate(170%);
+
+                border-bottom: 1px solid rgba(255, 255, 255, 0.9);
+                box-shadow: 0 5px 20px rgba(91, 33, 182, 0.06);
+
+                position: sticky;
+                top: 0;
+                z-index: 90;
+            }
+
+            .mobile-topbar .font-semibold {
+                color: #171322 !important;
+            }
+
+            .mobile-menu-btn,
+            .mobile-logout {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+
+                border: 1px solid rgba(167, 139, 250, 0.25);
+                border-radius: 12px;
+
+                background: rgba(243, 232, 255, 0.82);
+                color: #6d28d9;
+
+                font-size: 19px;
+                cursor: pointer;
+                text-decoration: none;
+                transition: 0.25s ease;
+            }
+
+            .mobile-menu-btn:hover,
+            .mobile-logout:hover {
+                background: #7c3aed;
+                color: white;
+                transform: translateY(-2px);
+            }
+
+            .sidebar-overlay {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(25, 15, 45, 0.38);
+                backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(5px);
+
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+
+                z-index: 105;
+                transition: 0.3s ease;
+            }
+
+            .sidebar-overlay.active {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+            }
+
+            body.sidebar-active {
+                overflow: hidden;
+            }
+
+            .admin-main {
+                width: 100%;
+            }
+
+            .admin-layout::before,
+            .admin-layout::after {
+                width: 220px;
+                height: 220px;
+                filter: blur(65px);
+            }
+        }
+
+        /* SMALL MOBILE */
+
+        @media (max-width: 380px) {
+            .mobile-topbar {
+                padding: 0 10px;
+            }
+
+            .mobile-topbar .font-semibold {
+                font-size: 13px;
+            }
+
+            .admin-sidebar {
+                width: min(280px, 88vw);
+            }
+        }
+
+        /* ACCESSIBILITY */
+
+        a:focus-visible,
+        button:focus-visible {
+            outline: 3px solid rgba(124, 58, 237, 0.45);
+            outline-offset: 3px;
+        }
+
+        /* REDUCED MOTION */
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <aside id="adminSidebar"
+           class="admin-sidebar bg-white shadow-lg">
+
+        <div class="mobile-sidebar-header">
+            <span class="font-semibold text-lg">N-ME Admin</span>
+
+            <button type="button"
+                    onclick="closeAdminSidebar()"
+                    class="sidebar-close"
+                    aria-label="Close navigation">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- LOGO -->
+        <div class="h-20 flex items-center justify-center border-b">
+            <img src="{% static 'images/logo.png' %}"
+                 alt="N-ME Logo"
+                 class="h-10">
+        </div>
+
+        <!-- NAVIGATION -->
+        <nav class="px-4 py-6 space-y-2">
+
+            <a href="{% url 'dashboard' %}"
+               class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </a>
+
+            <a href="{% url 'admin_blogs' %}"
+               class="nav-link {% if request.resolver_match.url_name == 'admin_blogs' %}active{% endif %}">
+                <i class="fa-solid fa-pen-nib"></i>
+                Blogs
+            </a>
+
+            <!-- <a
+               class="nav-link {% if request.resolver_match.url_name == 'admin_added_blogs' %}active{% endif %}">
+                <i class="fa-solid fa-newspaper"></i>
+                Added Blogs
+            </a> -->
+
+            <a href="{% url 'admin_enquiry' %}"
+               class="nav-link {% if request.resolver_match.url_name == 'admin_enquiry' %}active{% endif %}">
+                <i class="fa-solid fa-envelope-open-text"></i>
+                Enquiry
+            </a>
+
+            <a href="{% url 'admin_testimonials' %}"
+               class="nav-link {% if request.resolver_match.url_name == 'admin_testimonials' %}active{% endif %}">
+                <i class="fa-solid fa-star"></i>
+                Testimonials
+            </a>
+
+            <a href="{% url 'admin_messages' %}"
+               class="nav-link {% if request.resolver_match.url_name == 'admin_messages' %}active{% endif %}">
+                <i class="fa-solid fa-message"></i>
+                Messages
+            </a>
+
+        </nav>
+
+        <!-- LOGOUT -->
+        <div class="p-4 border-t">
+            <a href="{% url 'logout' %}"
+               class="flex items-center gap-3">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </a>
+        </div>
+
+    </aside>
+
+    <!-- SIDEBAR OVERLAY -->
+    <div id="sidebarOverlay"
+         class="sidebar-overlay"
+         onclick="closeAdminSidebar()">
+    </div>
+
+    <!-- MAIN -->
+    <main class="admin-main">
+
+        <!-- MOBILE HEADER -->
+        <header class="mobile-topbar">
+
+            <button type="button"
+                    onclick="openAdminSidebar()"
+                    class="mobile-menu-btn"
+                    aria-label="Open navigation">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div class="flex items-center gap-2">
+                <img src="{% static 'images/logo.png' %}"
+                     alt="N-ME Logo"
+                     class="h-8 w-auto">
+
+                <span class="font-semibold text-gray-800">
+                    Admin Panel
+                </span>
+            </div>
+
+            <a href="{% url 'logout' %}"
+               class="mobile-logout"
+               aria-label="Logout">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </a>
+
+        </header>
+
+        <!-- CHILD PAGE CONTENT -->
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+</div>
+
+<script>
+    function openAdminSidebar() {
+        const sidebar = document.getElementById("adminSidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+
+        if (!sidebar || !overlay) return;
+
+        sidebar.classList.add("mobile-open");
+        overlay.classList.add("active");
+        document.body.classList.add("sidebar-active");
+    }
+
+    function closeAdminSidebar() {
+        const sidebar = document.getElementById("adminSidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+
+        if (!sidebar || !overlay) return;
+
+        sidebar.classList.remove("mobile-open");
+        overlay.classList.remove("active");
+        document.body.classList.remove("sidebar-active");
+    }
+
+    window.addEventListener("resize", function () {
+        if (window.innerWidth >= 768) {
+            closeAdminSidebar();
+        }
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            closeAdminSidebar();
+        }
+    });
+</script>
+
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>

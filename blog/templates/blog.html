@@ -165,7 +165,9 @@ health centre near me, health clinic near me, private clinic near me, care clini
         <a href="{% url 'blogs' %}" class="block text-[16px] px-6 py-3 text-blue-600">Blogs</a>
         <a href="{% url 'faq' %}" class="block text-[16px] px-6 py-3 hover:text-blue-600">FAQs</a>
         <a href="{% url 'services' %}" class="block text-[16px] px-6 py-3 hover:text-blue-600">Services</a>
+        
         <a href="{% url 'contact' %}" class="block text-[16px] px-6 py-3 hover:text-blue-600">Contact</a>
+        <a href="{% url 'message' %}" class="block text-[16px] px-6 py-3 hover:text-blue-600">Message</a>
 
       </div>
 
@@ -408,7 +410,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <!-- ================= PAGINATION ================= -->
 
-<div class="mt-20 mb-5 flex items-center justify-center gap-1 sm:gap-3">
+<!-- <div class="mt-20 mb-5 flex items-center justify-center gap-1 sm:gap-3">
 
   <p class="cursor-pointer px-2 sm:px-6 py-1.5 sm:py-3
             text-xs sm:text-base font-manrope rounded-3xl bg-white">
@@ -451,7 +453,104 @@ document.addEventListener("DOMContentLoaded", () => {
     Last
   </p>
 
+</div> -->
+
+
+<div class="mt-20 mb-5 flex items-center justify-center gap-1 sm:gap-3">
+
+  <!-- First -->
+  {% if page_obj.has_previous %}
+    <a href="?{% if query %}q={{ query|urlencode }}&{% endif %}page=1"
+       class="cursor-pointer px-2 sm:px-6 py-1.5 sm:py-3
+              text-xs sm:text-base font-manrope rounded-3xl bg-white">
+      First
+    </a>
+  {% else %}
+    <span class="cursor-pointer px-2 sm:px-6 py-1.5 sm:py-3
+                 text-xs sm:text-base font-manrope rounded-3xl bg-white">
+      First
+    </span>
+  {% endif %}
+
+
+  <ul class="flex items-center font-manrope gap-1 sm:gap-2
+             rounded-3xl border border-white p-1 bg-gray-50">
+
+    <!-- Previous -->
+    {% if page_obj.has_previous %}
+      <li>
+        <a href="?{% if query %}q={{ query|urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}"
+           class="block cursor-pointer text-white px-2 sm:px-4 py-1.5 sm:py-3
+                  rounded-3xl text-center bg-black text-xs sm:text-base">
+          Previous
+        </a>
+      </li>
+    {% else %}
+      <li class="cursor-pointer text-white px-2 sm:px-4 py-1.5 sm:py-3
+                 rounded-3xl text-center bg-black text-xs sm:text-base">
+        Previous
+      </li>
+    {% endif %}
+
+
+    <!-- Page Numbers -->
+    {% for num in page_obj.paginator.page_range %}
+
+      {% if page_obj.number == num %}
+        <li class="cursor-pointer px-2 sm:px-4 py-1.5 sm:py-3
+                   rounded-full min-w-[30px] sm:min-w-[50px]
+                   text-center bg-[#5A8EFF] text-black text-xs sm:text-base">
+          {{ num }}
+        </li>
+      {% else %}
+        <li>
+          <a href="?{% if query %}q={{ query|urlencode }}&{% endif %}page={{ num }}"
+             class="block cursor-pointer px-2 sm:px-4 py-1.5 sm:py-3
+                    rounded-full min-w-[30px] sm:min-w-[50px]
+                    text-center text-xs sm:text-base">
+            {{ num }}
+          </a>
+        </li>
+      {% endif %}
+
+    {% endfor %}
+
+
+    <!-- Next -->
+    {% if page_obj.has_next %}
+      <li>
+        <a href="?{% if query %}q={{ query|urlencode }}&{% endif %}page={{ page_obj.next_page_number }}"
+           class="block cursor-pointer text-white px-2 sm:px-5 py-1.5 sm:py-3
+                  rounded-3xl text-center bg-black text-xs sm:text-base">
+          Next
+        </a>
+      </li>
+    {% else %}
+      <li class="cursor-pointer text-white px-2 sm:px-5 py-1.5 sm:py-3
+                 rounded-3xl text-center bg-black text-xs sm:text-base">
+        Next
+      </li>
+    {% endif %}
+
+  </ul>
+
+
+  <!-- Last -->
+  {% if page_obj.has_next %}
+    <a href="?{% if query %}q={{ query|urlencode }}&{% endif %}page={{ page_obj.paginator.num_pages }}"
+       class="cursor-pointer px-2 sm:px-6 py-1.5 sm:py-3
+              text-xs sm:text-base font-manrope rounded-3xl bg-white">
+      Last
+    </a>
+  {% else %}
+    <span class="cursor-pointer px-2 sm:px-6 py-1.5 sm:py-3
+                 text-xs sm:text-base font-manrope rounded-3xl bg-white">
+      Last
+    </span>
+  {% endif %}
+
 </div>
+
 
 <!-- ================= GET APP SECTION ================= -->
 
@@ -562,6 +661,38 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     }
 
+    /* ==========================================
+   MOBILE MENU CURRENT PAGE HIGHLIGHTER
+========================================== */
+function highlightCurrentMobilePage() {
+
+    const { menu } = getElements();
+
+    if (!menu) return;
+
+    const currentPath = window.location.pathname
+        .replace(/\/+$/, "") || "/";
+
+    const menuLinks = menu.querySelectorAll("a[href]");
+
+    menuLinks.forEach(function (link) {
+
+        const linkPath = new URL(
+            link.getAttribute("href"),
+            window.location.origin
+        ).pathname.replace(/\/+$/, "") || "/";
+
+        link.classList.remove("nav-active");
+        link.removeAttribute("aria-current");
+
+        if (currentPath === linkPath) {
+            link.classList.add("nav-active");
+            link.setAttribute("aria-current", "page");
+        }
+
+    });
+}
+
     function positionMenu() {
         const { btn, menu } = getElements();
 
@@ -641,7 +772,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "translateY(-8px) scaleY(.95)",
             "important"
         );
-
+        menu.style.setProperty("height", "auto", "important");
         btn.classList.remove("active");
         btn.setAttribute("aria-expanded", "false");
         menu.setAttribute("aria-hidden", "true");
@@ -661,6 +792,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!btn || !menu || initialized) return;
 
         initialized = true;
+        highlightCurrentMobilePage();
 
         btn.type = "button";
         btn.setAttribute("aria-controls", "mobileMenu");
@@ -1116,6 +1248,13 @@ body > section,
     #mobileMenu {
         display: none !important;
     }
+}
+/* Active mobile navigation link */
+#mobileMenu a.nav-active {
+    color: #2563eb !important;
+    background: rgba(59, 130, 246, 0.13) !important;
+    font-weight: 700 !important;
+    border-radius: 10px;
 }
 </style>
 

@@ -106,7 +106,7 @@ grocery delivery near me,fast grocery delivery near me{% endblock %}
   <a href="{% url 'faq' %}" class="block font-manrope text-[16px] px-6 py-3 hover:text-blue-600">FAQs</a>
   <a href="{% url 'services' %}" class="block font-manrope text-[16px] px-6 py-3 text-blue-600">Services</a>
   <a href="{% url 'contact' %}" class="block font-manrope text-[16px] px-6 py-3 hover:text-blue-600">Contact</a>
-
+  <a href="{% url 'message' %}" class="block font-manrope text-[16px] px-6 py-3 hover:text-blue-600">Message</a>
 </div>
   </div>
 </nav>
@@ -1085,166 +1085,219 @@ Quick access to medical help, emergency support, and skilled freelancers.    </p
   </div>
 </section>
 
-<script>
+    <script>
 
-(function () {
-    "use strict";
+    (function () {
+        "use strict";
 
-    const BREAKPOINT = 1024;
-    const SCREEN_PADDING = 12;
-    const MENU_GAP = 10;
+        const BREAKPOINT = 1024;
+        const SCREEN_PADDING = 12;
+        const MENU_GAP = 10;
 
-    let isMenuOpen = false;
+        let isMenuOpen = false;
 
-    function getElements() {
-        return {
-            btn: document.getElementById("menuBtn"),
-            menu: document.getElementById("mobileMenu")
-        };
-    }
-
-    /* Position dropdown below the hamburger button */
-
-    function positionMenu() {
-        const { btn, menu } = getElements();
-
-        if (!btn || !menu || !isMenuOpen) return;
-
-        const btnRect = btn.getBoundingClientRect();
-
-        const availableWidth = window.innerWidth - (SCREEN_PADDING * 2);
-        const menuWidth = Math.min(335, availableWidth);
-
-        let left = btnRect.right - menuWidth;
-
-        left = Math.max(
-            SCREEN_PADDING,
-            Math.min(left, window.innerWidth - menuWidth - SCREEN_PADDING)
-        );
-
-        menu.style.setProperty("position", "fixed", "important");
-        menu.style.setProperty("width", menuWidth + "px", "important");
-        menu.style.setProperty("max-width", availableWidth + "px", "important");
-        menu.style.setProperty("top", (btnRect.bottom + MENU_GAP) + "px", "important");
-        menu.style.setProperty("left", left + "px", "important");
-        menu.style.setProperty("right", "auto", "important");
-        menu.style.setProperty("bottom", "auto", "important");
-        menu.style.setProperty("display", "block", "important");
-    }
-
-    /* Open and close menu */
-
-    function setMenuState(open) {
-        const { btn, menu } = getElements();
-
-        if (!btn || !menu) return;
-
-        isMenuOpen = open && window.innerWidth < BREAKPOINT;
-
-        btn.classList.toggle("active", isMenuOpen);
-        menu.classList.toggle("menu-open", isMenuOpen);
-
-        btn.setAttribute("aria-expanded", String(isMenuOpen));
-        btn.setAttribute(
-            "aria-label",
-            isMenuOpen ? "Close navigation menu" : "Open navigation menu"
-        );
-
-        menu.setAttribute("aria-hidden", String(!isMenuOpen));
-
-        if (isMenuOpen) {
-            positionMenu();
-        } else {
-            menu.style.removeProperty("position");
-            menu.style.removeProperty("top");
-            menu.style.removeProperty("left");
-            menu.style.removeProperty("right");
-            menu.style.removeProperty("bottom");
-            menu.style.removeProperty("width");
-            menu.style.removeProperty("max-width");
-            menu.style.removeProperty("display");
+        function getElements() {
+            return {
+                btn: document.getElementById("menuBtn"),
+                menu: document.getElementById("mobileMenu")
+            };
         }
-    }
 
-    function initializeMenu() {
-        const { btn, menu } = getElements();
+        /* Position dropdown below the hamburger button */
 
-        if (!btn || !menu) return;
+        function positionMenu() {
+            const { btn, menu } = getElements();
 
-        btn.setAttribute("type", "button");
-        btn.setAttribute("aria-controls", "mobileMenu");
+            if (!btn || !menu || !isMenuOpen) return;
 
-        setMenuState(false);
+            const btnRect = btn.getBoundingClientRect();
 
-        /* Hamburger button click */
+            const availableWidth = window.innerWidth - (SCREEN_PADDING * 2);
+            const menuWidth = Math.min(335, availableWidth);
 
-        btn.addEventListener("click", function (event) {
-            event.preventDefault();
-            event.stopPropagation();
+            let left = btnRect.right - menuWidth;
 
-            setMenuState(!isMenuOpen);
-        });
+            left = Math.max(
+                SCREEN_PADDING,
+                Math.min(left, window.innerWidth - menuWidth - SCREEN_PADDING)
+            );
 
-        /* Close after selecting a menu link */
+            menu.style.setProperty("position", "fixed", "important");
+            menu.style.setProperty("width", menuWidth + "px", "important");
+            menu.style.setProperty("max-width", availableWidth + "px", "important");
+            menu.style.setProperty("top", (btnRect.bottom + MENU_GAP) + "px", "important");
+            menu.style.setProperty("left", left + "px", "important");
+            menu.style.setProperty("right", "auto", "important");
+            menu.style.setProperty("bottom", "auto", "important");
+            menu.style.setProperty("display", "block", "important");
+            menu.style.setProperty("height", "auto", "important");
+        }
 
-        menu.addEventListener("click", function (event) {
-            if (event.target.closest("a")) {
-                setMenuState(false);
-            }
-        });
+        function showMobileMenuLinks() {
+            const menu = document.getElementById("mobileMenu");
 
-        /* Close when clicking outside */
+            if (!menu) return;
 
-        document.addEventListener("click", function (event) {
-            if (!isMenuOpen) return;
+            menu.querySelectorAll("a").forEach(function (link) {
+                link.style.setProperty("display", "block", "important");
+                link.style.setProperty("visibility", "visible", "important");
+                link.style.setProperty("opacity", "1", "important");
+                link.style.setProperty("height", "auto", "important");
+                link.style.setProperty("min-height", "48px", "important");
+            });
+        }
+        /* Open and close menu */
 
-            if (
-                !btn.contains(event.target) &&
-                !menu.contains(event.target)
-            ) {
-                setMenuState(false);
-            }
-        });
+        function setMenuState(open) {
+            const { btn, menu } = getElements();
 
-        /* Close with Escape key */
+            if (!btn || !menu) return;
 
-        document.addEventListener("keydown", function (event) {
-            if (event.key === "Escape" && isMenuOpen) {
-                setMenuState(false);
-                btn.focus();
-            }
-        });
+            isMenuOpen = open && window.innerWidth < BREAKPOINT;
 
-        /* Close on desktop breakpoint */
+            btn.classList.toggle("active", isMenuOpen);
+            menu.classList.toggle("menu-open", isMenuOpen);
 
-        window.addEventListener("resize", function () {
-            if (window.innerWidth >= BREAKPOINT) {
-                setMenuState(false);
-            } else {
+            btn.setAttribute("aria-expanded", String(isMenuOpen));
+            btn.setAttribute(
+                "aria-label",
+                isMenuOpen ? "Close navigation menu" : "Open navigation menu"
+            );
+
+            menu.setAttribute("aria-hidden", String(!isMenuOpen));
+
+            if (isMenuOpen) {
                 positionMenu();
+            } else {
+                menu.style.removeProperty("position");
+                menu.style.removeProperty("top");
+                menu.style.removeProperty("left");
+                menu.style.removeProperty("right");
+                menu.style.removeProperty("bottom");
+                menu.style.removeProperty("width");
+                menu.style.removeProperty("max-width");
+                menu.style.removeProperty("display");
             }
-        });
+        }
 
-        /* Keep dropdown aligned while scrolling */
+        function initializeMenu() {
+            const { btn, menu } = getElements();
 
-        window.addEventListener("scroll", function () {
-            positionMenu();
-        }, true);
+            if (!btn || !menu) return;
+            highlightActiveNavLink();
 
-        /* Close if page is restored from browser cache */
+            btn.setAttribute("type", "button");
+            btn.setAttribute("aria-controls", "mobileMenu");
 
-        window.addEventListener("pageshow", function () {
             setMenuState(false);
-        });
-    }
 
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initializeMenu);
-    } else {
-        initializeMenu();
-    }
+            /* Hamburger button click */
 
-})();
+            // btn.addEventListener("click", function (event) {
+            //     event.preventDefault();
+            //     event.stopPropagation();
+
+            //     setMenuState(!isMenuOpen);
+            // });
+
+            btn.addEventListener("click", function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                if (!isMenuOpen) {
+                    showMobileMenuLinks();
+                }
+
+                setMenuState(!isMenuOpen);
+            });
+
+            /* Close after selecting a menu link */
+
+            menu.addEventListener("click", function (event) {
+                if (event.target.closest("a")) {
+                    setMenuState(false);
+                }
+            });
+
+            /* Close when clicking outside */
+
+            document.addEventListener("click", function (event) {
+                if (!isMenuOpen) return;
+
+                if (
+                    !btn.contains(event.target) &&
+                    !menu.contains(event.target)
+                ) {
+                    setMenuState(false);
+                }
+            });
+
+            /* Close with Escape key */
+
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape" && isMenuOpen) {
+                    setMenuState(false);
+                    btn.focus();
+                }
+            });
+
+            /* Close on desktop breakpoint */
+
+            window.addEventListener("resize", function () {
+                if (window.innerWidth >= BREAKPOINT) {
+                    setMenuState(false);
+                } else {
+                    positionMenu();
+                }
+            });
+
+            /* Keep dropdown aligned while scrolling */
+
+            window.addEventListener("scroll", function () {
+                positionMenu();
+            }, true);
+
+            /* Close if page is restored from browser cache */
+
+            window.addEventListener("pageshow", function () {
+                setMenuState(false);
+            });
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initializeMenu);
+        } else {
+            initializeMenu();
+        }
+
+    })();
+
+
+    function highlightActiveNavLink() {
+    const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
+
+    const links = document.querySelectorAll(
+        "nav ul li a, #mobileMenu a"
+    );
+
+    links.forEach(function (link) {
+        const linkPath = new URL(link.href, window.location.origin)
+            .pathname.replace(/\/+$/, "") || "/";
+
+        const isActive = linkPath === currentPath;
+
+        link.classList.toggle("nav-active", isActive);
+
+        if (isActive) {
+            link.setAttribute("aria-current", "page");
+        } else {
+            link.removeAttribute("aria-current");
+        }
+    });
+}
+
+
+
 
 </script>
 
@@ -2465,6 +2518,21 @@ section.w-full.py-20 * {
     box-sizing: border-box;
 }
 
+/* Active desktop navigation link */
+nav ul li a.nav-active {
+    color: #2563eb !important;
+    font-weight: 700 !important;
+    position: relative;
+}
+
+
+/* Active mobile navigation link */
+#mobileMenu a.nav-active {
+    color: #2563eb !important;
+    background: rgba(59, 130, 246, 0.13) !important;
+    font-weight: 700 !important;
+    border-radius: 10px;
+}
 </style>
 
 
