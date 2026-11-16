@@ -461,26 +461,124 @@ def blog_post(request):
         messages.success(request, "Blog added successfully!")
         return redirect('dashboard')  
 
+# def admin_panel(request):
+#     is_superuser = (
+#         request.user.is_authenticated and
+#         request.user.is_superuser
+#     )
+#     # if "name" not in request.session:
+#     #     return render(request, 'login.html')
+
+#     is_custom_user = "name" in request.session
+
+#     if not is_superuser and not is_custom_user:
+#         return redirect('login')
+
+#     blog = Post.objects.all()
+#     contact = Contact.objects.all()
+#     messages = Enquiry.objects.all().order_by("-created_at")
+#     team_members = TeamMember.objects.all()
+#     testimonials = Testimonial.objects.all().order_by('-id')
+
+#     # Get the page parameter from URL (default: dashboard)
+#     page = request.GET.get('page', 'dashboard')
+
+#     context = {
+#         "blog": blog,
+#         "contact": contact,
+#         "messages": messages,
+#         "team_members": team_members,
+#         "testimonials": testimonials,
+#         "page": page,
+#     }
+
+#     # ✅ THIS LINE WAS MISSING
+#     return render(request, "admin/dashboard.html", context)
+
+from django.shortcuts import render, redirect
+from django.db.models import Count
+from django.db.models.functions import ExtractMonth
+from django.utils import timezone
+
 def admin_panel(request):
+
     is_superuser = (
         request.user.is_authenticated and
         request.user.is_superuser
     )
-    # if "name" not in request.session:
-    #     return render(request, 'login.html')
 
     is_custom_user = "name" in request.session
 
     if not is_superuser and not is_custom_user:
         return redirect('login')
 
+    # Existing dashboard data
     blog = Post.objects.all()
     contact = Contact.objects.all()
     messages = Enquiry.objects.all().order_by("-created_at")
     team_members = TeamMember.objects.all()
     testimonials = Testimonial.objects.all().order_by('-id')
 
-    # Get the page parameter from URL (default: dashboard)
+    # =====================================
+    # ENQUIRY ANALYTICS
+    # =====================================
+
+    current_date = timezone.localdate()
+    current_year = current_date.year
+
+    # Get selected year
+    try:
+        selected_year = int(request.GET.get('year', current_year))
+    except (ValueError, TypeError):
+        selected_year = current_year
+
+    # Available years from enquiry records
+    available_years = list(
+        Enquiry.objects
+        .dates('created_at', 'year')
+    )
+
+    year_options = sorted(
+        {date.year for date in available_years} | {current_year},
+        reverse=True
+    )
+
+    # Prevent selecting an unavailable year
+    if selected_year not in year_options:
+        selected_year = current_year
+
+    # Total enquiries
+    total_enquiries = Enquiry.objects.count()
+
+    # Current month's enquiries
+    this_month_enquiries = Enquiry.objects.filter(
+        created_at__year=current_date.year,
+        created_at__month=current_date.month
+    ).count()
+
+    # Enquiries received in the selected year
+    yearly_enquiries = (
+        Enquiry.objects
+        .filter(created_at__year=selected_year)
+        .annotate(month=ExtractMonth('created_at'))
+        .values('month')
+        .annotate(total=Count('pk'))
+        .order_by('month')
+    )
+
+    # Create all 12 months, including months with zero enquiries
+    monthly_counts = [0] * 12
+
+    for item in yearly_enquiries:
+        monthly_counts[item['month'] - 1] = item['total']
+
+    # Total enquiries for selected year
+    selected_year_total = sum(monthly_counts)
+
+    # =====================================
+    # DASHBOARD CONTEXT
+    # =====================================
+
     page = request.GET.get('page', 'dashboard')
 
     context = {
@@ -490,9 +588,17 @@ def admin_panel(request):
         "team_members": team_members,
         "testimonials": testimonials,
         "page": page,
+
+        # Enquiry analytics
+        "today": current_date,
+        "total_enquiries": total_enquiries,
+        "this_month_enquiries": this_month_enquiries,
+        "selected_year": selected_year,
+        "selected_year_total": selected_year_total,
+        "year_options": year_options,
+        "monthly_counts": monthly_counts,
     }
 
-    # ✅ THIS LINE WAS MISSING
     return render(request, "admin/dashboard.html", context)
 
 def delete_message(request, id):

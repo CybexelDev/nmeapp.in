@@ -25,6 +25,7 @@ travel agent near me,near me travel agency
 
 {% if messages %}
     {% for message in messages %}
+    {% if 'dashboard' not in message.tags %}
         <div class="success-alert">
 
             <!-- Animated Gradient Border -->
@@ -59,6 +60,7 @@ travel agent near me,near me travel agency
 
             </div>
         </div>
+        {% endif %}
     {% endfor %}
 {% endif %}
 
@@ -529,7 +531,7 @@ Let's connect! Whether it's feedback, inquiries, or collaboration <br>ideas, we'
 
       <h2 class="text-[20px] md:text-[48px]
                  leading-[1.2] font-semibold text-[#1A1A1A]">
-        Have any confusion feel<br>free to write us
+        Having a confusion?<br>Feel free to write to us
         
       </h2>
 

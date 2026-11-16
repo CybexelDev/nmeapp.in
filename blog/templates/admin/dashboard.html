@@ -818,26 +818,556 @@
     }
 }
 
-/* =====================================
-   FULL-WIDTH DESKTOP DASHBOARD
-===================================== */
+.overview-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    cursor: pointer;
+}
 
-@media (min-width: 1025px) {
+.overview-link:hover {
+    text-decoration: none;
+    color: inherit;
+}
 
-    .dashboard-page {
-        width: 100%;
-        max-width: none;
-        margin: 0;
-        padding: 28px 32px;
-        box-sizing: border-box;
+
+
+/* =========================================
+   DASHBOARD HERO - GLASS ANALYTICS
+========================================= */
+
+.dashboard-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 440px;
+    border-radius: 26px;
+}
+
+.dashboard-hero .hero-background {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.dashboard-hero .hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    min-height: 440px;
+    padding: 35px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(350px, 0.95fr);
+    align-items: center;
+    gap: 35px;
+}
+
+/* LEFT CONTENT */
+
+.dashboard-hero .hero-text {
+    max-width: 540px;
+    color: #ffffff;
+}
+
+.dashboard-hero .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 15px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 30px;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+    color: #ffffff;
+}
+
+.dashboard-hero .hero-text h2 {
+    margin-top: 24px;
+    font-size: clamp(30px, 3.2vw, 46px);
+    line-height: 1.2;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.dashboard-hero .hero-text h2 span {
+    display: block;
+    color: #a5c8ff;
+}
+
+.dashboard-hero .hero-text p {
+    max-width: 450px;
+    margin-top: 18px;
+    color: rgba(255,255,255,0.82);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+
+/* =========================================
+   GLASS ANALYTICS CARD
+========================================= */
+
+.hero-analytics {
+    width: 100%;
+    max-width: 510px;
+    justify-self: end;
+    padding: 23px;
+    border-radius: 23px;
+
+    background: rgba(255,255,255,0.13);
+    border: 1px solid rgba(255,255,255,0.27);
+
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
+    box-shadow:
+        0 18px 50px rgba(8,20,60,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+
+    color: #ffffff;
+}
+
+
+/* HEADER */
+
+.analytics-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.analytics-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    color: #c8dcff;
+}
+
+.analytics-header h3 {
+    margin-top: 7px;
+    font-size: 21px;
+    font-weight: 750;
+    color: #ffffff;
+}
+
+.analytics-header p {
+    margin-top: 4px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+}
+
+.analytics-header-icon {
+    width: 43px;
+    height: 43px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.15);
+    color: #ffffff;
+    font-size: 18px;
+}
+
+
+/* =========================================
+   STATISTICS
+========================================= */
+
+.analytics-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 12px;
+    margin-top: 23px;
+}
+
+.analytics-stat {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 15px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.13);
+}
+
+.stat-icon {
+    width: 37px;
+    height: 37px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    font-size: 15px;
+}
+
+.total-icon {
+    background: rgba(96,165,250,0.24);
+    color: #bfdbfe;
+}
+
+.month-icon {
+    background: rgba(196,181,253,0.23);
+    color: #ddd6fe;
+}
+
+.analytics-stat span {
+    display: block;
+    font-size: 10px;
+    color: rgba(255,255,255,0.75);
+}
+
+.analytics-stat h4 {
+    margin-top: 4px;
+    font-size: 23px;
+    line-height: 1;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+
+/* =========================================
+   GRAPH HEADER
+========================================= */
+
+.analytics-graph-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.analytics-graph-header h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.analytics-graph-header span {
+    display: block;
+    margin-top: 4px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.7);
+}
+
+
+/* YEAR SELECTOR */
+
+.analytics-year-form {
+    position: relative;
+}
+
+.analytics-year-form select {
+    appearance: none;
+    -webkit-appearance: none;
+    min-width: 85px;
+    padding: 8px 28px 8px 12px;
+    border-radius: 9px;
+    outline: none;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.analytics-year-form select option {
+    color: #1e293b;
+    background: #ffffff;
+}
+
+.analytics-year-form > i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 9px;
+    color: #ffffff;
+}
+
+
+/* =========================================
+   CHART
+========================================= */
+
+.analytics-chart-wrapper {
+    position: relative;
+    width: 100%;
+    height: 155px;
+    margin-top: 15px;
+}
+
+.analytics-chart-wrapper canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+
+/* FOOTER */
+
+.analytics-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 13px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.16);
+}
+
+.analytics-footer span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.8);
+}
+
+.analytics-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #93c5fd;
+    box-shadow: 0 0 10px rgba(147,197,253,0.8);
+}
+
+
+/* =========================================
+   RESPONSIVE - TABLET
+========================================= */
+
+@media (max-width: 1024px) {
+
+    .dashboard-hero .hero-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        padding: 25px;
     }
 
-    .dashboard-hero,
-    .dashboard-overview,
-    .team-section {
-        width: 100%;
-        max-width: none;
+    .hero-analytics {
+        padding: 19px;
     }
+
+    .dashboard-hero .hero-text h2 {
+        font-size: 32px;
+    }
+
+}
+
+
+/* =========================================
+   RESPONSIVE - MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+
+    .dashboard-hero {
+        min-height: auto;
+    }
+
+    .dashboard-hero .hero-content {
+        min-height: auto;
+        grid-template-columns: 1fr;
+        gap: 25px;
+        padding: 25px 18px;
+    }
+
+    .dashboard-hero .hero-text {
+        max-width: 100%;
+    }
+
+    .dashboard-hero .hero-text h2 {
+        margin-top: 17px;
+        font-size: 31px;
+    }
+
+    .dashboard-hero .hero-text p {
+        font-size: 13px;
+    }
+
+    .hero-analytics {
+        max-width: 100%;
+        padding: 18px;
+        justify-self: stretch;
+    }
+
+    .analytics-header h3 {
+        font-size: 19px;
+    }
+
+    .analytics-stat {
+        padding: 11px 9px;
+        gap: 8px;
+    }
+
+    .analytics-stat h4 {
+        font-size: 20px;
+    }
+
+    .analytics-stat span {
+        font-size: 9px;
+    }
+
+    .analytics-chart-wrapper {
+        height: 145px;
+    }
+
+}
+
+
+/* SMALL MOBILE */
+
+@media (max-width: 380px) {
+
+    .analytics-stats {
+        gap: 7px;
+    }
+
+    .analytics-stat {
+        padding: 9px 7px;
+    }
+
+    .stat-icon {
+        width: 31px;
+        height: 31px;
+        font-size: 12px;
+    }
+
+    .analytics-stat h4 {
+        font-size: 18px;
+    }
+
+}
+
+/* =========================================
+   GLASS ANALYTICS - IMPROVED TEXT VISIBILITY
+========================================= */
+
+/* Main hero text */
+.dashboard-hero .hero-text {
+    color: #ffffff !important;
+}
+
+.dashboard-hero .hero-text h2 {
+    color: #ffffff !important;
+    font-weight: 850;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.22);
+}
+
+.dashboard-hero .hero-text h2 span {
+    color: #dbeafe !important;
+}
+
+.dashboard-hero .hero-text p {
+    color: #ffffff !important;
+    font-weight: 500;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.25);
+}
+
+/* Hero tag */
+.dashboard-hero .hero-tag {
+    color: #ffffff !important;
+    font-weight: 800;
+    background: rgba(15,23,42,0.22);
+    border-color: rgba(255,255,255,0.4);
+}
+
+/* Analytics card */
+.hero-analytics {
+    color: #ffffff !important;
+}
+
+/* Analytics header */
+.analytics-label {
+    color: #ffffff !important;
+    font-weight: 800;
+}
+
+.analytics-header h3 {
+    color: #ffffff !important;
+    font-weight: 800;
+    text-shadow: 0 1px 5px rgba(0,0,0,0.2);
+}
+
+.analytics-header p {
+    color: #ffffff !important;
+    opacity: 0.95;
+    font-weight: 500;
+}
+
+/* Statistics labels */
+.analytics-stat span {
+    color: #ffffff !important;
+    opacity: 1;
+    font-weight: 600;
+}
+
+.analytics-stat h4 {
+    color: #ffffff !important;
+    font-weight: 850;
+    text-shadow: 0 1px 5px rgba(0,0,0,0.2);
+}
+
+/* Graph heading */
+.analytics-graph-header h4 {
+    color: #ffffff !important;
+    font-weight: 800;
+}
+
+.analytics-graph-header span {
+    color: #ffffff !important;
+    opacity: 0.95;
+    font-weight: 500;
+}
+
+/* Year dropdown */
+.analytics-year-form select {
+    color: #ffffff !important;
+    font-weight: 800;
+    background: rgba(15,23,42,0.28);
+    border-color: rgba(255,255,255,0.4);
+}
+
+.analytics-year-form > i {
+    color: #ffffff !important;
+}
+
+/* Analytics footer */
+.analytics-footer span {
+    color: #ffffff !important;
+    font-weight: 600;
+    opacity: 1;
+}
+
+/* Header icon */
+.analytics-header-icon {
+    color: #ffffff !important;
+}
+
+/* Improve graph readability */
+.analytics-chart-wrapper {
+    color: #ffffff;
+}
+
+/* Improve card separation without removing glass effect */
+.analytics-stat {
+    background: rgba(15,23,42,0.20);
+    border-color: rgba(255,255,255,0.24);
+}
+
+.analytics-header-icon {
+    background: rgba(15,23,42,0.20);
+    border: 1px solid rgba(255,255,255,0.25);
 }
 </style>
 
@@ -871,7 +1401,7 @@
          HERO SECTION
     ====================================== -->
 
-    <section class="dashboard-hero">
+    <!-- <section class="dashboard-hero">
 
         <img src="{% static 'images/admin_bg.png' %}"
              class="hero-background"
@@ -901,7 +1431,160 @@
 
         </div>
 
-    </section>
+    </section> -->
+
+    <section class="dashboard-hero">
+
+    <img src="{% static 'images/admin_bg.png' %}"
+         class="hero-background"
+         alt="N-ME Dashboard">
+
+    <div class="hero-content">
+
+        <!-- LEFT SIDE -->
+        <div class="hero-text">
+
+            <div class="hero-tag">
+                <i class="fa-solid fa-sparkles"></i>
+                N-ME ADMINISTRATION
+            </div>
+
+            <h2>
+                Find What You Need.
+                <span>Nearby.</span>
+            </h2>
+
+            <p>
+                Manage your website content, team members,
+                enquiries and customer messages from one
+                convenient dashboard.
+            </p>
+
+        </div>
+
+
+        <!-- RIGHT SIDE: ENQUIRY ANALYTICS -->
+        <div class="hero-analytics">
+
+            <div class="analytics-header">
+
+                <div>
+                    <span class="analytics-label">
+                        <i class="fa-solid fa-chart-line"></i>
+                        DASHBOARD INSIGHTS
+                    </span>
+
+                    <h3>Enquiry Analytics</h3>
+
+                    <p>Track your customer enquiries</p>
+                </div>
+
+                <div class="analytics-header-icon">
+                    <i class="fa-solid fa-chart-simple"></i>
+                </div>
+
+            </div>
+
+
+            <!-- STATISTICS -->
+            <div class="analytics-stats">
+
+                <div class="analytics-stat">
+
+                    <div class="stat-icon total-icon">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+
+                    <div>
+                        <span>Total Enquiries</span>
+                        <h4>{{ total_enquiries }}</h4>
+                    </div>
+
+                </div>
+
+
+                <div class="analytics-stat">
+
+                    <div class="stat-icon month-icon">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </div>
+
+                    <div>
+                        <span>This Month</span>
+                        <h4>{{ this_month_enquiries }}</h4>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- GRAPH HEADER -->
+            <div class="analytics-graph-header">
+
+                <div>
+                    <h4>Monthly Overview</h4>
+                    <span>
+                        {{ selected_year_total }} enquiries in {{ selected_year }}
+                    </span>
+                </div>
+
+                <form method="GET"
+                      class="analytics-year-form">
+
+                    <input type="hidden"
+                           name="page"
+                           value="{{ page }}">
+
+                    <select name="year"
+                            onchange="this.form.submit()"
+                            aria-label="Select enquiry year">
+
+                        {% for year in year_options %}
+
+                        <option value="{{ year }}"
+                            {% if year == selected_year %}selected{% endif %}>
+                            {{ year }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+
+                </form>
+
+            </div>
+
+
+            <!-- CHART -->
+            <div class="analytics-chart-wrapper">
+
+                <canvas id="enquiryAnalyticsChart"></canvas>
+
+            </div>
+
+
+            <div class="analytics-footer">
+
+                <span>
+                    <span class="analytics-dot"></span>
+                    Monthly enquiries
+                </span>
+
+                <span>
+                    <i class="fa-regular fa-calendar"></i>
+                    {{ selected_year }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
 
     <!-- =====================================
@@ -929,11 +1612,11 @@
             <div class="overview-icon">
                 <i class="fa-solid fa-layer-group"></i>
             </div>
-
+            <a href="{% url 'admin_blogs' %}" class="overview-link">
             <div class="overview-info">
                 <p>Content Management</p>
                 <h3>Blogs</h3>
-            </div>
+            </div></a>
 
         </div>
 
@@ -943,12 +1626,12 @@
             <div class="overview-icon">
                 <i class="fa-solid fa-comments"></i>
             </div>
-
+            <a href="{% url 'admin_enquiry' %}" class="overview-link">
             <div class="overview-info">
                 <p>Communication</p>
                 <h3>Enquiries & Messages</h3>
             </div>
-
+            </a>
         </div>
 
     </section>
@@ -1471,6 +2154,190 @@ document.addEventListener("keydown", function (event) {
 
 });
 
-</script>
 
+</script>
+<!-- Enquiry chart data from Django -->
+{{ monthly_counts|json_script:"monthly-enquiry-data" }}
+
+<!-- Chart.js library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const canvas = document.getElementById("enquiryAnalyticsChart");
+
+    if (!canvas || typeof Chart === "undefined") {
+        return;
+    }
+
+    // Get actual monthly enquiry counts from Django
+    const monthlyCounts = JSON.parse(
+        document.getElementById("monthly-enquiry-data").textContent
+    );
+
+    const ctx = canvas.getContext("2d");
+
+    // Blue gradient for the graph
+    const gradient = ctx.createLinearGradient(0, 0, 0, 180);
+
+    gradient.addColorStop(0, "rgba(147,197,253,0.38)");
+    gradient.addColorStop(1, "rgba(147,197,253,0.01)");
+
+    new Chart(ctx, {
+
+        type: "line",
+
+        data: {
+
+            labels: [
+                "Jan", "Feb", "Mar", "Apr",
+                "May", "Jun", "Jul", "Aug",
+                "Sep", "Oct", "Nov", "Dec"
+            ],
+
+            datasets: [{
+
+                label: "Enquiries",
+
+                data: monthlyCounts,
+
+                borderColor: "#93c5fd",
+
+                backgroundColor: gradient,
+
+                borderWidth: 2.5,
+
+                fill: true,
+
+                tension: 0.4,
+
+                pointRadius: 3,
+
+                pointHoverRadius: 6,
+
+                pointBackgroundColor: "#ffffff",
+
+                pointBorderColor: "#93c5fd",
+
+                pointBorderWidth: 2,
+
+                pointHoverBackgroundColor: "#c4b5fd",
+
+                pointHoverBorderColor: "#ffffff"
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            interaction: {
+                intersect: false,
+                mode: "index"
+            },
+
+            plugins: {
+
+                legend: {
+                    display: false
+                },
+
+                tooltip: {
+
+                    backgroundColor: "rgba(15,23,42,0.95)",
+
+                    titleColor: "#ffffff",
+
+                    bodyColor: "#dbeafe",
+
+                    padding: 12,
+
+                    cornerRadius: 10,
+
+                    displayColors: false,
+
+                    callbacks: {
+
+                        label: function(context) {
+                            return context.parsed.y +
+                                (context.parsed.y === 1
+                                    ? " Enquiry"
+                                    : " Enquiries");
+                        }
+
+                    }
+
+                }
+
+            },
+
+            scales: {
+
+                x: {
+
+                    grid: {
+                        display: false
+                    },
+
+                    border: {
+                        display: false
+                    },
+
+                    ticks: {
+
+                        color: "rgba(255,255,255,0.75)",
+
+                        font: {
+                            size: 9
+                        }
+
+                    }
+
+                },
+
+                y: {
+
+                    beginAtZero: true,
+
+                    border: {
+                        display: false
+                    },
+
+                    grid: {
+
+                        color: "rgba(255,255,255,0.12)",
+
+                        drawTicks: false
+
+                    },
+
+                    ticks: {
+
+                        color: "rgba(255,255,255,0.75)",
+
+                        precision: 0,
+
+                        padding: 8,
+
+                        font: {
+                            size: 9
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+});
+</script>
 {% endblock %}

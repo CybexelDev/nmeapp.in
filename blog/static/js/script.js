@@ -71,8 +71,8 @@ document.addEventListener("DOMContentLoaded", function () {
     window.onload = () => {
       const digits = document.querySelectorAll(".digit");
 
-      rollDigit(digits[0], 7, 900, false);      // first digit (normal speed)
-      rollDigit(digits[1], 2, 2000, false);     // second digit (slow)
+      rollDigit(digits[0], 9, 900, false);      // first digit (normal speed)
+      rollDigit(digits[1], 5, 2000, false);     // second digit (slow)
       rollDigit(digits[2], 0, 900, true);       // 3rd digit rolls 0–9–0
       rollDigit(digits[3], 0, 900, true);       // 4th digit same timing
     };
