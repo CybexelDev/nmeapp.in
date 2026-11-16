@@ -13,7 +13,7 @@ from django.db.models import CharField
 from django.urls import reverse
 from django.contrib import messages
 from datetime import datetime
-
+from django.contrib import messages as django_messages
 
 # Create your views here.
 def base(request):
@@ -373,10 +373,10 @@ def contact_submit(request):
     return redirect("contact")
 
 
-def delete_enquiry(request, id):
-    if request.method == "POST":
-        Contact.objects.filter(id=id).delete()  # delete the enquiry
-    return redirect("dashboard")  # redirect to admin panel
+# def delete_enquiry(request, id):
+#     if request.method == "POST":
+#         Contact.objects.filter(id=id).delete()  # delete the enquiry
+#     return redirect("dashboard")  # redirect to admin panel
  # reload admin panel
 
 from django.shortcuts import render, redirect, get_object_or_404
@@ -431,7 +431,12 @@ def delete_enquiry(request, id):
         enquiry = get_object_or_404(Contact, id=id)
         enquiry.delete()
 
-    return redirect("admin_enquiry")
+        request.session["enquiry_notification"] = {
+            "message": "Enquiry deleted successfully!",
+            "type": "success"
+        }
+
+    return redirect("dashboard")
 
 def blog_post(request):
     if request.method == "POST":
@@ -458,7 +463,10 @@ def blog_post(request):
         blog_data.save()
 
         # Add message
-        messages.success(request, "Blog added successfully!")
+        request.session["blog_notification"] = {
+            "message": "Blog added successfully!",
+            "type": "success"
+        }
         return redirect('dashboard')  
 
 # def admin_panel(request):
@@ -580,7 +588,11 @@ def admin_panel(request):
     # =====================================
 
     page = request.GET.get('page', 'dashboard')
-
+    team_notification = request.session.pop("team_notification", None)
+    blog_notification = request.session.pop("blog_notification", None)
+    enquiry_notification = request.session.pop("enquiry_notification", None)
+    testimonial_notification = request.session.pop("testimonial_notification", None)
+    message_notification = request.session.pop("message_notification", None)
     context = {
         "blog": blog,
         "contact": contact,
@@ -588,7 +600,11 @@ def admin_panel(request):
         "team_members": team_members,
         "testimonials": testimonials,
         "page": page,
-
+        "team_notification": team_notification,
+        "blog_notification": blog_notification,
+        "enquiry_notification": enquiry_notification,
+        "testimonial_notification": testimonial_notification,
+        "message_notification": message_notification,
         # Enquiry analytics
         "today": current_date,
         "total_enquiries": total_enquiries,
@@ -601,12 +617,12 @@ def admin_panel(request):
 
     return render(request, "admin/dashboard.html", context)
 
-def delete_message(request, id):
-    if request.method == "POST":
-        msg = get_object_or_404(Enquiry, id=id)
-        msg.delete()
-        return redirect("dashboard")
-    return redirect("dashboard")  # redirect for GET requests
+# def delete_message(request, id):
+#     if request.method == "POST":
+#         msg = get_object_or_404(Enquiry, id=id)
+#         msg.delete()
+#         return redirect("dashboard")
+#     return redirect("dashboard")  # redirect for GET requests
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
@@ -640,8 +656,17 @@ def add_testimonial(request):
             opinion=opinion,
             image=image
         )
+        request.session["testimonial_notification"] = {
+            "message": "Testimonial added successfully!",
+            "type": "success"
+        }
+    else:
+        request.session["testimonial_notification"] = {
+            "message": "Please fill in all testimonial fields!",
+            "type": "error"
+        }
 
-    return redirect("admin_testimonials")
+    return redirect("dashboard")
 
 
 @require_POST
@@ -664,7 +689,19 @@ def edit_testimonial(request, id):
 
         testimonial.save()
 
-    return redirect("admin_testimonials")
+        request.session["testimonial_notification"] = {
+            "message": "Testimonial updated successfully!",
+            "type": "success"
+        }
+
+    else:
+        request.session["testimonial_notification"] = {
+            "message": "Please fill in all required testimonial fields!",
+            "type": "error"
+        }
+
+
+    return redirect("dashboard")
 
 
 @require_POST
@@ -672,8 +709,12 @@ def delete_testimonial(request, id):
 
     testimonial = get_object_or_404(Testimonial, id=id)
     testimonial.delete()
+    request.session["testimonial_notification"] = {
+        "message": "Testimonial deleted successfully!",
+        "type": "success"
+    }
 
-    return redirect("admin_testimonials")
+    return redirect("dashboard")
 
 # def add_testimonial(request):
 #     if request.method == "POST":
@@ -712,6 +753,7 @@ def delete_testimonial(request, id):
 #     testimonial = get_object_or_404(Testimonial, id=id)
 #     testimonial.delete()
 #     return redirect('dashboard')
+
 def add_team_member(request):
     if request.method == "POST":
         TeamMember.objects.create(
@@ -720,7 +762,13 @@ def add_team_member(request):
             sentence=request.POST.get("sentence"),
             photo=request.FILES.get("photo"),
         )
-    return redirect("dashboard")  # ✅ FIXED
+
+        request.session["team_notification"] = {
+            "message": "Team member added successfully!",
+            "type": "success"
+        }
+
+    return redirect("dashboard")
 
 
 def update_team_member(request, id):
@@ -736,13 +784,27 @@ def update_team_member(request, id):
 
         member.save()
 
-    return redirect("dashboard")  # ✅ FIXED
+        request.session["team_notification"] = {
+            "message": "Team member updated successfully!",
+            "type": "success"
+        }
+
+    return redirect("dashboard")
 
 
 def delete_team_member(request, id):
     member = get_object_or_404(TeamMember, id=id)
-    member.delete()
-    return redirect("dashboard")  # ✅ FIXED
+
+    if request.method == "POST":
+        member_name = member.name
+        member.delete()
+
+        request.session["team_notification"] = {
+            "message": f"{member_name} deleted successfully!",
+            "type": "success"
+        }
+
+    return redirect("dashboard")
 
 def update_blog(request):
     if request.method == 'POST':
@@ -772,6 +834,10 @@ def update_blog(request):
             blog.image = uploaded['secure_url']
 
         blog.save()
+        request.session["blog_notification"] = {
+            "message": "Blog updated successfully!",
+            "type": "success"
+        }
         return redirect('dashboard')
 
     return redirect('dashboard')
@@ -788,6 +854,10 @@ def delete_blog(request, id):
         cloudinary.uploader.destroy(public_id)
 
     blog.delete()
+    request.session["blog_notification"] = {
+        "message": "Blog deleted successfully!",
+        "type": "success"
+    }
     return redirect('dashboard')
 
 def delete_contact(request,id):
@@ -1104,5 +1174,9 @@ def delete_message(request, id):
     msg = get_object_or_404(Enquiry, id=id)
 
     msg.delete()
+    request.session["message_notification"] = {
+        "message": "Enquiry message deleted successfully!",
+        "type": "success"
+    }
 
-    return redirect("admin_messages")
+    return redirect("dashboard")

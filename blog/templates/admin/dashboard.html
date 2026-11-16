@@ -1369,6 +1369,95 @@
     background: rgba(15,23,42,0.20);
     border: 1px solid rgba(255,255,255,0.25);
 }
+
+
+.notification-container {
+    position: fixed !important;
+    right: 20px !important;
+    bottom: 20px !important;
+    top: auto !important;
+    left: auto !important;
+
+    z-index: 2147483647 !important;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    width: min(380px, calc(100vw - 30px));
+
+    pointer-events: none;
+}
+
+.admin-notification {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px;
+
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+
+    border-left: 4px solid #64748b;
+    pointer-events: auto;
+
+    animation: notificationSlide 0.35s ease;
+}
+
+.admin-notification.success {
+    border-left-color: #16a34a;
+}
+
+.admin-notification.error {
+    border-left-color: #dc2626;
+}
+
+.admin-notification.warning {
+    border-left-color: #f59e0b;
+}
+
+.admin-notification.info {
+    border-left-color: #2563eb;
+}
+
+.notification-icon {
+    font-size: 19px;
+    color: #16a34a;
+}
+
+.notification-content {
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
+    color: #1e293b;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+}
+
+@keyframes notificationSlide {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 480px) {
+    .notification-container {
+        right: 10px !important;
+        bottom: 10px !important;
+        width: calc(100vw - 20px);
+    }
+}
+
 </style>
 
 {% endblock %}
@@ -1377,6 +1466,71 @@
 {% block content %}
 
 <div class="dashboard-page">
+
+
+<div class="notification-container" id="notificationContainer">
+
+    {% if team_notification %}
+        <div class="admin-notification {{ team_notification.type }}">
+            <div class="notification-icon">
+                <i class="fa-solid fa-check"></i>
+            </div>
+
+            <div class="notification-content">
+                {{ team_notification.message }}
+            </div>
+        </div>
+    {% endif %}
+    {% if blog_notification %}
+        <div class="admin-notification {{ blog_notification.type }}">
+            <div class="notification-icon">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <div class="notification-content">
+                {{ blog_notification.message }}
+            </div>
+        </div>
+    {% endif %}
+    {% if enquiry_notification %}
+        <div class="admin-notification {{ enquiry_notification.type }}">
+            <div class="notification-icon">
+                <i class="fa-solid fa-check"></i>
+            </div>
+
+            <div class="notification-content">
+                {{ enquiry_notification.message }}
+            </div>
+        </div>
+    {% endif %}
+    {% if testimonial_notification %}
+        <div class="admin-notification {{ testimonial_notification.type }}">
+            <div class="notification-icon">
+                {% if testimonial_notification.type == "success" %}
+                    <i class="fa-solid fa-check"></i>
+                {% else %}
+                    <i class="fa-solid fa-exclamation"></i>
+                {% endif %}
+            </div>
+
+            <div class="notification-content">
+                {{ testimonial_notification.message }}
+            </div>
+        </div>
+    {% endif %}
+    {% if message_notification %}
+        <div class="admin-notification {{ message_notification.type }}">
+            <div class="notification-icon">
+                <i class="fa-solid fa-check"></i>
+            </div>
+
+            <div class="notification-content">
+                {{ message_notification.message }}
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+
 
     <!-- =====================================
          DASHBOARD HEADING
@@ -1395,43 +1549,6 @@
         </div>
 
     </div>
-
-
-    <!-- =====================================
-         HERO SECTION
-    ====================================== -->
-
-    <!-- <section class="dashboard-hero">
-
-        <img src="{% static 'images/admin_bg.png' %}"
-             class="hero-background"
-             alt="N-ME Dashboard">
-
-        <div class="hero-content">
-
-            <div class="hero-text">
-
-                <div class="hero-tag">
-                    <i class="fa-solid fa-sparkles"></i>
-                    N-ME ADMINISTRATION
-                </div>
-
-                <h2>
-                    Find What You Need.
-                    <span>Nearby.</span>
-                </h2>
-
-                <p>
-                    Manage your website content, team members,
-                    enquiries and customer messages from one
-                    convenient dashboard.
-                </p>
-
-            </div>
-
-        </div>
-
-    </section> -->
 
     <section class="dashboard-hero">
 
@@ -2338,6 +2455,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.querySelectorAll(".admin-notification").forEach(notification => {
+
+        setTimeout(() => {
+            notification.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+            notification.style.opacity = "0";
+            notification.style.transform = "translateX(30px)";
+
+            setTimeout(() => notification.remove(), 400);
+
+        }, 4000);
+
+    });
+
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const notificationContainer = document.getElementById("notificationContainer");
+
+    if (notificationContainer) {
+        document.body.appendChild(notificationContainer);
+    }
 });
 </script>
 {% endblock %}
