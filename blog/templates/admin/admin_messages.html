@@ -738,7 +738,7 @@
 
                     {% for msg in messages %}
 
-                    <tr class="message-row">
+                    <tr class="message-row" data-message-id="{{ msg.id }}">
 
                         <td>
                             <div class="message-name">
@@ -1042,15 +1042,35 @@ document.addEventListener("DOMContentLoaded", function () {
         modalContent.textContent = data.message || "No message provided";
 
 
-        if (data.email) {
-            replyLink.href = "mailto:" + data.email;
+        if (replyLink) {
+
+        if (data.email && data.email.trim() !== "") {
+
+            const email = data.email.trim();
+
+            const subject = "Re: Your Message - N-ME Website";
+
+            replyLink.href =
+                "https://mail.google.com/mail/?view=cm&fs=1" +
+                "&to=" + encodeURIComponent(email) +
+                "&su=" + encodeURIComponent(subject);
+
+            replyLink.target = "_blank";
+            replyLink.rel = "noopener noreferrer";
+
             replyLink.style.pointerEvents = "auto";
             replyLink.style.opacity = "1";
+
+            replyLink.onclick = null;
+
         } else {
+
             replyLink.href = "#";
             replyLink.style.pointerEvents = "none";
             replyLink.style.opacity = ".5";
+
         }
+    }
 
 
         modal.classList.add("active");
@@ -1098,8 +1118,56 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
     });
+        /* =====================================
+       OPEN MESSAGE MODAL FROM NOTIFICATION
+    ===================================== */
+
+    const params = new URLSearchParams(window.location.search);
+    const selectedMessageId = params.get("message_id");
+
+    if (selectedMessageId) {
+
+        const selectedRow = document.querySelector(
+            `.message-row[data-message-id="${selectedMessageId}"]`
+        );
+
+        if (selectedRow) {
+
+            const viewButton = selectedRow.querySelector(
+                ".message-view-btn"
+            );
+
+            if (viewButton) {
+                viewButton.click();
+            }
+
+        } else {
+            console.error(
+                "Message not found for ID:",
+                selectedMessageId
+            );
+        }
+
+        // Remove message_id from URL without reloading
+        params.delete("message_id");
+
+        const newQuery = params.toString();
+
+        const newUrl =
+            window.location.pathname +
+            (newQuery ? "?" + newQuery : "") +
+            window.location.hash;
+
+        window.history.replaceState(
+            {},
+            document.title,
+            newUrl
+        );
+    }
 
 });
+
+
 </script>
 
 {% endblock %}

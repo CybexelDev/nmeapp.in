@@ -96,6 +96,25 @@ urlpatterns = [
         views.delete_message,
         name="delete_message"
     ),
+
+    path(
+        "admin-notifications/",
+        views.admin_notifications_api,
+        name="admin_notifications_api"
+    ),
+
+    path(
+        "admin-notification/open/<int:id>/",
+        views.open_admin_notification,
+        name="open_admin_notification"
+    ),
+
+    path(
+        "admin-notification/mark-read/<int:id>/",
+        views.mark_admin_notification_read,
+        name="mark_admin_notification_read"
+    ),
+
     # path('admin_register/', views.admin_register, name='admin_register'),
 
     # re_path(r'^.*$', views.home, name='catch_all'),

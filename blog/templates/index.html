@@ -4832,6 +4832,83 @@ nav ul li a.nav-active {
     border-radius: 10px;
 }
 
+
+
+/* =========================================
+   MOBILE PHONE ANIMATION - SCROLL FIX
+========================================= */
+
+@media screen and (max-width: 767px) {
+
+    html {
+        height: auto !important;
+        overflow-x: clip !important;
+        overflow-y: auto !important;
+
+        scroll-behavior: auto !important;
+
+        overscroll-behavior-y: auto;
+    }
+
+    body {
+        height: auto !important;
+        min-height: 100% !important;
+
+        overflow-x: clip !important;
+        overflow-y: visible !important;
+
+        position: relative !important;
+
+        touch-action: pan-y !important;
+
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: auto;
+    }
+
+    #heroSection,
+    #circleSection {
+        touch-action: pan-y !important;
+        overscroll-behavior: auto !important;
+    }
+
+    #circleSection {
+        position: relative !important;
+        overflow: visible !important;
+    }
+
+    #targetCircle {
+        position: relative;
+        overflow: hidden;
+    }
+
+    #heroPhone,
+    .hero-phone-clone {
+        touch-action: pan-y !important;
+        -webkit-user-drag: none;
+        user-select: none;
+    }
+
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media screen and (max-width: 480px) {
+
+    html,
+    body {
+        scroll-snap-type: none !important;
+    }
+
+    #heroSection,
+    #circleSection {
+        scroll-snap-align: none !important;
+    }
+
+}
+
+
 </style>
 
 

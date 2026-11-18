@@ -14,6 +14,7 @@ from django.urls import reverse
 from django.contrib import messages
 from datetime import datetime
 from django.contrib import messages as django_messages
+from django.urls import reverse
 
 # Create your views here.
 def base(request):
@@ -149,7 +150,14 @@ def message(request):
 
         # Save only after successful validation
         try:
-            Enquiry.objects.create(**submitted_values)
+            enquiry_obj = Enquiry.objects.create(**submitted_values)
+
+            AdminNotification.objects.create(
+                notification_type="enquiry",
+                object_id=enquiry_obj.id,
+                title="New Website Enquiry",
+                message=f"New enquiry from {enquiry_obj.full_name}"
+            )
 
             messages.success(
                 request,
@@ -300,6 +308,55 @@ def contact(request):
     return render(request, 'contact.html', {'form': form})
 
 
+# def contact(request):
+
+#     if request.method == "POST":
+
+#         form = ContactForm(request.POST)
+
+#         if form.is_valid():
+
+#             # Save contact form
+#             contact_obj = form.save()
+
+#             # Create admin notification
+#             AdminNotification.objects.create(
+#                 notification_type="contact",
+#                 object_id=contact_obj.id,
+#                 title="New Contact Message",
+#                 message="A new contact form has been submitted."
+#             )
+
+#             return render(
+#                 request,
+#                 'contact.html',
+#                 {
+#                     'form': ContactForm(),
+#                     'success': True
+#                 }
+#             )
+
+#         else:
+#             return render(
+#                 request,
+#                 'contact.html',
+#                 {
+#                     'form': form
+#                 }
+#             )
+
+#     else:
+#         form = ContactForm()
+
+#     return render(
+#         request,
+#         'contact.html',
+#         {
+#             'form': form
+#         }
+#     )
+
+
 # def contact_submit(request):
 #     if request.method == "POST":
 #         Contact.objects.create(
@@ -334,12 +391,19 @@ def contact_submit(request):
         message = request.POST.get("message", "").strip()
 
         try:
-            Contact.objects.create(
+            contact_obj = Contact.objects.create(
                 name=name,
                 email=email,
                 phone=phone or None,
                 subject=subject,
                 message=message,
+            )
+
+            AdminNotification.objects.create(
+                notification_type="contact",
+                object_id=contact_obj.id,
+                title="New Contact Message",
+                message=f"New contact message from {name}"
             )
 
             messages.success(
@@ -397,6 +461,7 @@ def admin_enquiry(request):
 
     return render(request, "admin/enquiry.html", {
         "contact": contact,
+        "selected_enquiry_id": request.GET.get("enquiry_id", "")
     })
 
 
@@ -865,7 +930,7 @@ def delete_contact(request,id):
     if contact:
         contact.delete()
     else:
-        return HttpResponse("cant delete this message!")
+        return HttpResponse("Can't delete this message!")
     return redirect('dashboard')
 
 
@@ -1163,7 +1228,8 @@ def admin_messages(request):
         request,
         "admin/admin_messages.html",
         {
-            "messages": messages
+            "messages": messages,
+            "selected_message_id": request.GET.get("message_id", "")
         }
     )
 
@@ -1180,3 +1246,156 @@ def delete_message(request, id):
     }
 
     return redirect("dashboard")
+
+
+def admin_notifications_api(request):
+
+    is_superuser = (
+        request.user.is_authenticated and
+        request.user.is_superuser
+    )
+
+    is_custom_user = "name" in request.session
+
+    if not is_superuser and not is_custom_user:
+        return JsonResponse(
+            {"error": "Unauthorized"},
+            status=403
+        )
+
+    notifications = AdminNotification.objects.filter(
+        is_read=False
+    ).order_by("-created_at")
+
+    unread_count = notifications.count()
+
+    latest_notifications = notifications[:10]
+
+    data = []
+
+    for notification in latest_notifications:
+
+        notification_url = reverse(
+            "open_admin_notification",
+            args=[notification.id]
+        )
+
+        mark_read_url = reverse(
+            "mark_admin_notification_read",
+            args=[notification.id]
+        )
+
+        data.append({
+            "id": notification.id,
+            "title": notification.title,
+            "message": notification.message,
+            "url": notification_url,
+            "mark_read_url": mark_read_url,
+            "notification_type": notification.notification_type,
+            "created_at": timezone.localtime(
+                notification.created_at
+            ).strftime("%d %b %Y, %I:%M %p")
+        })
+
+    return JsonResponse({
+        "unread_count": unread_count,
+        "notifications": data
+    })
+
+
+def open_admin_notification(request, id):
+
+    is_superuser = (
+        request.user.is_authenticated and
+        request.user.is_superuser
+    )
+
+    is_custom_user = "name" in request.session
+
+    if not is_superuser and not is_custom_user:
+        return redirect("login")
+
+    notification = get_object_or_404(
+        AdminNotification,
+        id=id
+    )
+
+    if not notification.is_read:
+        notification.is_read = True
+        notification.save(update_fields=["is_read"])
+
+    # CONTACT FORM MESSAGE
+    if notification.notification_type == "contact":
+
+        return redirect(
+            f"{reverse('admin_enquiry')}?enquiry_id={notification.object_id}"
+        )
+
+    # WEBSITE ENQUIRY MESSAGE
+    elif notification.notification_type == "enquiry":
+
+        return redirect(
+            f"{reverse('admin_messages')}?message_id={notification.object_id}"
+        )
+
+    return redirect("dashboard")
+
+@require_POST
+def mark_admin_notification_read(request, id):
+
+    is_superuser = (
+        request.user.is_authenticated and
+        request.user.is_superuser
+    )
+
+    is_custom_user = "name" in request.session
+
+    if not is_superuser and not is_custom_user:
+        return JsonResponse(
+            {"error": "Unauthorized"},
+            status=403
+        )
+
+    notification = get_object_or_404(
+        AdminNotification,
+        id=id
+    )
+
+    if not notification.is_read:
+        notification.is_read = True
+        notification.save(update_fields=["is_read"])
+
+    unread_count = AdminNotification.objects.filter(
+        is_read=False
+    ).count()
+
+    return JsonResponse({
+        "success": True,
+        "unread_count": unread_count
+    })
+
+
+def message_enquiry_detail(request, id):
+
+    is_superuser = (
+        request.user.is_authenticated and
+        request.user.is_superuser
+    )
+
+    is_custom_user = "name" in request.session
+
+    if not is_superuser and not is_custom_user:
+        return redirect("login")
+
+    enquiry = get_object_or_404(
+        Enquiry,
+        id=id
+    )
+
+    return render(
+        request,
+        "admin/message_enquiry_detail.html",
+        {
+            "enquiry": enquiry
+        }
+    )

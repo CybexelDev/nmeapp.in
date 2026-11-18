@@ -1248,7 +1248,46 @@
     }
 
 }
+/* =========================================
+   FIX ANALYTICS STATS - TABLET
+========================================= */
 
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    .hero-analytics {
+        min-width: 0;
+        width: 100%;
+        padding: 16px;
+        box-sizing: border-box;
+    }
+
+    .analytics-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .analytics-stat {
+        min-width: 0;
+        padding: 10px 8px;
+        gap: 7px;
+    }
+
+    .stat-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 13px;
+    }
+
+    .analytics-stat span {
+        font-size: 9px;
+        white-space: normal;
+    }
+
+    .analytics-stat h4 {
+        font-size: 20px;
+    }
+
+}
 /* =========================================
    GLASS ANALYTICS - IMPROVED TEXT VISIBILITY
 ========================================= */
@@ -1458,6 +1497,593 @@
     }
 }
 
+
+
+/* =========================================
+   DASHBOARD HEADING
+========================================= */
+
+.dashboard-heading {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 100;
+}
+
+.dashboard-heading > div:first-child {
+    min-width: 0;
+}
+
+.dashboard-heading h1 {
+    font-size: clamp(25px, 3vw, 32px);
+    font-weight: 800;
+    color: #172554;
+    letter-spacing: -0.8px;
+    margin: 0 0 6px;
+}
+
+.dashboard-heading p {
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+}
+
+
+/* =========================================
+   DATE + NOTIFICATION ALIGNMENT
+========================================= */
+
+.dashboard-date-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 14px;
+    flex-shrink: 0;
+    min-width: 0;
+}
+
+
+/* =========================================
+   NOTIFICATION BELL
+========================================= */
+
+.notification-bell-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.notification-bell {
+    width: 46px;
+    height: 46px;
+    border: 1px solid #e2e8f0;
+    border-radius: 15px;
+    background: #ffffff;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    font-size: 19px;
+    transition: all 0.25s ease;
+    box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+}
+
+.notification-bell:hover {
+    background: #eff6ff;
+    color: #2563eb;
+    border-color: #bfdbfe;
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px rgba(37, 99, 235, 0.10);
+}
+
+.notification-bell:active {
+    transform: scale(0.96);
+}
+
+.notification-bell:focus-visible {
+    outline: 3px solid rgba(59, 130, 246, 0.25);
+    outline-offset: 3px;
+}
+
+
+/* =========================================
+   UNREAD COUNT BADGE
+========================================= */
+
+.notification-count {
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    min-width: 19px;
+    height: 19px;
+    padding: 0 5px;
+    border: 2px solid #ffffff;
+    border-radius: 50px;
+    background: #ef4444;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1;
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.25);
+    z-index: 2;
+}
+
+
+/* =========================================
+   NOTIFICATION DROPDOWN
+========================================= */
+
+.notification-dropdown {
+    position: absolute;
+    top: calc(100% + 14px);
+    right: 0;
+
+    width: 360px;
+    max-width: calc(100vw - 30px);
+
+    background: #ffffff;
+    border: 1px solid #e8edf5;
+    border-radius: 18px;
+
+    box-shadow: 0 18px 55px rgba(15, 23, 42, 0.16);
+
+    overflow: hidden;
+    z-index: 99999;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform: translateY(10px) scale(0.98);
+    transform-origin: top right;
+
+    transition:
+        opacity 0.22s ease,
+        visibility 0.22s ease,
+        transform 0.22s ease;
+}
+
+.notification-dropdown.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+}
+
+
+/* =========================================
+   DROPDOWN HEADER
+========================================= */
+
+.notification-dropdown-header {
+    padding: 19px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: linear-gradient(135deg, #eff6ff, #f8faff);
+    border-bottom: 1px solid #e8edf5;
+}
+
+.notification-dropdown-header > div:first-child {
+    min-width: 0;
+}
+
+.notification-dropdown-header h3 {
+    margin: 0 0 5px;
+    color: #172554;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.notification-dropdown-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.notification-header-icon {
+    width: 39px;
+    height: 39px;
+    min-width: 39px;
+    border-radius: 12px;
+    background: #dbeafe;
+    color: #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+}
+
+
+/* =========================================
+   NOTIFICATION LIST
+========================================= */
+
+.notification-list {
+    max-height: 350px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 8px;
+    overscroll-behavior: contain;
+}
+
+.notification-list::-webkit-scrollbar {
+    width: 5px;
+}
+
+.notification-list::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.notification-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+/* =========================================
+   INDIVIDUAL NOTIFICATION ITEM
+========================================= */
+
+.notification-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 12px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+    border-bottom: 1px solid #f1f5f9;
+    background: #ffffff;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-item:hover {
+    background: #f1f6ff;
+}
+
+.notification-item-icon {
+    width: 37px;
+    height: 37px;
+    min-width: 37px;
+    border-radius: 11px;
+    background: #eff6ff;
+    color: #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+}
+
+.notification-item-content {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.notification-item-content h4 {
+    margin: 0 0 4px;
+    color: #1e293b;
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.notification-item-content p {
+    margin: 0;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.notification-item-content span,
+.notification-time {
+    display: block;
+    margin-top: 7px;
+    color: #94a3b8;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   NOTIFICATION ACTIONS
+========================================= */
+
+.notification-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.notification-mark-read,
+.notification-view {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px 11px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.2s ease;
+    white-space: nowrap;
+}
+
+.notification-mark-read {
+    color: #15803d;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+}
+
+.notification-mark-read:hover {
+    background: #dcfce7;
+}
+
+.notification-view {
+    color: #2563eb;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+}
+
+.notification-view:hover {
+    background: #dbeafe;
+}
+
+.notification-mark-read:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* =========================================
+   EMPTY / LOADING STATE
+========================================= */
+
+.notification-loading,
+.notification-empty {
+    padding: 30px 15px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.notification-empty i {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 27px;
+    color: #cbd5e1;
+}
+
+.notification-empty p {
+    margin: 0;
+    font-size: 13px;
+}
+
+
+/* =========================================
+   DASHBOARD DATE
+========================================= */
+
+.dashboard-date {
+    min-height: 46px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 15px;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 650;
+    white-space: nowrap;
+    box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+}
+
+.dashboard-date i {
+    color: #2563eb;
+    font-size: 15px;
+}
+
+
+/* =========================================
+   TABLET RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+
+    .dashboard-heading {
+        gap: 15px;
+        margin-bottom: 22px;
+    }
+
+    .dashboard-heading h1 {
+        font-size: 25px;
+    }
+
+    .dashboard-heading p {
+        font-size: 12px;
+    }
+
+    .dashboard-date-wrapper {
+        gap: 9px;
+    }
+
+    .notification-bell {
+        width: 42px;
+        height: 42px;
+        border-radius: 13px;
+    }
+
+    .dashboard-date {
+        min-height: 42px;
+        padding: 0 11px;
+        font-size: 11px;
+        border-radius: 13px;
+    }
+
+    .notification-dropdown {
+        width: min(360px, calc(100vw - 30px));
+        right: 0;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE RESPONSIVE
+========================================= */
+
+@media (max-width: 520px) {
+
+    .dashboard-heading {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 14px;
+        width: 100%;
+    }
+
+    .dashboard-heading > div:first-child {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+
+    .dashboard-date-wrapper {
+        width: 100%;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .notification-bell-wrapper {
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    /*
+       Keep dropdown inside the mobile viewport.
+       Position it relative to the right side of the screen.
+    */
+
+    .notification-dropdown {
+        position: fixed;
+
+        top: auto;
+        right: 12px;
+
+        width: calc(100vw - 24px);
+        max-width: 380px;
+
+        margin-top: 0;
+
+        transform: translateY(10px) scale(0.98);
+        transform-origin: top right;
+
+        max-height: min(75vh, 520px);
+    }
+
+    .notification-dropdown.show {
+        transform: translateY(0) scale(1);
+    }
+
+    .notification-dropdown-header {
+        padding: 16px;
+    }
+
+    .notification-list {
+        max-height: min(55vh, 350px);
+        overflow-y: auto;
+    }
+
+    .notification-item {
+        gap: 10px;
+        padding: 13px 10px;
+    }
+
+    .notification-item-content h4 {
+        font-size: 13px;
+    }
+
+    .notification-item-content p {
+        font-size: 12px;
+    }
+
+    .notification-actions {
+        gap: 7px;
+    }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 360px) {
+
+    .dashboard-heading h1 {
+        font-size: 23px;
+    }
+
+    .dashboard-date {
+        padding: 0 9px;
+        font-size: 10px;
+    }
+
+    .notification-dropdown {
+        right: 10px;
+        width: calc(100vw - 20px);
+        max-width: none;
+        border-radius: 15px;
+    }
+
+    .notification-dropdown-header {
+        padding: 14px;
+    }
+
+    .notification-header-icon {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+    }
+
+    .notification-item {
+        padding: 12px 8px;
+    }
+
+    .notification-mark-read,
+    .notification-view {
+        padding: 7px 9px;
+        font-size: 10px;
+    }
+
+}
+
+
 </style>
 
 {% endblock %}
@@ -1543,12 +2169,75 @@
             <p>Welcome to your N-ME administration panel.</p>
         </div>
 
+        <div class="dashboard-date-wrapper">
+
+        <!-- NOTIFICATION BELL -->
+        <div class="notification-bell-wrapper">
+
+            <button type="button"
+                    id="notificationBell"
+                    class="notification-bell"
+                    aria-label="View unread notifications"
+                    aria-expanded="false"
+                    aria-controls="notificationDropdown">
+
+                <i class="fa-regular fa-bell"></i>
+
+                <span id="notificationCount"
+                      class="notification-count"
+                      style="display: none;">
+                    0
+                </span>
+
+            </button>
+
+            <!-- NOTIFICATION DROPDOWN -->
+            <div class="notification-dropdown"
+                 id="notificationDropdown"
+                 aria-hidden="true">
+
+                <div class="notification-dropdown-header">
+
+                    <div>
+                        <h3>Notifications</h3>
+                        <p>Your unread notifications</p>
+                    </div>
+
+                    <div class="notification-header-icon">
+                        <i class="fa-regular fa-bell"></i>
+                    </div>
+
+                </div>
+
+                <div class="notification-list"
+                     id="notificationList">
+
+                    <div class="notification-loading">
+                        Loading notifications...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- DASHBOARD DATE -->
         <div class="dashboard-date">
             <i class="fa-regular fa-calendar mr-2"></i>
             {{ today|default:"N-ME Admin Panel" }}
         </div>
 
     </div>
+
+</div>
+
+        <!-- <div class="dashboard-date">
+            <i class="fa-regular fa-calendar mr-2"></i>
+            {{ today|default:"N-ME Admin Panel" }}
+        </div>
+
+    </div> -->
 
     <section class="dashboard-hero">
 
@@ -2476,12 +3165,327 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const notificationContainer = document.getElementById("notificationContainer");
 
-    if (notificationContainer) {
-        document.body.appendChild(notificationContainer);
+document.addEventListener("DOMContentLoaded", function () {
+
+    const apiUrl = "{% url 'admin_notifications_api' %}";
+
+    const notificationCount = document.getElementById("notificationCount");
+    const notificationList = document.getElementById("notificationList");
+
+    const notificationBell = document.getElementById("notificationBell");
+    const notificationDropdown = document.getElementById("notificationDropdown");
+
+    if (!notificationCount || !notificationList) return;
+
+
+    // CSRF TOKEN
+    function getCSRFToken() {
+
+        const cookie = document.cookie
+            .split("; ")
+            .find(row => row.startsWith("csrftoken="));
+
+        return cookie
+            ? decodeURIComponent(cookie.split("=")[1])
+            : "";
     }
+
+
+    // ESCAPE HTML
+    function escapeHTML(value) {
+
+        return String(value ?? "").replace(/[&<>"']/g, function (char) {
+
+            return {
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;"
+            }[char];
+
+        });
+    }
+
+
+    // UPDATE BADGE
+    function updateBadge(count) {
+
+        count = Number(count) || 0;
+
+        notificationCount.textContent =
+            count > 99 ? "99+" : count;
+
+        notificationCount.style.display =
+            count > 0 ? "flex" : "none";
+    }
+
+
+    // EMPTY NOTIFICATION MESSAGE
+    function showEmptyNotifications() {
+
+        notificationList.innerHTML = `
+            <div class="notification-empty">
+                <i class="fa-regular fa-bell-slash"></i>
+                <p>No new notifications</p>
+            </div>
+        `;
+    }
+
+
+    // LOAD NOTIFICATIONS
+    async function loadNotifications() {
+
+        try {
+
+            const response = await fetch(apiUrl, {
+                method: "GET",
+                credentials: "same-origin",
+                cache: "no-store",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error("Unable to load notifications");
+            }
+
+            const result = await response.json();
+
+            updateBadge(result.unread_count);
+
+            if (
+                !result.notifications ||
+                result.notifications.length === 0
+            ) {
+
+                showEmptyNotifications();
+                return;
+            }
+
+
+            notificationList.innerHTML = result.notifications.map(item => {
+
+                const isContact =
+                    item.notification_type === "contact";
+
+                const icon = isContact
+                    ? "fa-address-card"
+                    : "fa-envelope";
+
+                return `
+                    <div class="notification-item"
+                         id="notification-${item.id}">
+
+                        <div class="notification-item-icon">
+                            <i class="fa-regular ${icon}"></i>
+                        </div>
+
+                        <div class="notification-item-content">
+
+                            <h4>${escapeHTML(item.title)}</h4>
+
+                            <p>${escapeHTML(item.message)}</p>
+
+                            <span class="notification-time">
+                                <i class="fa-regular fa-clock"></i>
+                                ${escapeHTML(item.created_at)}
+                            </span>
+
+                            <div class="notification-actions">
+
+                                <button
+                                    type="button"
+                                    class="notification-mark-read"
+                                    data-id="${item.id}"
+                                    data-url="${escapeHTML(item.mark_read_url)}">
+
+                                    <i class="fa-solid fa-check"></i>
+                                    Mark as Read
+
+                                </button>
+
+                                <a
+                                    href="${escapeHTML(item.url)}"
+                                    class="notification-view">
+
+                                    <i class="fa-solid fa-eye"></i>
+                                    View
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                `;
+
+            }).join("");
+
+        } catch (error) {
+
+            console.error("Notification error:", error);
+
+            notificationList.innerHTML = `
+                <div class="notification-empty">
+                    Unable to load notifications.
+                </div>
+            `;
+        }
+    }
+
+
+    // MARK AS READ
+    notificationList.addEventListener("click", async function (event) {
+
+        const button = event.target.closest(
+            ".notification-mark-read"
+        );
+
+        if (!button) return;
+
+        const notificationId = button.dataset.id;
+        const markReadUrl = button.dataset.url;
+
+        if (!notificationId || !markReadUrl) return;
+
+        button.disabled = true;
+
+        try {
+
+            const response = await fetch(markReadUrl, {
+
+                method: "POST",
+
+                credentials: "same-origin",
+
+                headers: {
+                    "X-CSRFToken": getCSRFToken(),
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error("Unable to mark notification as read");
+            }
+
+
+            // REMOVE NOTIFICATION
+            const notificationElement = document.getElementById(
+                `notification-${notificationId}`
+            );
+
+            if (notificationElement) {
+                notificationElement.remove();
+            }
+
+
+            // UPDATE BADGE
+            updateBadge(result.unread_count);
+
+
+            // EMPTY MESSAGE
+            if (
+                !notificationList.querySelector(".notification-item")
+            ) {
+                showEmptyNotifications();
+            }
+
+        } catch (error) {
+
+            console.error("Mark as read error:", error);
+
+            button.disabled = false;
+
+            alert("Unable to mark this notification as read.");
+
+        }
+
+    });
+
+
+    // BELL DROPDOWN
+    if (notificationBell && notificationDropdown) {
+
+        notificationBell.addEventListener("click", function (event) {
+
+            event.stopPropagation();
+
+            const isOpen =
+                notificationDropdown.classList.toggle("show");
+
+            notificationBell.setAttribute(
+                "aria-expanded",
+                isOpen
+            );
+
+            notificationDropdown.setAttribute(
+                "aria-hidden",
+                !isOpen
+            );
+
+            if (isOpen) {
+                loadNotifications();
+            }
+
+        });
+
+
+        // CLOSE WHEN CLICKING OUTSIDE
+        document.addEventListener("click", function (event) {
+
+            if (
+                !notificationBell.contains(event.target) &&
+                !notificationDropdown.contains(event.target)
+            ) {
+
+                notificationDropdown.classList.remove("show");
+
+                notificationBell.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+                notificationDropdown.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+            }
+
+        });
+
+    }
+
+
+    // INITIAL LOAD
+    loadNotifications();
+
+
+    // AUTOMATIC REFRESH EVERY 15 SECONDS
+    setInterval(function () {
+
+        if (!document.hidden) {
+            loadNotifications();
+        }
+
+    }, 15000);
+
+
+    document.addEventListener("visibilitychange", function () {
+
+        if (!document.hidden) {
+            loadNotifications();
+        }
+
+    });
+
 });
+
 </script>
 {% endblock %}

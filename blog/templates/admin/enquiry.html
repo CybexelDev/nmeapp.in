@@ -720,7 +720,7 @@
                 <tbody id="enquiryTableBody">
 
                     {% for c in contact %}
-                    <tr class="enquiry-row">
+                    <tr class="enquiry-row" data-enquiry-id="{{ c.id }}">
 
                         <td>
                             <div class="enquiry-name">{{ c.name }}</div>
@@ -925,189 +925,6 @@
 
 
 {% block extra_js %}
-<!-- <script>
-document.addEventListener("DOMContentLoaded", function () {
-
-    const modal = document.getElementById("enquiryModal");
-    const searchInput = document.getElementById("enquirySearch");
-    const rows = document.querySelectorAll(".enquiry-row");
-    const noResults = document.getElementById("enquiryNoResults");
-
-    const modalName = document.getElementById("modalEnquiryName");
-    const modalEmail = document.getElementById("modalEnquiryEmail");
-    const modalPhone = document.getElementById("modalEnquiryPhone");
-    const modalSubject = document.getElementById("modalEnquirySubject");
-    const modalMessage = document.getElementById("modalEnquiryMessage");
-    const deleteForm = document.getElementById("modalEnquiryDeleteForm");
-
-    let previousFocus = null;
-
-
-    /* OPEN MODAL */
-
-    window.openEnquiryModal = function (button) {
-
-        if (!modal || !button) return;
-
-        previousFocus = document.activeElement;
-
-        const name = button.dataset.name || "Not provided";
-        const email = button.dataset.email || "";
-        const phone = button.dataset.phone || "";
-        const subject = button.dataset.subject || "No subject";
-        const message = button.dataset.message || "No message provided";
-        const deleteUrl = button.dataset.deleteUrl;
-
-        modalName.textContent = name;
-        modalSubject.textContent = subject;
-        modalMessage.textContent = message;
-
-        modalEmail.textContent = email || "Not provided";
-        modalEmail.href = email ? "mailto:" + email : "#";
-
-        modalPhone.textContent = phone || "Not provided";
-        modalPhone.href = phone ? "tel:" + phone : "#";
-
-        deleteForm.action = deleteUrl || "";
-
-        modal.classList.add("active");
-        modal.setAttribute("aria-hidden", "false");
-
-        document.body.style.overflow = "hidden";
-
-        const closeButton = modal.querySelector(".enquiry-modal-close");
-
-        if (closeButton) {
-            closeButton.focus();
-        }
-    };
-
-
-    /* CLOSE MODAL */
-
-    window.closeEnquiryModal = function () {
-
-        if (!modal) return;
-
-        modal.classList.remove("active");
-        modal.setAttribute("aria-hidden", "true");
-
-        document.body.style.overflow = "";
-
-        if (previousFocus && document.contains(previousFocus)) {
-            previousFocus.focus();
-        }
-    };
-
-
-    /* OUTSIDE CLICK */
-
-    window.handleEnquiryBackdrop = function (event) {
-
-        if (event.target === modal) {
-            closeEnquiryModal();
-        }
-    };
-
-
-    /* ESCAPE KEY */
-
-    document.addEventListener("keydown", function (event) {
-
-        if (event.key === "Escape" && modal.classList.contains("active")) {
-            closeEnquiryModal();
-        }
-    });
-
-
-    /* SEARCH */
-
-    if (searchInput) {
-
-        searchInput.addEventListener("input", function () {
-
-            const searchValue = this.value.toLowerCase().trim();
-            let visibleCount = 0;
-
-            rows.forEach(function (row) {
-
-                const matches = row.innerText
-                    .toLowerCase()
-                    .includes(searchValue);
-
-                row.style.display = matches ? "" : "none";
-
-                if (matches) {
-                    visibleCount++;
-                }
-            });
-
-            if (noResults) {
-                noResults.style.display =
-                    rows.length > 0 && visibleCount === 0
-                        ? ""
-                        : "none";
-            }
-
-        });
-    }
-
-});
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-    const searchInput = document.getElementById("enquirySearch");
-    const tableBody = document.getElementById("enquiryTableBody");
-    const noResults = document.getElementById("enquiryNoResults");
-
-    if (!searchInput || !tableBody) {
-        console.error("Enquiry search elements not found.");
-        return;
-    }
-
-    const rows = Array.from(
-        tableBody.querySelectorAll("tr.enquiry-row")
-    );
-
-    searchInput.addEventListener("input", function () {
-
-        const searchText = this.value
-            .trim()
-            .toLowerCase();
-
-        let visibleCount = 0;
-
-        rows.forEach(function (row) {
-
-            // Search across all enquiry columns
-            const rowText = row.textContent
-                .toLowerCase()
-                .replace(/\s+/g, " ");
-
-            const isMatch = rowText.includes(searchText);
-
-            row.style.display = isMatch ? "" : "none";
-
-            if (isMatch) {
-                visibleCount++;
-            }
-        });
-
-        // Show or hide the no-results row
-        if (noResults) {
-            noResults.style.display =
-                rows.length > 0 && visibleCount === 0
-                    ? "table-row"
-                    : "none";
-        }
-
-    });
-
-});
-</script> -->
-
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -1274,6 +1091,55 @@ document.addEventListener("DOMContentLoaded", function () {
 
         });
 
+    }
+
+        /* =====================================
+       OPEN ENQUIRY MODAL FROM NOTIFICATION
+    ===================================== */
+
+    const params = new URLSearchParams(window.location.search);
+    const selectedEnquiryId = params.get("enquiry_id");
+
+    if (selectedEnquiryId) {
+
+        const selectedRow = document.querySelector(
+            `.enquiry-row[data-enquiry-id="${selectedEnquiryId}"]`
+        );
+
+        if (selectedRow) {
+
+            const viewButton = selectedRow.querySelector(
+                ".enquiry-view-btn"
+            );
+
+            if (viewButton) {
+                viewButton.click();
+            }
+
+        } else {
+
+            console.error(
+                "Enquiry not found for ID:",
+                selectedEnquiryId
+            );
+
+        }
+
+        // Remove enquiry_id from URL without reloading
+        params.delete("enquiry_id");
+
+        const newQuery = params.toString();
+
+        const newUrl =
+            window.location.pathname +
+            (newQuery ? "?" + newQuery : "") +
+            window.location.hash;
+
+        window.history.replaceState(
+            {},
+            document.title,
+            newUrl
+        );
     }
 
 });

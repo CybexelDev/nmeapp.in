@@ -459,6 +459,221 @@
 
 }
 
+
+/* =========================================
+   NEWSLETTER RESPONSIVE LAYOUT
+========================================= */
+
+/* Description width */
+section > div > div > p {
+    width: 100%;
+    max-width: 600px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* Newsletter wrapper */
+section > div > div > div:has(.newsletter-input) {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 100% !important;
+    max-width: 600px !important;
+
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    gap: 10px !important;
+}
+
+/* Email field - 80% */
+section > div > div > div:has(.newsletter-input) label {
+    display: flex !important;
+    align-items: center !important;
+
+    flex: 0 0 80% !important;
+    width: 80% !important;
+    min-width: 0 !important;
+
+    min-height: 44px !important;
+    padding: 0 15px !important;
+    gap: 9px !important;
+
+    box-sizing: border-box !important;
+}
+
+/* Email icon */
+section > div > div > div:has(.newsletter-input) label img {
+    width: 18px !important;
+    height: 18px !important;
+    flex-shrink: 0 !important;
+}
+
+/* Email input */
+.newsletter-input {
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+
+    height: 100% !important;
+    padding: 0 !important;
+
+    border: none !important;
+    outline: none !important;
+    background: transparent !important;
+
+    font-family: 'Manrope', sans-serif !important;
+    font-size: 12px !important;
+
+    box-sizing: border-box !important;
+}
+
+.newsletter-input::placeholder {
+    color: #999 !important;
+    opacity: 1 !important;
+    font-size: 12px !important;
+}
+
+/* Subscribe button - 20% */
+.newsletter-button {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    flex: 1 1 20% !important;
+    width: 20% !important;
+    min-width: 0 !important;
+
+    min-height: 36px !important;
+    height: 36px !important;
+
+    padding: 0 8px !important;
+
+    border-radius: 999px !important;
+
+    font-family: 'Manrope', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+
+    white-space: nowrap !important;
+    line-height: 1 !important;
+
+    box-sizing: border-box !important;
+}
+
+/* =========================================
+   TABLET AND DESKTOP
+========================================= */
+
+@media (min-width: 768px) {
+
+    section > div > div > div:has(.newsletter-input) {
+        flex-direction: row !important;
+        max-width: 600px !important;
+    }
+
+    section > div > div > div:has(.newsletter-input) label {
+        flex: 0 0 80% !important;
+        width: 80% !important;
+        min-height: 44px !important;
+    }
+
+    .newsletter-button {
+        flex: 0 0 20% !important;
+        width: 20% !important;
+        height: 43px !important;
+        min-height: 43px !important;
+    }
+}
+
+/* =========================================
+   MOBILE - LINE BY LINE
+========================================= */
+
+@media (max-width: 767px) {
+
+    section > div > div > p {
+        max-width: 600px !important;
+        text-align: center !important;
+    }
+
+    section > div > div > div:has(.newsletter-input) {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        width: 100% !important;
+        max-width: 600px !important;
+
+        gap: 10px !important;
+    }
+
+    /* Input takes more space */
+    section > div > div > div:has(.newsletter-input) label {
+        flex: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+
+        min-height: 42px !important;
+        padding: 0 14px !important;
+    }
+
+    /* Button stays compact and centered */
+    .newsletter-button {
+        flex: none !important;
+
+        width: 20% !important;
+        min-width: 105px !important;
+        max-width: 130px !important;
+
+        height: 43px !important;
+        min-height: 43px !important;
+
+        padding: 0 10px !important;
+        font-size: 10px !important;
+
+        align-self: center !important;
+    }
+
+    .newsletter-input,
+    .newsletter-input::placeholder {
+        font-size: 11px !important;
+    }
+}
+
+/* =========================================
+   EXTRA SMALL MOBILE
+========================================= */
+
+@media (max-width: 380px) {
+
+    section > div > div > div:has(.newsletter-input) {
+        gap: 9px !important;
+    }
+
+    section > div > div > div:has(.newsletter-input) label {
+        min-height: 39px !important;
+    }
+
+    .newsletter-button {
+        width: 30% !important;
+        min-width: 100px !important;
+        max-width: 120px !important;
+
+        height: 43px !important;
+        min-height: 43px !important;
+    }
+}
+footer {
+    border-top-left-radius: 20px !important;
+    border-top-right-radius: 20px !important;
+}
+
   </style>
 </head>
 
@@ -509,8 +724,8 @@
         </div>
       </div>
 
-      <footer class="w-full rounded-t-[24px] sm:rounded-t-[32px] lg:rounded-t-[40px] bg-black px-5 py-10 text-white sm:px-8 sm:py-12 md:px-10 lg:px-12 xl:px-16 lg:py-16">
-
+      <!-- <footer class="w-full rounded-t-[24px] sm:rounded-t-[32px] lg:rounded-t-[40px] bg-black px-5 py-10 text-white sm:px-8 sm:py-12 md:px-10 lg:px-12 xl:px-16 lg:py-16"> -->
+        <footer class="w-full rounded-t-[12px] bg-black px-5 py-10 text-white sm:px-8 sm:py-12 md:px-10 lg:px-12 xl:px-16 lg:py-16">
         <div class="footer-main grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 md:gap-x-8 md:gap-y-12 lg:grid-cols-4 lg:gap-x-8 xl:gap-x-10">
 
           <div class="w-full min-w-0 text-center sm:text-left">

@@ -375,342 +375,1150 @@ function startScrolling() {
 
 
 
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+// gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+// window.addEventListener("load", () => {
+
+//     const phone = document.querySelector("#heroPhone");
+//     const circleCenter = document.querySelector("#circleCenter");
+//     const circleSection = document.querySelector("#circleSection");
+//     const heroSection = document.querySelector("#heroSection");
+//     const targetCircle = document.querySelector("#targetCircle");
+
+//     if (
+//         !phone ||
+//         !circleCenter ||
+//         !circleSection ||
+//         !heroSection ||
+//         !targetCircle
+//     ) return;
+
+//     // Remove previous clones
+//     document.querySelectorAll(".hero-phone-clone").forEach(el => el.remove());
+
+//     // Create phone clone
+//     const clone = phone.cloneNode(true);
+
+//     clone.removeAttribute("id");
+//     clone.classList.add("hero-phone-clone");
+//     clone.setAttribute("aria-hidden", "true");
+
+//     clone.querySelectorAll("[id]").forEach(el => {
+//         el.removeAttribute("id");
+//     });
+
+//     Object.assign(clone.style, {
+//         position: "absolute",
+//         display: "block",
+//         margin: "0",
+//         padding: "0",
+//         pointerEvents: "none",
+//         visibility: "hidden",
+//         opacity: "1",
+//         transform: "none",
+//         transition: "none",
+//         boxSizing: "border-box"
+//     });
+
+//     // IMPORTANT:
+//     // Put clone inside circleSection, not document.body.
+//     // It will stay behind targetCircle and its contents.
+//     // circleSection.insertBefore(clone, circleSection.firstChild);
+//     circleSection.appendChild(clone);
+
+//     clone.style.setProperty("z-index", "9999", "important");
+
+//     let animating = false;
+//     let isInRing = false;
+
+//     let startPosition = null;
+
+//     // Get positions relative to circleSection
+//     function getPositions() {
+
+//         const phoneRect = phone.getBoundingClientRect();
+//         const ringRect = circleCenter.getBoundingClientRect();
+//         const sectionRect = circleSection.getBoundingClientRect();
+
+//         return {
+
+//             left: phoneRect.left - sectionRect.left,
+//             startY: phoneRect.top - sectionRect.top,
+
+//             width: phoneRect.width,
+//             height: phoneRect.height,
+
+//             targetY:
+//                 ringRect.top -
+//                 sectionRect.top +
+//                 ringRect.height / 2 -
+//                 phoneRect.height / 2
+
+//         };
+//     }
+
+//     // Set original phone dimensions and position
+//     // function setClonePosition(position) {
+
+//     //     gsap.set(clone, {
+
+//     //         left: position.left,
+//     //         top: position.startY,
+
+//     //         width: position.width,
+//     //         height: position.height,
+
+//     //         minWidth: position.width,
+//     //         maxWidth: position.width,
+
+//     //         minHeight: position.height,
+//     //         maxHeight: position.height,
+
+//     //         scale: 1,
+//     //         x: 0,
+//     //         y: 0,
+
+//     //         visibility: "visible",
+//     //         zIndex: 1
+
+//     //     });
+
+//     //     clone.style.setProperty("z-index", "1", "important");
+//     // }
+
+//     // startPosition = getPositions();
+
+//     // gsap.set(clone, {
+//     //     left: startPosition.left,
+//     //     top: startPosition.startY,
+//     //     width: startPosition.width,
+//     //     height: startPosition.height,
+//     //     visibility: "hidden"
+//     // });
+
+//     function setClonePosition(position) {
+
+//     clone.style.setProperty("width", `${position.width}px`, "important");
+//     clone.style.setProperty("height", `${position.height}px`, "important");
+
+//     clone.style.setProperty("min-width", `${position.width}px`, "important");
+//     clone.style.setProperty("max-width", "none", "important");
+
+//     clone.style.setProperty("min-height", `${position.height}px`, "important");
+//     clone.style.setProperty("max-height", "none", "important");
+
+//     gsap.set(clone, {
+//         left: position.left,
+//         top: position.startY,
+//         width: position.width,
+//         height: position.height,
+//         scale: 1,
+//         x: 0,
+//         y: 0,
+//         visibility: "visible",
+//         zIndex: 1
+//     });
+// }
+
+//     // =====================================
+//     // PHONE MOVES DOWN INTO THE RING
+//     // =====================================
+
+//     function animatePhoneDown() {
+
+//         if (animating || isInRing) return;
+
+//         animating = true;
+
+//         startPosition = getPositions();
+
+//         setClonePosition(startPosition);
+
+//         // Hide original phone
+//         gsap.set(phone, {
+//             opacity: 0
+//         });
+
+//         // Scroll to circular section
+//         gsap.to(window, {
+
+//             scrollTo: {
+//                 y: circleSection,
+//                 autoKill: false
+//             },
+
+//             duration: 0.9,
+//             ease: "power3.inOut",
+//             overwrite: "auto"
+
+//         });
+
+//         // Move clone into center of ring
+//         gsap.to(clone, {
+
+//             top: startPosition.targetY,
+
+//             duration: 0.9,
+//             ease: "power3.inOut",
+//             overwrite: "auto",
+
+//             onComplete: () => {
+
+//                 animating = false;
+//                 isInRing = true;
+
+//             }
+
+//         });
+
+//     }
+
+//     // =====================================
+//     // PHONE RETURNS UP TO ORIGINAL POSITION
+//     // =====================================
+
+//     function animatePhoneUp() {
+
+//         if (animating || !isInRing) return;
+
+//         animating = true;
+
+//         // Keep phone behind ring contents
+//         clone.style.setProperty("z-index", "1", "important");
+
+//         gsap.set(clone, {
+//             visibility: "visible"
+//         });
+
+//         // Scroll back to hero
+//         gsap.to(window, {
+
+//             scrollTo: {
+//                 y: heroSection,
+//                 autoKill: false
+//             },
+
+//             duration: 0.9,
+//             ease: "power3.inOut",
+//             overwrite: "auto"
+
+//         });
+
+//         // Move phone back to original position
+//         gsap.to(clone, {
+
+//             top: startPosition.startY,
+
+//             duration: 0.9,
+//             ease: "power3.inOut",
+//             overwrite: "auto",
+
+//             onComplete: () => {
+
+//                 gsap.set(clone, {
+//                     visibility: "hidden"
+//                 });
+
+//                 // Show original phone again
+//                 gsap.set(phone, {
+//                     opacity: 1
+//                 });
+
+//                 animating = false;
+//                 isInRing = false;
+
+//             }
+
+//         });
+
+//     }
+
+//     // =====================================
+//     // SCROLL TRIGGER
+//     // =====================================
+
+//     ScrollTrigger.create({
+
+//         trigger: heroSection,
+
+//         start: "top top",
+//         end: "bottom top",
+
+//         onLeave: animatePhoneDown,
+
+//         onEnterBack: animatePhoneUp
+
+//     });
+
+//     // =====================================
+//     // RESIZE
+//     // =====================================
+
+//     window.addEventListener("resize", () => {
+
+//         if (!animating && !isInRing) {
+
+//             startPosition = getPositions();
+
+//             gsap.set(clone, {
+
+//                 left: startPosition.left,
+//                 top: startPosition.startY,
+
+//                 width: startPosition.width,
+//                 height: startPosition.height
+
+//             });
+
+//         }
+
+//         ScrollTrigger.refresh();
+
+//     });
+
+// });
+
+
+// // Smart Features for a Smooth Experience section phone animation
+
+
+//     gsap.utils.toArray(".phone-anim").forEach((phone, index) => {
+
+//       const card = phone.closest(".relative");
+
+//       const moveDistance =
+//         card.offsetHeight +
+//         phone.offsetHeight +
+//         400; // buffer
+
+//       gsap.timeline({
+//         repeat: -1,
+//         delay: index * 0.3
+//       })
+
+//         // Pause at center
+//         .to(phone, { duration: 2 })
+
+//         // Move completely UP (fully hidden)
+//         .to(phone, {
+//           y: -moveDistance,
+//           duration: 1.2,
+//           ease: "power1.inOut"
+//         })
+
+//         // Jump to bottom (fully hidden)
+//         .set(phone, {
+//           y: moveDistance
+//         })
+
+//         // Move back to center
+//         .to(phone, {
+//           y: 0,
+//           duration: 1.2,
+//           ease: "power1.inOut"
+//         })
+
+//         // Pause again
+//         .to(phone, { duration: 2 });
+
+//     });
+  
+
+
+
+// function setQR(type) {
+//   const qrImage = document.getElementById("qrImage");
+
+//   if (type === "apple") {
+//     qrImage.src = "/static/images/apple_qr.png";
+//   } else {
+//     qrImage.src = "/static/images/playstore_qr.png";
+//   }
+// }
+
+
+
+
+gsap.registerPlugin(ScrollTrigger);
+
+// =========================================================
+// PROJECT VIEW - PHONE AND GRADIENT ANIMATION
+// =========================================================
 
 window.addEventListener("load", () => {
 
     const phone = document.querySelector("#heroPhone");
-    const circleCenter = document.querySelector("#circleCenter");
-    const circleSection = document.querySelector("#circleSection");
-    const heroSection = document.querySelector("#heroSection");
-    const targetCircle = document.querySelector("#targetCircle");
+    const phoneWrapper = document.querySelector("#heroPhoneWrapper");
+    const center = document.querySelector("#circleCenter");
+    const target = document.querySelector("#targetCircle");
+    const section = document.querySelector("#circleSection");
+    const hero = document.querySelector("#heroSection");
+    const heroCut = document.querySelector("#heroCut");
+    const sharedCircle = document.querySelector("#sharedCircle");
 
     if (
         !phone ||
-        !circleCenter ||
-        !circleSection ||
-        !heroSection ||
-        !targetCircle
-    ) return;
+        !phoneWrapper ||
+        !center ||
+        !target ||
+        !section ||
+        !hero ||
+        !heroCut ||
+        !sharedCircle
+    ) {
+        console.error("Required project-view elements not found.");
+        return;
+    }
 
-    // Remove previous clones
-    document.querySelectorAll(".hero-phone-clone").forEach(el => el.remove());
+    const heroCutContent = heroCut.querySelector(".hero-cut");
+    const svg = heroCut.querySelector("svg");
 
-    // Create phone clone
+    if (!heroCutContent) {
+        console.error(".hero-cut element not found.");
+        return;
+    }
+
+    // =========================================================
+    // RESPONSIVE SETTINGS
+    // =========================================================
+
+    const CLONE_MIN_WIDTH = 1025;
+
+    const SMALL_LAPTOP_MIN_WIDTH = 1024;
+    const SMALL_LAPTOP_MAX_WIDTH = 1360;
+    const SMALL_LAPTOP_UP_OFFSET = 40;
+
+    // =========================================================
+    // REMOVE PREVIOUS INSTANCE
+    // =========================================================
+
+    if (window.phoneDiagnostic) {
+        window.phoneDiagnostic.kill?.();
+    }
+
+    target.parentElement
+        ?.querySelectorAll('[data-phone-animation-clone="true"]')
+        .forEach(el => el.remove());
+
+    document.querySelector("#gradientOverlapClone")?.remove();
+
+    // =========================================================
+    // HERO CONTENT LAYOUT - TABLET & SMALL LAPTOP
+    // =========================================================
+
+    const heroContentRow = heroCutContent.querySelector(
+        ":scope > div.flex.justify-between.items-start"
+    );
+
+    let heroContentResizeHandler = null;
+
+    if (heroContentRow) {
+        const heading = heroContentRow.querySelector("h2");
+
+        const description = heroContentRow.querySelector(
+            "p.hidden.md\\:block"
+        );
+
+        const originalRowStyles = {
+            display: heroContentRow.style.display,
+            flexDirection: heroContentRow.style.flexDirection,
+            alignItems: heroContentRow.style.alignItems,
+            justifyContent: heroContentRow.style.justifyContent,
+            textAlign: heroContentRow.style.textAlign,
+            gap: heroContentRow.style.gap
+        };
+
+        const originalHeadingStyles = heading ? {
+            textAlign: heading.style.textAlign,
+            marginLeft: heading.style.marginLeft,
+            marginRight: heading.style.marginRight
+        } : null;
+
+        const originalDescriptionStyles = description ? {
+            textAlign: description.style.textAlign,
+            marginLeft: description.style.marginLeft,
+            marginRight: description.style.marginRight,
+            maxWidth: description.style.maxWidth
+        } : null;
+
+        function restoreInlineStyles(element, savedStyles) {
+            if (!element || !savedStyles) return;
+
+            Object.entries(savedStyles).forEach(([property, value]) => {
+                const cssProperty = property.replace(
+                    /[A-Z]/g,
+                    m => "-" + m.toLowerCase()
+                );
+
+                if (value) {
+                    element.style.setProperty(cssProperty, value);
+                } else {
+                    element.style.removeProperty(cssProperty);
+                }
+            });
+        }
+
+        function updateHeroContentLayout() {
+            const width = window.innerWidth;
+
+            if (width >= 768 && width <= 1360) {
+
+                heroContentRow.style.setProperty("display", "flex", "important");
+                heroContentRow.style.setProperty("flex-direction", "column", "important");
+                heroContentRow.style.setProperty("align-items", "center", "important");
+                heroContentRow.style.setProperty("justify-content", "center", "important");
+                heroContentRow.style.setProperty("text-align", "center", "important");
+                heroContentRow.style.setProperty("gap", "16px", "important");
+
+                if (heading) {
+                    heading.style.setProperty("text-align", "center", "important");
+                    heading.style.setProperty("margin-left", "auto", "important");
+                    heading.style.setProperty("margin-right", "auto", "important");
+                }
+
+                if (description) {
+                    description.style.setProperty("text-align", "center", "important");
+                    description.style.setProperty("margin-left", "auto", "important");
+                    description.style.setProperty("margin-right", "auto", "important");
+                    description.style.setProperty("max-width", "380px", "important");
+                }
+
+            } else {
+                restoreInlineStyles(heroContentRow, originalRowStyles);
+                restoreInlineStyles(heading, originalHeadingStyles);
+                restoreInlineStyles(description, originalDescriptionStyles);
+            }
+        }
+
+        heroContentResizeHandler = updateHeroContentLayout;
+
+        updateHeroContentLayout();
+
+        window.addEventListener(
+            "resize",
+            heroContentResizeHandler
+        );
+    }
+
+    // =========================================================
+    // SAVE ORIGINAL POSITIONS
+    // =========================================================
+
+    const originalCircleTranslate = {
+        value: sharedCircle.style.getPropertyValue("translate"),
+        priority: sharedCircle.style.getPropertyPriority("translate")
+    };
+
+    const originalPhoneWrapperTranslate = {
+        value: phoneWrapper.style.getPropertyValue("translate"),
+        priority: phoneWrapper.style.getPropertyPriority("translate")
+    };
+
+    function restoreTranslate(element, saved) {
+        if (saved.value) {
+            element.style.setProperty(
+                "translate",
+                saved.value,
+                saved.priority
+            );
+        } else {
+            element.style.removeProperty("translate");
+        }
+    }
+
+    // =========================================================
+    // SMALL LAPTOP POSITION ADJUSTMENT
+    // MOVE PHONE AND ORIGINAL GRADIENT CIRCLE UP 40PX
+    // =========================================================
+
+    function updateSmallLaptopPositions() {
+        const width = window.innerWidth;
+
+        const shouldMoveUp =
+            width >= SMALL_LAPTOP_MIN_WIDTH &&
+            width <= SMALL_LAPTOP_MAX_WIDTH;
+
+        if (shouldMoveUp) {
+
+            sharedCircle.style.setProperty(
+                "translate",
+                `0 -${SMALL_LAPTOP_UP_OFFSET}px`,
+                "important"
+            );
+
+            phoneWrapper.style.setProperty(
+                "translate",
+                `0 -${SMALL_LAPTOP_UP_OFFSET}px`,
+                "important"
+            );
+
+        } else {
+            restoreTranslate(sharedCircle, originalCircleTranslate);
+            restoreTranslate(phoneWrapper, originalPhoneWrapperTranslate);
+        }
+    }
+
+    updateSmallLaptopPositions();
+
+    window.addEventListener(
+        "resize",
+        updateSmallLaptopPositions
+    );
+
+    // =========================================================
+    // DISABLE OLD PHONE SCROLLTRIGGERS
+    // =========================================================
+
+    ScrollTrigger.getAll().forEach(st => {
+        if (st.vars.trigger === hero) {
+            st.kill();
+        }
+    });
+
+    // =========================================================
+    // CREATE PHONE CLONE
+    // =========================================================
+
     const clone = phone.cloneNode(true);
 
     clone.removeAttribute("id");
-    clone.classList.add("hero-phone-clone");
-    clone.setAttribute("aria-hidden", "true");
 
     clone.querySelectorAll("[id]").forEach(el => {
         el.removeAttribute("id");
     });
+
+    clone.dataset.phoneAnimationClone = "true";
+
+    target.insertAdjacentElement("afterend", clone);
 
     Object.assign(clone.style, {
         position: "absolute",
         display: "block",
         margin: "0",
         padding: "0",
-        pointerEvents: "none",
-        visibility: "hidden",
-        opacity: "1",
         transform: "none",
         transition: "none",
+        pointerEvents: "none",
+        visibility: "visible",
+        opacity: "0",
         boxSizing: "border-box"
     });
 
-    // IMPORTANT:
-    // Put clone inside circleSection, not document.body.
-    // It will stay behind targetCircle and its contents.
-    // circleSection.insertBefore(clone, circleSection.firstChild);
-    circleSection.appendChild(clone);
+    // =========================================================
+    // CIRCLE SECTION LAYERS
+    // =========================================================
 
-    clone.style.setProperty("z-index", "9999", "important");
+    section.style.setProperty("position", "relative", "important");
+    section.style.setProperty("z-index", "auto", "important");
+    section.style.setProperty("isolation", "auto", "important");
 
-    let animating = false;
-    let isInRing = false;
+    target.style.setProperty("position", "relative", "important");
+    target.style.setProperty("z-index", "auto", "important");
 
-    let startPosition = null;
+    sharedCircle.style.setProperty("z-index", "20", "important");
 
-    // Get positions relative to circleSection
+    [...target.children].slice(0, 3).forEach(ring => {
+        ring.style.setProperty("z-index", "1", "important");
+    });
+
+    [...target.children].slice(3).forEach(content => {
+        content.style.setProperty("z-index", "30", "important");
+    });
+
+    // =========================================================
+    // SAVE ORIGINAL HERO CUT STYLES
+    // =========================================================
+
+    const originalHeroStyles = {};
+
+    ["position", "z-index", "isolation"].forEach(property => {
+        originalHeroStyles[property] = {
+            value: heroCut.style.getPropertyValue(property),
+            priority: heroCut.style.getPropertyPriority(property)
+        };
+    });
+
+    function restoreHeroCutStyles() {
+        Object.entries(originalHeroStyles).forEach(([property, saved]) => {
+            if (saved.value) {
+                heroCut.style.setProperty(
+                    property,
+                    saved.value,
+                    saved.priority
+                );
+            } else {
+                heroCut.style.removeProperty(property);
+            }
+        });
+    }
+
+    // =========================================================
+    // HERO CUT LAYERS
+    // =========================================================
+
+    heroCut.style.setProperty("position", "relative", "important");
+    heroCut.style.setProperty("z-index", "26", "important");
+    heroCut.style.setProperty("isolation", "isolate", "important");
+
+    heroCutContent.style.setProperty("position", "relative", "important");
+    heroCutContent.style.setProperty("z-index", "auto", "important");
+    heroCutContent.style.setProperty("isolation", "auto", "important");
+
+    if (svg) {
+        svg.style.setProperty("z-index", "40", "important");
+        svg.style.setProperty("pointer-events", "none", "important");
+    }
+
+    // =========================================================
+    // CREATE GRADIENT OVERLAP CLONE
+    // =========================================================
+
+    const gradientClone = sharedCircle.cloneNode(true);
+
+    gradientClone.removeAttribute("id");
+
+    gradientClone.querySelectorAll("[id]").forEach(el => {
+        el.removeAttribute("id");
+    });
+
+    gradientClone.id = "gradientOverlapClone";
+    gradientClone.setAttribute("aria-hidden", "true");
+
+    Object.assign(gradientClone.style, {
+        position: "absolute",
+        margin: "0",
+        padding: "0",
+        transform: "none",
+        translate: "none",
+        transition: "none",
+        pointerEvents: "none",
+        boxSizing: "border-box"
+    });
+
+    function hideGradientClone() {
+        gradientClone.style.setProperty("display", "none", "important");
+        gradientClone.style.setProperty("visibility", "hidden", "important");
+        gradientClone.style.setProperty("opacity", "0", "important");
+        gradientClone.style.setProperty("pointer-events", "none", "important");
+    }
+
+    function showGradientClone() {
+        gradientClone.style.setProperty("display", "block", "important");
+        gradientClone.style.setProperty("visibility", "visible", "important");
+        gradientClone.style.setProperty("opacity", "1", "important");
+        gradientClone.style.setProperty("pointer-events", "none", "important");
+    }
+
+    hideGradientClone();
+
+    heroCutContent.insertBefore(
+        gradientClone,
+        heroCutContent.firstChild
+    );
+
+    // =========================================================
+    // CONDITIONAL GRADIENT OVERLAP
+    // =========================================================
+
+    function updateGradientOverlapClone() {
+
+        if (window.innerWidth <= CLONE_MIN_WIDTH) {
+            hideGradientClone();
+            return;
+        }
+
+        const circleRect = sharedCircle.getBoundingClientRect();
+        const panelRect = heroCutContent.getBoundingClientRect();
+
+        if (
+            !circleRect.width ||
+            !circleRect.height ||
+            !panelRect.width ||
+            !panelRect.height
+        ) {
+            hideGradientClone();
+            return;
+        }
+
+        const left = Math.max(circleRect.left, panelRect.left);
+        const top = Math.max(circleRect.top, panelRect.top);
+        const right = Math.min(circleRect.right, panelRect.right);
+        const bottom = Math.min(circleRect.bottom, panelRect.bottom);
+
+        if (right <= left || bottom <= top) {
+            hideGradientClone();
+            return;
+        }
+
+        const cloneLeft = circleRect.left - panelRect.left;
+        const cloneTop = circleRect.top - panelRect.top;
+
+        const clipTop = Math.max(0, top - circleRect.top);
+        const clipRight = Math.max(0, circleRect.right - right);
+        const clipBottom = Math.max(0, circleRect.bottom - bottom);
+        const clipLeft = Math.max(0, left - circleRect.left);
+
+        Object.assign(gradientClone.style, {
+            left: `${cloneLeft}px`,
+            top: `${cloneTop}px`,
+            width: `${circleRect.width}px`,
+            height: `${circleRect.height}px`,
+            clipPath: `inset(${clipTop}px ${clipRight}px ${clipBottom}px ${clipLeft}px)`
+        });
+
+        showGradientClone();
+    }
+
+    // =========================================================
+    // HERO CUT LAYER CONTROL
+    // =========================================================
+
+    function updateHeroCutLayer() {
+        const phoneRect = clone.getBoundingClientRect();
+        const cardRect = heroCut.getBoundingClientRect();
+
+        const horizontalOverlap =
+            phoneRect.right > cardRect.left &&
+            phoneRect.left < cardRect.right;
+
+        const verticalOverlap =
+            phoneRect.bottom > cardRect.top &&
+            phoneRect.top < cardRect.bottom;
+
+        if (horizontalOverlap && verticalOverlap) {
+            heroCut.style.setProperty("position", "relative", "important");
+            heroCut.style.setProperty("z-index", "26", "important");
+            heroCut.style.setProperty("isolation", "isolate", "important");
+        } else {
+            restoreHeroCutStyles();
+        }
+    }
+
+    // =========================================================
+    // PHONE POSITION CALCULATIONS
+    // =========================================================
+
     function getPositions() {
-
-        const phoneRect = phone.getBoundingClientRect();
-        const ringRect = circleCenter.getBoundingClientRect();
-        const sectionRect = circleSection.getBoundingClientRect();
+        const p = phone.getBoundingClientRect();
+        const c = center.getBoundingClientRect();
+        const s = section.getBoundingClientRect();
 
         return {
+            startLeft: p.left - s.left,
+            startTop: p.top - s.top,
+            width: p.width,
+            height: p.height,
 
-            left: phoneRect.left - sectionRect.left,
-            startY: phoneRect.top - sectionRect.top,
+            targetLeft:
+                c.left - s.left +
+                c.width / 2 -
+                p.width / 2,
 
-            width: phoneRect.width,
-            height: phoneRect.height,
-
-            targetY:
-                ringRect.top -
-                sectionRect.top +
-                ringRect.height / 2 -
-                phoneRect.height / 2
-
+            targetTop:
+                c.top - s.top +
+                c.height / 2 -
+                p.height / 2
         };
     }
 
-    // Set original phone dimensions and position
-    function setClonePosition(position) {
+    const pos = getPositions();
 
-        gsap.set(clone, {
-
-            left: position.left,
-            top: position.startY,
-
-            width: position.width,
-            height: position.height,
-
-            minWidth: position.width,
-            maxWidth: position.width,
-
-            minHeight: position.height,
-            maxHeight: position.height,
-
-            scale: 1,
-            x: 0,
-            y: 0,
-
-            visibility: "visible",
-            zIndex: 1
-
-        });
-
-        clone.style.setProperty("z-index", "1", "important");
-    }
-
-    startPosition = getPositions();
+    // =========================================================
+    // INITIAL PHONE POSITION
+    // =========================================================
 
     gsap.set(clone, {
-        left: startPosition.left,
-        top: startPosition.startY,
-        width: startPosition.width,
-        height: startPosition.height,
-        visibility: "hidden"
+        left: pos.startLeft,
+        top: pos.startTop,
+        width: pos.width,
+        height: pos.height,
+        x: 0,
+        y: 0,
+        zIndex: 25,
+        opacity: 0
     });
 
-    // =====================================
-    // PHONE MOVES DOWN INTO THE RING
-    // =====================================
+    gsap.set(phone, {
+        opacity: 1
+    });
 
-    function animatePhoneDown() {
+    // =========================================================
+    // PHONE VISIBILITY
+    // =========================================================
 
-        if (animating || isInRing) return;
-
-        animating = true;
-
-        startPosition = getPositions();
-
-        setClonePosition(startPosition);
-
-        // Hide original phone
-        gsap.set(phone, {
-            opacity: 0
-        });
-
-        // Scroll to circular section
-        gsap.to(window, {
-
-            scrollTo: {
-                y: circleSection,
-                autoKill: false
-            },
-
-            duration: 0.9,
-            ease: "power3.inOut",
-            overwrite: "auto"
-
-        });
-
-        // Move clone into center of ring
-        gsap.to(clone, {
-
-            top: startPosition.targetY,
-
-            duration: 0.9,
-            ease: "power3.inOut",
-            overwrite: "auto",
-
-            onComplete: () => {
-
-                animating = false;
-                isInRing = true;
-
-            }
-
-        });
-
-    }
-
-    // =====================================
-    // PHONE RETURNS UP TO ORIGINAL POSITION
-    // =====================================
-
-    function animatePhoneUp() {
-
-        if (animating || !isInRing) return;
-
-        animating = true;
-
-        // Keep phone behind ring contents
-        clone.style.setProperty("z-index", "1", "important");
+    function updatePhoneLayers(progress) {
+        const showClone = progress > 0.001;
 
         gsap.set(clone, {
-            visibility: "visible"
+            opacity: showClone ? 1 : 0
         });
 
-        // Scroll back to hero
-        gsap.to(window, {
-
-            scrollTo: {
-                y: heroSection,
-                autoKill: false
-            },
-
-            duration: 0.9,
-            ease: "power3.inOut",
-            overwrite: "auto"
-
+        gsap.set(phone, {
+            opacity: showClone ? 0 : 1
         });
 
-        // Move phone back to original position
-        gsap.to(clone, {
+        clone.style.setProperty("z-index", "25", "important");
 
-            top: startPosition.startY,
-
-            duration: 0.9,
-            ease: "power3.inOut",
-            overwrite: "auto",
-
-            onComplete: () => {
-
-                gsap.set(clone, {
-                    visibility: "hidden"
-                });
-
-                // Show original phone again
-                gsap.set(phone, {
-                    opacity: 1
-                });
-
-                animating = false;
-                isInRing = false;
-
-            }
-
-        });
-
+        updateHeroCutLayer();
+        updateGradientOverlapClone();
     }
 
-    // =====================================
-    // SCROLL TRIGGER
-    // =====================================
+    // =========================================================
+    // SCROLL AND RESIZE UPDATES
+    // =========================================================
 
-    ScrollTrigger.create({
+    let updateScheduled = false;
 
-        trigger: heroSection,
+    function updateAllLayers() {
+        if (updateScheduled) return;
 
-        start: "top top",
-        end: "bottom top",
+        updateScheduled = true;
 
-        onLeave: animatePhoneDown,
+        requestAnimationFrame(() => {
+            updateScheduled = false;
 
-        onEnterBack: animatePhoneUp
+            updateGradientOverlapClone();
+            updateHeroCutLayer();
+        });
+    }
 
+    function refreshResponsiveLayers() {
+        requestAnimationFrame(() => {
+            updateAllLayers();
+
+            requestAnimationFrame(() => {
+                updateAllLayers();
+            });
+        });
+    }
+
+    window.addEventListener("scroll", updateAllLayers, {
+        passive: true
     });
 
-    // =====================================
-    // RESIZE
-    // =====================================
+    window.addEventListener("resize", refreshResponsiveLayers);
+    window.addEventListener("load", refreshResponsiveLayers);
 
-    window.addEventListener("resize", () => {
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener(
+            "resize",
+            refreshResponsiveLayers
+        );
+    }
 
-        if (!animating && !isInRing) {
+    // =========================================================
+    // PHONE SCROLL ANIMATION
+    // =========================================================
 
-            startPosition = getPositions();
+    const animation = gsap.to(clone, {
+        left: pos.targetLeft,
+        top: pos.targetTop,
+        ease: "none",
 
-            gsap.set(clone, {
+        scrollTrigger: {
+            id: "phone-layer-scroll-test",
+            trigger: hero,
+            start: "top top",
+            endTrigger: center,
+            end: "center center",
+            scrub: 1,
+            invalidateOnRefresh: true,
 
-                left: startPosition.left,
-                top: startPosition.startY,
+            onUpdate(self) {
+                updatePhoneLayers(self.progress);
+            },
 
-                width: startPosition.width,
-                height: startPosition.height
+            onRefresh() {
+                refreshResponsiveLayers();
+            }
+        }
+    });
 
+    // =========================================================
+    // DIAGNOSTIC CONTROLS AND CLEANUP
+    // =========================================================
+
+    window.phoneDiagnostic = {
+        clone,
+        phone,
+        animation,
+        gradientClone,
+
+        cleanup() {
+            restoreHeroCutStyles();
+
+            restoreTranslate(sharedCircle, originalCircleTranslate);
+            restoreTranslate(phoneWrapper, originalPhoneWrapperTranslate);
+
+            window.removeEventListener(
+                "resize",
+                updateSmallLaptopPositions
+            );
+
+            window.removeEventListener("scroll", updateAllLayers);
+            window.removeEventListener("resize", refreshResponsiveLayers);
+            window.removeEventListener("load", refreshResponsiveLayers);
+
+            if (window.visualViewport) {
+                window.visualViewport.removeEventListener(
+                    "resize",
+                    refreshResponsiveLayers
+                );
+            }
+
+            if (heroContentResizeHandler) {
+                window.removeEventListener(
+                    "resize",
+                    heroContentResizeHandler
+                );
+            }
+        },
+
+        kill() {
+            animation.scrollTrigger?.kill();
+            animation.kill();
+
+            clone.remove();
+            gradientClone.remove();
+
+            this.cleanup();
+
+            gsap.set(phone, {
+                opacity: 1
             });
 
+            console.log("Phone and gradient clones removed.");
         }
+    };
 
-        ScrollTrigger.refresh();
+    // =========================================================
+    // REFRESH
+    // =========================================================
 
+    ScrollTrigger.refresh();
+    refreshResponsiveLayers();
+
+    console.log("Project view phone and gradient animation initialized.");
+
+    console.table({
+        viewportWidth: window.innerWidth,
+
+        smallLaptop:
+            window.innerWidth >= SMALL_LAPTOP_MIN_WIDTH &&
+            window.innerWidth <= SMALL_LAPTOP_MAX_WIDTH,
+
+        upwardOffset:
+            window.innerWidth >= SMALL_LAPTOP_MIN_WIDTH &&
+            window.innerWidth <= SMALL_LAPTOP_MAX_WIDTH
+                ? SMALL_LAPTOP_UP_OFFSET
+                : 0,
+
+        heroContentStacked:
+            window.innerWidth >= 768 &&
+            window.innerWidth <= 1360,
+
+        gradientCloneEnabled:
+            window.innerWidth > CLONE_MIN_WIDTH,
+
+        gradientCloneDisplay:
+            getComputedStyle(gradientClone).display,
+
+        phoneCloneZIndex:
+            getComputedStyle(clone).zIndex
     });
 
 });
 
 
-// Smart Features for a Smooth Experience section phone animation
+// =========================================================
+// SMART FEATURES SECTION - PHONE ANIMATION
+// =========================================================
 
+// Remove old feature timelines if this script is initialized again.
+if (window.smartFeaturePhoneTimelines) {
+    window.smartFeaturePhoneTimelines.forEach(timeline => {
+        timeline.kill();
+    });
+}
 
-    gsap.utils.toArray(".phone-anim").forEach((phone, index) => {
+window.smartFeaturePhoneTimelines = [];
 
-      const card = phone.closest(".relative");
+gsap.utils.toArray(".phone-anim").forEach((phone, index) => {
 
-      const moveDistance =
+    const card = phone.closest(".relative");
+
+    if (!card) return;
+
+    const moveDistance =
         card.offsetHeight +
         phone.offsetHeight +
-        400; // buffer
+        400;
 
-      gsap.timeline({
+    const timeline = gsap.timeline({
         repeat: -1,
         delay: index * 0.3
-      })
-
-        // Pause at center
-        .to(phone, { duration: 2 })
-
-        // Move completely UP (fully hidden)
-        .to(phone, {
-          y: -moveDistance,
-          duration: 1.2,
-          ease: "power1.inOut"
-        })
-
-        // Jump to bottom (fully hidden)
-        .set(phone, {
-          y: moveDistance
-        })
-
-        // Move back to center
-        .to(phone, {
-          y: 0,
-          duration: 1.2,
-          ease: "power1.inOut"
-        })
-
-        // Pause again
-        .to(phone, { duration: 2 });
-
     });
-  
+
+    timeline
+
+        // Pause at center.
+        .to(phone, {
+            duration: 2
+        })
+
+        // Move completely up.
+        .to(phone, {
+            y: -moveDistance,
+            duration: 1.2,
+            ease: "power1.inOut"
+        })
+
+        // Jump to bottom while hidden.
+        .set(phone, {
+            y: moveDistance
+        })
+
+        // Move back to center.
+        .to(phone, {
+            y: 0,
+            duration: 1.2,
+            ease: "power1.inOut"
+        })
+
+        // Pause again.
+        .to(phone, {
+            duration: 2
+        });
+
+    window.smartFeaturePhoneTimelines.push(timeline);
+
+});
+
+
+// =========================================================
+// QR CODE SWITCHING
+// =========================================================
+
+window.setQR = function(type) {
+
+    const qrImage = document.getElementById("qrImage");
+
+    if (!qrImage) {
+        console.error("#qrImage element not found.");
+        return;
+    }
+
+    if (type === "apple") {
+        qrImage.src = "/static/images/apple_qr.png";
+    } else {
+        qrImage.src = "/static/images/playstore_qr.png";
+    }
+
+};
 
 
 
-function setQR(type) {
-  const qrImage = document.getElementById("qrImage");
 
-  if (type === "apple") {
-    qrImage.src = "/static/images/apple_qr.png";
-  } else {
-    qrImage.src = "/static/images/playstore_qr.png";
-  }
-}
 
 
 /* ==========================================

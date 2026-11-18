@@ -10,4 +10,4 @@ admin.site.register(Login)
 admin.site.register(TeamMember)
 admin.site.register(Testimonial)
 admin.site.register(Enquiry)
-
+admin.site.register(AdminNotification)
