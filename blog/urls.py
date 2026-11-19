@@ -30,9 +30,6 @@ urlpatterns = [
     path('faq', views.faq, name='faq'),
     path('blogs', views.blogs, name='blogs'),
     path('blogs/<int:id>/', views.blog_detail, name='blog_detail'),
-    # path('testimonials/add/', views.add_testimonial, name='add_testimonial'),
-    # path('testimonials/edit/', views.edit_testimonial, name='edit_testimonial'),
-    # path('testimonials/delete/<int:id>/', views.delete_testimonial, name='delete_testimonial'),
 
     path(
         "testimonials/",

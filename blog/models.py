@@ -43,8 +43,8 @@ def validate_message(value):
     validate_plain_text(value)
 
 phone_validator = RegexValidator(
-    regex=r'^\+?[0-9]{7,15}$',
-    message="Enter a valid phone number with 7 to 15 digits."
+    regex=r'^\+?[0-9]{10,13}$',
+    message="Enter a valid phone number with 10 to 13 digits."
 )
 
 def validate_enquiry_name(value):
@@ -57,9 +57,9 @@ def validate_enquiry_name(value):
 
 
 def validate_enquiry_phone(value):
-    if not re.fullmatch(r'^\+?[0-9]{7,15}$', value):
+    if not re.fullmatch(r'^\+?[0-9]{10,13}$', value):
         raise ValidationError(
-            "Enter a valid phone number with 7 to 15 digits."
+            "Enter a valid phone number with 10 to 13 digits."
         )
 
 # Create your models here.

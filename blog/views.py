@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render,redirect,get_object_or_404
-from. models import*
+from .models import *
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
@@ -14,7 +14,19 @@ from django.urls import reverse
 from django.contrib import messages
 from datetime import datetime
 from django.contrib import messages as django_messages
-from django.urls import reverse
+from django.http import JsonResponse
+from .forms import ContactForm
+import re
+from django.views.decorators.http import require_POST
+from .models import Enquiry
+from django.contrib.auth import authenticate, login as auth_login
+from django.utils import timezone
+from datetime import timedelta
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from django.db.models import Count
+from django.db.models.functions import ExtractMonth
+
 
 # Create your views here.
 def base(request):
@@ -22,37 +34,6 @@ def base(request):
 def home(request):
     testimonials = Testimonial.objects.all()
     return render(request, "index.html", {"testimonials": testimonials})
-
-# def message(request):
-#     if request.method == "POST":
-#         try:
-#             Enquiry.objects.create(
-#                 full_name=request.POST.get("full_name"),
-#                 email=request.POST.get("email"),
-#                 phone=request.POST.get("phone"),
-#                 business_name=request.POST.get("business_name"),
-#                 business_category=request.POST.get("business_category"),
-#                 subject=request.POST.get("subject"),
-#                 message=request.POST.get("message"),
-#             )
-#             return JsonResponse({"success": True})
-
-#         except Exception as e:
-#             return JsonResponse({
-#                 "success": False,
-#                 "errors": {"server": str(e)}
-#             }, status=400)
-
-#     return render(request, "message.html")
-
-import re
-
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.core.exceptions import ValidationError
-from django.core.validators import validate_email
-
-from .models import Enquiry
 
 
 def message(request):
@@ -278,23 +259,6 @@ def blog_detail(request, id):
 
 
 
-
-
-
-from django.http import JsonResponse
-from .forms import ContactForm
-# def contact(request):
-
-#     if request.method == "POST":
-#         name = request.POST.get('name')
-#         subject = request.POST.get('subject')
-#         email = request.POST.get('email')
-#         message = request.POST.get('message')
-
-#         contact_data=Contact(name=name,subject=subject,email=email,message=message)
-#         contact_data.save()
-#     return render (request,'contact.html')
-
 def contact(request):
     if request.method == "POST":
         form = ContactForm(request.POST)
@@ -308,76 +272,6 @@ def contact(request):
     return render(request, 'contact.html', {'form': form})
 
 
-# def contact(request):
-
-#     if request.method == "POST":
-
-#         form = ContactForm(request.POST)
-
-#         if form.is_valid():
-
-#             # Save contact form
-#             contact_obj = form.save()
-
-#             # Create admin notification
-#             AdminNotification.objects.create(
-#                 notification_type="contact",
-#                 object_id=contact_obj.id,
-#                 title="New Contact Message",
-#                 message="A new contact form has been submitted."
-#             )
-
-#             return render(
-#                 request,
-#                 'contact.html',
-#                 {
-#                     'form': ContactForm(),
-#                     'success': True
-#                 }
-#             )
-
-#         else:
-#             return render(
-#                 request,
-#                 'contact.html',
-#                 {
-#                     'form': form
-#                 }
-#             )
-
-#     else:
-#         form = ContactForm()
-
-#     return render(
-#         request,
-#         'contact.html',
-#         {
-#             'form': form
-#         }
-#     )
-
-
-# def contact_submit(request):
-#     if request.method == "POST":
-#         Contact.objects.create(
-#             name=request.POST.get("name"),
-#             email=request.POST.get("email"),
-#             phone=request.POST.get("phone"),
-#             subject=request.POST.get("subject"),
-#             message=request.POST.get("message"),
-#         )
-#         # redirect to your custom admin panel instead of contact page
-#         # return redirect("dashboard")  # your admin_panel URL name
-
-#         messages.success(request, "Your message has been submitted successfully!")
-#         return redirect("contact")
-#     return redirect("contact")
-
-
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.core.exceptions import ValidationError
-from .models import Contact
 
 
 def contact_submit(request):
@@ -436,15 +330,6 @@ def contact_submit(request):
 
     return redirect("contact")
 
-
-# def delete_enquiry(request, id):
-#     if request.method == "POST":
-#         Contact.objects.filter(id=id).delete()  # delete the enquiry
-#     return redirect("dashboard")  # redirect to admin panel
- # reload admin panel
-
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Contact
 
 
 def admin_enquiry(request):
@@ -534,44 +419,6 @@ def blog_post(request):
         }
         return redirect('dashboard')  
 
-# def admin_panel(request):
-#     is_superuser = (
-#         request.user.is_authenticated and
-#         request.user.is_superuser
-#     )
-#     # if "name" not in request.session:
-#     #     return render(request, 'login.html')
-
-#     is_custom_user = "name" in request.session
-
-#     if not is_superuser and not is_custom_user:
-#         return redirect('login')
-
-#     blog = Post.objects.all()
-#     contact = Contact.objects.all()
-#     messages = Enquiry.objects.all().order_by("-created_at")
-#     team_members = TeamMember.objects.all()
-#     testimonials = Testimonial.objects.all().order_by('-id')
-
-#     # Get the page parameter from URL (default: dashboard)
-#     page = request.GET.get('page', 'dashboard')
-
-#     context = {
-#         "blog": blog,
-#         "contact": contact,
-#         "messages": messages,
-#         "team_members": team_members,
-#         "testimonials": testimonials,
-#         "page": page,
-#     }
-
-#     # ✅ THIS LINE WAS MISSING
-#     return render(request, "admin/dashboard.html", context)
-
-from django.shortcuts import render, redirect
-from django.db.models import Count
-from django.db.models.functions import ExtractMonth
-from django.utils import timezone
 
 def admin_panel(request):
 
@@ -682,16 +529,6 @@ def admin_panel(request):
 
     return render(request, "admin/dashboard.html", context)
 
-# def delete_message(request, id):
-#     if request.method == "POST":
-#         msg = get_object_or_404(Enquiry, id=id)
-#         msg.delete()
-#         return redirect("dashboard")
-#     return redirect("dashboard")  # redirect for GET requests
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.decorators.http import require_POST
-from .models import Testimonial
 
 
 def admin_testimonials(request):
@@ -781,43 +618,6 @@ def delete_testimonial(request, id):
 
     return redirect("dashboard")
 
-# def add_testimonial(request):
-#     if request.method == "POST":
-#         name = request.POST.get('name')
-#         rating = request.POST.get('rating')
-#         opinion = request.POST.get('opinion')
-#         image = request.FILES.get('image')
-
-#         Testimonial.objects.create(
-#             name=name,
-#             rating=rating,
-#             opinion=opinion,
-#             image=image
-#         )
-#     return redirect('dashboard')  # or testimonials_page
-
-
-# def edit_testimonial(request, id):
-#     testimonial = Testimonial.objects.get(id=id)
-
-#     if request.method == "POST":
-#         testimonial.name = request.POST.get("name")
-#         testimonial.rating = request.POST.get("rating")
-#         testimonial.opinion = request.POST.get("opinion")
-
-#         if request.FILES.get("image"):
-#             testimonial.image = request.FILES.get("image")
-
-#         testimonial.save()
-#         return redirect("dashboard")  # change if needed
-
-
-
-# # Delete testimonial
-# def delete_testimonial(request, id):
-#     testimonial = get_object_or_404(Testimonial, id=id)
-#     testimonial.delete()
-#     return redirect('dashboard')
 
 def add_team_member(request):
     if request.method == "POST":
@@ -946,92 +746,6 @@ def admin_register(request):
 
     return render(request, 'admin_register.html')
 
-
-# from django.utils import timezone
-# from datetime import timedelta
-# from datetime import datetime
-# def login(request):
-#     print("Login view HIT!", request.method)
-#     if request.method == 'POST':
-#         username = request.POST.get('username')
-#         raw_password = request.POST.get('password')
-
-#         print(username, raw_password)
-#         if "name" in request.session:
-#             print('haaaaaaiiii')
-#         else:
-#             print('loggiinnn pageee')
-
-#         holder = Login.objects.first()
-
-#         current_time = timezone.now()
-#         if holder.last_failed_login is not None:
-#             if timezone.is_naive(holder.last_failed_login):
-#                 # Assume naive datetime is in your current timezone (e.g., Asia/Kolkata)
-#                 aware_last_failed_login = timezone.make_aware(holder.last_failed_login, timezone.get_current_timezone())
-#             else:
-#                 aware_last_failed_login = holder.last_failed_login
-
-#             if current_time < aware_last_failed_login + timedelta(hours=2) and holder.rate_limit == 5:
-#                 print('Wait for a 2 hour time period')
-#                 return render(request, 'login.html', {'ratelimit': True})
-        
-#             else:
-#                 if holder.rate_limit >=5:
-#                     holder.rate_limit = 0
-#                     holder.save()
-                
-#                 try:
-#                     user = Login.objects.get(username=username)
-#                 except Login.DoesNotExist:
-#                     holder.rate_limit +=1
-#                     holder.last_failed_login = timezone.now()
-#                     holder.save()
-#                     return render(request, 'login.html', {'show_alert': True})
-#                     # return render(request, 'login.html', {'show_alert': True})
-
-                
-#                 if check_password(raw_password, user.password):
-#                     request.session["name"] = username
-#                     # print(request.session['name'],'nameeeeee')
-#                     holder.rate_limit = 0
-#                     holder.save()
-#                     response = redirect('dashboard')
-#                     response['Cache-Control'] = 'no-store, no-cache, must-revalidate, proxy-revalidate'
-#                     response['Pragma'] = 'no-cache'
-#                     response['Expires'] = '0'
-#                     print("Login successful, session name:", request.session.get("name"))
-
-#                     return redirect('dashboard')
-#                 else:
-#                     holder = Login.objects.first()
-                    
-#                     holder.rate_limit +=1
-#                     holder.last_failed_login = timezone.now()
-#                     holder.save()
-#                     # print('the rate limit :',user.rate_limit)
-#                     return render(request, 'login.html', {'error': 'Invalid credentials'})
-#         else:
-#             holder.last_failed_login = current_time
-#             holder.save()
-#             return redirect('login')
-
-#     else:
-#         if "name" in request.session:
-#             return redirect('dashboard')
-#         else:
-#             print("Login attempt")
-#             response = render(request, 'login.html')
-#             response['Cache-Control'] = 'no-store, no-cache, must-revalidate, proxy-revalidate'
-#             response['Pragma'] = 'no-cache'
-#             response['Expires'] = '0'
-#             return response
-
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login as auth_login
-from django.contrib.auth.hashers import check_password
-from django.utils import timezone
-from datetime import timedelta
 
 
 def login(request):
@@ -1214,9 +928,7 @@ def admin_blogs(request):
         'blog': blog,
     })
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.decorators.http import require_POST
-from .models import Enquiry
+
 
 
 def admin_messages(request):
