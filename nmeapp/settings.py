@@ -40,18 +40,16 @@ SECRET_KEY = 'django-insecure-52da-#m3+q2qlp_9k48dm$#$ue_@^1du(v+)-d*t9br8wu)@dz
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['nmeapp.in', 'www.nmeapp.in','127.0.0.1']
+ALLOWED_HOSTS = ["nmeapp-in.onrender.com",'nmeapp.in', 'www.nmeapp.in','127.0.0.1']
 # ALLOWED_HOSTS = []
 
 
 
 CSRF_TRUSTED_ORIGINS = [
-        "nmeapp-in.onrender.com",
+        "https://nmeapp-in.onrender.com",
         'http://nmeapp.in',
         'https://nmeapp.in',
         'https://www.nmeapp.in',  # Add both HTTP and HTTPS if using SSL
-        "localhost",
-        "127.0.0.1",
         ]
 
 
