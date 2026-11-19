@@ -1053,6 +1053,15 @@ def login(request):
             password=raw_password
         )
 
+        print("Submitted username:", username)
+        print("Django authentication result:", django_user)
+
+        if django_user is None:
+            print("Django authentication failed")
+        else:
+            print("Is superuser:", django_user.is_superuser)
+            print("Is staff:", django_user.is_staff)
+
         if django_user is not None and django_user.is_superuser:
 
             auth_login(request, django_user)
