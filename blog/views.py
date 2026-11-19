@@ -86,9 +86,9 @@ def message(request):
             errors["email"] = ["Enter a valid email address."]
 
         # Phone validation
-        if not re.fullmatch(r'^\+?[0-9]{7,15}$', submitted_values["phone"]):
+        if not re.fullmatch(r'^\+?[0-9]{10,13}$', submitted_values["phone"]):
             errors["phone"] = [
-                "Enter a valid phone number with 7 to 15 digits."
+                "Enter a valid phone number with 10 to 13 digits."
             ]
 
         # Business name validation

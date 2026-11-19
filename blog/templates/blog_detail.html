@@ -278,14 +278,14 @@
             {% for blog in latest_blogs %}
 
             <article class="latest-blog-card rounded-3xl p-1 mb-6">
-
+                <a href="{% url 'blog_detail' blog.id %}">
                 <img
                     class="rounded-3xl"
                     src="{{ blog.image.url }}"
                     alt="{{ blog.card_head }}"
                     loading="lazy"
                 >
-
+                </a>
                 <div>
                     <h4 class="font-poppins text-[#3C79FF] text-xl mt-8 mb-2">
                         {{ blog.keyword }}

@@ -84,7 +84,7 @@
 
 
     <!-- ENQUIRY SECTION -->
-    <section class="enquiry-section">
+    <section class="enquiry-section" id="enquiryFormSection">
 
         <div class="enquiry-intro">
             <span class="section-label">GET IN TOUCH</span>
@@ -123,13 +123,13 @@
 
 
                 <!-- DJANGO ERRORS -->
-                {% if errors %}
+                <!-- {% if errors %}
                     <div class="server-errors" role="alert">
                         {% for field, error in errors.items %}
                             <p>{{ error }}</p>
                         {% endfor %}
                     </div>
-                {% endif %}
+                {% endif %} -->
 
 
                 <!-- DJANGO MESSAGES -->
@@ -201,7 +201,13 @@
                                 placeholder="Enter your full name"
                                 autocomplete="name"
                                 required
-                                value="{{ request.POST.full_name|default:'' }}">
+                                value="{{ request.POST.full_name|default:'' }}"
+                                {% if errors.full_name %}aria-invalid="true" aria-describedby="full_name_error"{% endif %}>
+                            {% if errors.full_name %}
+                                <span class="field-error" id="full_name_error">
+                                    {{ errors.full_name.0 }}
+                                </span>
+                            {% endif %}
                         </div>
 
 
@@ -217,7 +223,13 @@
                                 placeholder="Enter your email address"
                                 autocomplete="email"
                                 required
-                                value="{{ request.POST.email|default:'' }}">
+                                value="{{ request.POST.email|default:'' }}"
+                                {% if errors.email %}aria-invalid="true" aria-describedby="email_error"{% endif %}>
+                            {% if errors.email %}
+                                <span class="field-error" id="email_error">
+                                    {{ errors.email.0 }}
+                                </span>
+                            {% endif %}
                         </div>
 
 
@@ -233,7 +245,13 @@
                                 placeholder="Enter your phone number"
                                 autocomplete="tel"
                                 required
-                                value="{{ request.POST.phone|default:'' }}">
+                                value="{{ request.POST.phone|default:'' }}"
+                                {% if errors.phone %}aria-invalid="true" aria-describedby="phone_error"{% endif %}>
+                             {% if errors.phone %}
+                                <span class="field-error" id="phone_error">
+                                    {{ errors.phone.0 }}
+                                </span>
+                            {% endif %}
                         </div>
 
 
@@ -248,7 +266,14 @@
                                 name="business_name"
                                 placeholder="Enter your business name"
                                 required
-                                value="{{ request.POST.business_name|default:'' }}">
+                                value="{{ request.POST.business_name|default:'' }}"
+                                {% if errors.business_name %}aria-invalid="true" aria-describedby="business_name_error"{% endif %}>
+
+                            {% if errors.business_name %}
+                                <span class="field-error" id="business_name_error">
+                                    {{ errors.business_name.0 }}
+                                </span>
+                            {% endif %}
                         </div>
 
 
@@ -263,7 +288,13 @@
                                 name="business_category"
                                 placeholder="Enter your business category"
                                 required
-                                value="{{ request.POST.business_category|default:'' }}">
+                                value="{{ request.POST.business_category|default:'' }}"
+                                {% if errors.business_category %}aria-invalid="true" aria-describedby="business_category_error"{% endif %}>
+                            {% if errors.business_category %}
+                                <span class="field-error" id="business_category_error">
+                                    {{ errors.business_category.0 }}
+                                </span>
+                            {% endif %}
                         </div>
 
 
@@ -278,7 +309,13 @@
                                 name="subject"
                                 placeholder="Enter enquiry subject"
                                 required
-                                value="{{ request.POST.subject|default:'' }}">
+                                value="{{ request.POST.subject|default:'' }}"
+                                {% if errors.subject %}aria-invalid="true" aria-describedby="subject_error"{% endif %}>
+                            {% if errors.subject %}
+                                <span class="field-error" id="subject_error">
+                                    {{ errors.subject.0 }}
+                                </span>
+                            {% endif %}
                         </div>
 
 
@@ -291,7 +328,14 @@
                                 id="message"
                                 name="message"
                                 placeholder="Tell us more about your business and requirements..."
-                                required>{{ request.POST.message|default:'' }}</textarea>
+                                required
+                                {% if errors.message %}aria-invalid="true" aria-describedby="message_error"{% endif %}
+                                >{{ request.POST.message|default:'' }}</textarea>
+                            {% if errors.message %}
+                                <span class="field-error" id="message_error">
+                                    {{ errors.message.0 }}
+                                </span>
+                            {% endif %}
                         </div>
 
                     </div>
@@ -2281,6 +2325,37 @@
 #message-page .message-hero .hero-background::after {
     animation: nmeLiquidWaveB 9s ease-in-out infinite alternate !important;
 }
+
+/* Individual field validation errors */
+.field-error {
+    display: block;
+    color: #dc2626;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 7px;
+    line-height: 1.5;
+    animation: errorFadeIn 0.25s ease;
+}
+
+/* Highlight invalid input */
+.form-field input[aria-invalid="true"],
+.form-field textarea[aria-invalid="true"] {
+    border-color: #dc2626;
+    background-color: #fffafa;
+}
+
+/* Error animation */
+@keyframes errorFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 </style>
 
 
@@ -2469,30 +2544,63 @@ updateHamburgerIcon(shouldOpen);
        Normal Django POST is preserved.
     ================================================= */
 
+//     const form = document.getElementById("enquiryForm");
+//     const submitButton = document.getElementById("submitButton");
+
+//     if (form && submitButton) {
+
+//         form.addEventListener("submit", function () {
+
+//             if (!form.reportValidity()) {
+//                 return;
+//             }
+
+//             submitButton.disabled = true;
+
+//             const label = submitButton.querySelector("span:first-child");
+
+//             if (label) {
+//                 label.textContent = "Sending...";
+//             }
+
+//         });
+
+//     }
+
+});
+
+(() => {
+
     const form = document.getElementById("enquiryForm");
     const submitButton = document.getElementById("submitButton");
 
-    if (form && submitButton) {
+    if (!form || !submitButton) return;
 
-        form.addEventListener("submit", function () {
+    form.addEventListener("submit", function (event) {
 
-            if (!form.reportValidity()) {
-                return;
-            }
+        // Allow browser validation to handle required fields
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
 
-            submitButton.disabled = true;
+        // Prevent multiple submissions
+        if (submitButton.disabled) {
+            event.preventDefault();
+            return;
+        }
 
-            const label = submitButton.querySelector("span:first-child");
+        submitButton.disabled = true;
 
-            if (label) {
-                label.textContent = "Sending...";
-            }
+        const label = submitButton.querySelector("span:first-child");
 
-        });
+        if (label) {
+            label.textContent = "Sending...";
+        }
 
-    }
+    });
 
-});
+})();
 
 
 /* CLOSE NOTIFICATION */
@@ -2544,6 +2652,28 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
     });
+
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const hasErrors = document.querySelector(
+        ".field-error, .django-message"
+    );
+
+    const enquirySection = document.getElementById(
+        "enquiryFormSection"
+    );
+
+    if (hasErrors && enquirySection) {
+        setTimeout(function () {
+            enquirySection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }, 200);
+    }
 
 });
 

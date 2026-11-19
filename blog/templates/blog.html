@@ -299,13 +299,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       <div class="bg-white rounded-3xl mt-6 md:m-6 p-1
                   w-[85%] md:w-6/12 mx-auto">
-
+        <a href="{% url 'blog_detail' latest.id %}">
         <img
           class="rounded-3xl w-full h-60 md:h-[55vh] object-cover"
           src="{{ latest.image.url }}"
           alt="{{ latest.card_head }}"
         >
-
+        </a>
       </div>
 
       <div class="w-full md:w-5/12 p-4 md:p-6 mt-4 md:mt-12 space-y-6">
@@ -361,14 +361,14 @@ document.addEventListener("DOMContentLoaded", () => {
     {% if not forloop.first %}
 
       <div class="rounded-3xl p-1 w-full md:w-[32%] mb-10">
-
+        <a href="{% url 'blog_detail' blog.id %}">
         <img
           class="rounded-[40px] w-[335px] h-[335px]
                  md:w-[405px] md:h-[373px] object-cover"
           src="{{ blog.image.url }}"
           alt="{{ blog.card_head }}"
         >
-
+        </a>
         <div>
 
           <h4 class="font-manrope text-[#3C79FF] font-medium
