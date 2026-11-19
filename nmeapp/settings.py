@@ -46,9 +46,12 @@ ALLOWED_HOSTS = ['nmeapp.in', 'www.nmeapp.in','127.0.0.1']
 
 
 CSRF_TRUSTED_ORIGINS = [
+        "nmeapp-in.onrender.com",
         'http://nmeapp.in',
         'https://nmeapp.in',
         'https://www.nmeapp.in',  # Add both HTTP and HTTPS if using SSL
+        "localhost",
+        "127.0.0.1",
         ]
 
 
