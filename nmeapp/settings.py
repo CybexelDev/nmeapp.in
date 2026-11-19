@@ -185,11 +185,6 @@ MESSAGE_TAGS = {
 }
 
 
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
-    },
-}
 
 # Authentication Redirect Settings
 
