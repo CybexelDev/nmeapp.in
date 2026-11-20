@@ -27,7 +27,11 @@ from django.core.validators import validate_email
 from django.db.models import Count
 from django.db.models.functions import ExtractMonth
 from django.http import JsonResponse
-
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.contrib import messages
+from .models import Newsletter
 
 # Create your views here.
 def base(request):
@@ -513,6 +517,11 @@ def admin_panel(request):
     enquiry_notification = request.session.pop("enquiry_notification", None)
     testimonial_notification = request.session.pop("testimonial_notification", None)
     message_notification = request.session.pop("message_notification", None)
+    newsletter_notification = request.session.pop(
+        "newsletter_notification",
+        None
+    )
+
     context = {
         "blog": blog,
         "contact": contact,
@@ -525,6 +534,7 @@ def admin_panel(request):
         "enquiry_notification": enquiry_notification,
         "testimonial_notification": testimonial_notification,
         "message_notification": message_notification,
+        "newsletter_notification": newsletter_notification,
         # Enquiry analytics
         "today": current_date,
         "total_enquiries": total_enquiries,
@@ -758,8 +768,6 @@ def admin_register(request):
 
 def login(request):
 
-    print("Login view HIT!", request.method)
-
     if request.method == 'POST':
 
         username = request.POST.get('username', '').strip()
@@ -775,20 +783,9 @@ def login(request):
             password=raw_password
         )
 
-        print("Submitted username:", username)
-        print("Django authentication result:", django_user)
-
-        if django_user is None:
-            print("Django authentication failed")
-        else:
-            print("Is superuser:", django_user.is_superuser)
-            print("Is staff:", django_user.is_staff)
-
         if django_user is not None and django_user.is_superuser:
 
             auth_login(request, django_user)
-
-            print("Django superuser login successful!")
 
             response = redirect('dashboard')
 
@@ -869,8 +866,6 @@ def login(request):
             holder.rate_limit = 0
             holder.last_failed_login = None
             holder.save()
-
-            print("Custom login successful:", username)
 
             response = redirect('dashboard')
 
@@ -1156,3 +1151,68 @@ def newsletter_subscribe(request):
         'message': 'Invalid request method.'
     }, status=405)
 
+@login_required
+def admin_newsletter(request):
+
+    search_query = request.GET.get('search', '').strip()
+
+    subscribers = Newsletter.objects.all().order_by('-created_at')
+
+    # SEARCH BY EMAIL
+    if search_query:
+        subscribers = subscribers.filter(
+            Q(email__icontains=search_query)
+        )
+
+    # TOTAL SUBSCRIBERS
+    total_subscribers = Newsletter.objects.count()
+
+    # PAGINATION
+    paginator = Paginator(subscribers, 10)
+
+    page_number = request.GET.get('page')
+
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'subscribers': page_obj,
+        'page_obj': page_obj,
+        'search_query': search_query,
+        'total_subscribers': total_subscribers,
+        'filtered_count': subscribers.count(),
+    }
+
+    return render(
+        request,
+        'admin/admin_newsletter.html',
+        context
+    )
+
+
+@login_required
+def delete_newsletter(request, pk):
+
+    is_superuser = (
+        request.user.is_authenticated and
+        request.user.is_superuser
+    )
+
+    is_custom_user = "name" in request.session
+
+    if not is_superuser and not is_custom_user:
+        return redirect('login')
+
+    if request.method == 'POST':
+
+        subscriber = get_object_or_404(
+            Newsletter,
+            pk=pk
+        )
+
+        subscriber.delete()
+
+        request.session["newsletter_notification"] = {
+            "type": "success",
+            "message": "Newsletter subscriber deleted successfully!"
+        }
+    return redirect('dashboard')

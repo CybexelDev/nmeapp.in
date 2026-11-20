@@ -1,0 +1,744 @@
+
+{% extends 'admin/admin_base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+/* =====================================
+   NEWSLETTER ADMIN PAGE
+===================================== */
+
+.newsletter-admin {
+    width: 100%;
+    min-width: 0;
+    padding: 30px;
+    color: #111827;
+    box-sizing: border-box;
+}
+
+.newsletter-admin * {
+    box-sizing: border-box;
+}
+
+/* HEADER */
+
+.newsletter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+}
+
+.newsletter-heading h1 {
+    font-size: 27px;
+    font-weight: 750;
+    color: #111827;
+    margin: 0;
+}
+
+.newsletter-heading p {
+    color: #6b7280;
+    font-size: 14px;
+    margin-top: 7px;
+}
+
+/* SUBSCRIBER COUNT CARD */
+
+.newsletter-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.newsletter-stat-card {
+    background: rgba(243, 232, 255, 0.65);
+    border: 1px solid rgba(167, 139, 250, 0.25);
+    border-radius: 14px;
+    padding: 22px;
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    min-width: 0;
+}
+
+.newsletter-stat-icon {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: #7c3aed;
+    color: white;
+    font-size: 21px;
+}
+
+.newsletter-stat-info p {
+    font-size: 13px;
+    color: #6b7280;
+    margin: 0 0 5px;
+}
+
+.newsletter-stat-info h2 {
+    font-size: 25px;
+    font-weight: 750;
+    color: #111827;
+    margin: 0;
+}
+
+/* MAIN CONTENT CARD */
+
+.newsletter-content-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.035);
+}
+
+.newsletter-content-header {
+    padding: 23px 25px;
+    border-bottom: 1px solid #eee9f5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.newsletter-content-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+.newsletter-content-header p {
+    font-size: 13px;
+    color: #6b7280;
+    margin: 5px 0 0;
+}
+
+/* SEARCH */
+
+.newsletter-search {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    max-width: 340px;
+}
+
+.newsletter-search input {
+    width: 100%;
+    min-width: 0;
+    height: 43px;
+    padding: 0 13px;
+    border: 1px solid #e5e7eb;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #111827;
+    font-size: 13px;
+    outline: none;
+    transition: 0.25s ease;
+}
+
+.newsletter-search input:focus {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
+}
+
+.newsletter-search button {
+    height: 43px;
+    padding: 0 17px;
+    flex-shrink: 0;
+    border: 1px solid rgba(167, 139, 250, 0.25);
+    border-radius: 9px;
+    background: rgba(243, 232, 255, 0.8);
+    color: #6d28d9;
+    font-size: 13px;
+    font-weight: 650;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.newsletter-search button:hover {
+    background: #7c3aed;
+    color: #ffffff;
+}
+
+/* TABLE */
+
+.newsletter-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.newsletter-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.newsletter-table thead {
+    background: #faf8ff;
+}
+
+.newsletter-table th {
+    padding: 16px 25px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.newsletter-table td {
+    padding: 17px 25px;
+    border-top: 1px solid #f1edf7;
+    font-size: 13px;
+    color: #111827;
+}
+
+.newsletter-table tbody tr {
+    transition: 0.2s ease;
+}
+
+.newsletter-table tbody tr:hover {
+    background: #fcfaff;
+}
+
+.newsletter-email {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+.newsletter-email-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(243, 232, 255, 0.8);
+    border: 1px solid rgba(167, 139, 250, 0.25);
+    color: #6d28d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.newsletter-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 11px;
+    border: 1px solid rgba(167, 139, 250, 0.25);
+    border-radius: 20px;
+    background: rgba(243, 232, 255, 0.8);
+    color: #6d28d9;
+    font-size: 11px;
+    font-weight: 650;
+}
+
+.newsletter-delete-btn {
+    width: 35px;
+    height: 35px;
+    border: 1px solid #fee2e2;
+    border-radius: 9px;
+    background: #fff5f5;
+    color: #dc2626;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.newsletter-delete-btn:hover {
+    background: #dc2626;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* EMPTY STATE */
+
+.newsletter-empty {
+    padding: 55px 20px;
+    text-align: center;
+}
+
+.newsletter-empty-icon {
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 15px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(243, 232, 255, 0.8);
+    color: #7c3aed;
+    font-size: 25px;
+}
+
+.newsletter-empty h3 {
+    font-size: 16px;
+    color: #111827;
+    font-weight: 700;
+    margin-bottom: 7px;
+}
+
+.newsletter-empty p {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+/* PAGINATION */
+
+.newsletter-pagination {
+    padding: 20px 25px;
+    border-top: 1px solid #eee9f5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.newsletter-pagination-info {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.newsletter-pagination-links {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.newsletter-pagination-links a,
+.newsletter-pagination-links span {
+    min-width: 34px;
+    height: 34px;
+    padding: 0 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #111827;
+    font-size: 12px;
+    transition: 0.2s ease;
+}
+
+.newsletter-pagination-links a:hover,
+.newsletter-pagination-links .current {
+    background: #7c3aed;
+    border-color: #7c3aed;
+    color: #ffffff;
+}
+
+/* MESSAGES */
+
+.newsletter-messages {
+    margin-bottom: 20px;
+}
+
+.newsletter-message {
+    padding: 13px 16px;
+    border-radius: 10px;
+    background: rgba(243, 232, 255, 0.8);
+    border: 1px solid rgba(167, 139, 250, 0.25);
+    color: #6d28d9;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1024px) {
+    .newsletter-admin {
+        padding: 25px 20px;
+    }
+}
+
+@media (max-width: 767px) {
+    .newsletter-admin {
+        padding: 20px 15px;
+    }
+
+    .newsletter-heading h1 {
+        font-size: 23px;
+    }
+
+    .newsletter-stats {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .newsletter-stat-card {
+        padding: 17px;
+    }
+
+    .newsletter-content-header {
+        padding: 18px;
+        align-items: stretch;
+    }
+
+    .newsletter-search {
+        max-width: 100%;
+    }
+
+    .newsletter-table th,
+    .newsletter-table td {
+        padding: 14px 15px;
+    }
+
+    .newsletter-pagination {
+        padding: 17px;
+        justify-content: center;
+    }
+
+    .newsletter-pagination-info {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 380px) {
+    .newsletter-admin {
+        padding: 16px 10px;
+    }
+
+    .newsletter-heading h1 {
+        font-size: 21px;
+    }
+
+    .newsletter-search {
+        gap: 6px;
+    }
+
+    .newsletter-search button {
+        padding: 0 12px;
+    }
+}
+</style>
+
+
+<div class="newsletter-admin">
+
+    <!-- PAGE HEADER -->
+
+    <div class="newsletter-header">
+
+        <div class="newsletter-heading">
+            <h1>Newsletter Subscribers</h1>
+
+            <p>
+                Manage and view all your newsletter subscriptions.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- SUCCESS / ERROR MESSAGES -->
+
+    {% if messages %}
+    <div class="newsletter-messages">
+
+        {% for message in messages %}
+
+        <div class="newsletter-message">
+            <i class="fa-solid fa-circle-check mr-2"></i>
+            {{ message }}
+        </div>
+
+        {% endfor %}
+
+    </div>
+    {% endif %}
+
+
+    <!-- STATISTICS -->
+
+    <div class="newsletter-stats">
+
+        <div class="newsletter-stat-card">
+
+            <div class="newsletter-stat-icon">
+                <i class="fa-solid fa-users"></i>
+            </div>
+
+            <div class="newsletter-stat-info">
+                <p>Total Subscribers</p>
+                <h2>{{ total_subscribers }}</h2>
+            </div>
+
+        </div>
+
+
+        <div class="newsletter-stat-card">
+
+            <div class="newsletter-stat-icon">
+                <i class="fa-solid fa-envelope-open-text"></i>
+            </div>
+
+            <div class="newsletter-stat-info">
+                <p>
+                    {% if search_query %}
+                        Search Results
+                    {% else %}
+                        Displayed Subscribers
+                    {% endif %}
+                </p>
+
+                <h2>{{ filtered_count }}</h2>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUBSCRIBER TABLE CARD -->
+
+    <div class="newsletter-content-card">
+
+        <!-- CARD HEADER -->
+
+        <div class="newsletter-content-header">
+
+            <div>
+                <h2>Subscription Details</h2>
+
+                <p>
+                    View all registered newsletter email addresses.
+                </p>
+            </div>
+
+
+            <!-- SEARCH -->
+
+            <form method="GET"
+                  action="{% url 'admin_newsletter' %}"
+                  class="newsletter-search">
+
+                <input
+                    type="search"
+                    name="search"
+                    placeholder="Search email address..."
+                    value="{{ search_query }}"
+                >
+
+                <button type="submit">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Search
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- TABLE -->
+
+        <div class="newsletter-table-wrapper">
+
+            <table class="newsletter-table">
+
+                <thead>
+
+                    <tr>
+                        <th>#</th>
+                        <th>Email Address</th>
+                        <th>Subscription Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for subscriber in subscribers %}
+
+                    <tr>
+
+                        <td>
+                            {{ forloop.counter0|add:page_obj.start_index }}
+                        </td>
+
+
+                        <td>
+
+                            <div class="newsletter-email">
+
+                                <div class="newsletter-email-icon">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+
+                                <span>
+                                    {{ subscriber.email }}
+                                </span>
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+                            {{ subscriber.created_at|date:"d M Y" }}
+                            <br>
+                            <span style="font-size:11px;color:#9ca3af;">
+                                {{ subscriber.created_at|date:"h:i A" }}
+                            </span>
+                        </td>
+
+
+                        <td>
+                            <span class="newsletter-status">
+                                <i class="fa-solid fa-circle-check"></i>
+                                Subscribed
+                            </span>
+                        </td>
+
+
+                        <td>
+
+                            <form method="POST"
+                                  action="{% url 'delete_newsletter' subscriber.pk %}"
+                                  onsubmit="return confirm('Are you sure you want to delete this subscriber?');">
+
+                                {% csrf_token %}
+
+                                <button type="submit"
+                                        class="newsletter-delete-btn"
+                                        title="Delete subscriber"
+                                        aria-label="Delete subscriber">
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td colspan="5">
+
+                            <div class="newsletter-empty">
+
+                                <div class="newsletter-empty-icon">
+                                    <i class="fa-solid fa-envelope-open-text"></i>
+                                </div>
+
+                                {% if search_query %}
+
+                                    <h3>No Subscribers Found</h3>
+
+                                    <p>
+                                        No newsletter subscriptions match
+                                        "{{ search_query }}".
+                                    </p>
+
+                                {% else %}
+
+                                    <h3>No Subscribers Yet</h3>
+
+                                    <p>
+                                        Newsletter subscriptions will
+                                        appear here when users subscribe.
+                                    </p>
+
+                                {% endif %}
+
+                            </div>
+
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- PAGINATION -->
+
+        {% if page_obj.has_other_pages %}
+
+        <div class="newsletter-pagination">
+
+            <div class="newsletter-pagination-info">
+
+                Showing {{ page_obj.start_index }}
+                - {{ page_obj.end_index }}
+
+                of {{ filtered_count }} subscribers
+
+            </div>
+
+
+            <div class="newsletter-pagination-links">
+
+                {% if page_obj.has_previous %}
+
+                    <a href="?page=1{% if search_query %}&search={{ search_query|urlencode }}{% endif %}"
+                       aria-label="First page">
+                        <i class="fa-solid fa-angles-left"></i>
+                    </a>
+
+                    <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query|urlencode }}{% endif %}"
+                       aria-label="Previous page">
+                        <i class="fa-solid fa-angle-left"></i>
+                    </a>
+
+                {% endif %}
+
+
+                <span class="current">
+                    {{ page_obj.number }}
+                </span>
+
+
+                {% if page_obj.has_next %}
+
+                    <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query|urlencode }}{% endif %}"
+                       aria-label="Next page">
+                        <i class="fa-solid fa-angle-right"></i>
+                    </a>
+
+                    <a href="?page={{ page_obj.paginator.num_pages }}{% if search_query %}&search={{ search_query|urlencode }}{% endif %}"
+                       aria-label="Last page">
+                        <i class="fa-solid fa-angles-right"></i>
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

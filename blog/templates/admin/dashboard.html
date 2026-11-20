@@ -2154,7 +2154,17 @@
             </div>
         </div>
     {% endif %}
+    {% if newsletter_notification %}
+        <div class="admin-notification {{ newsletter_notification.type }}">
+            <div class="notification-icon">
+                <i class="fa-solid fa-check"></i>
+            </div>
 
+            <div class="notification-content">
+                {{ newsletter_notification.message }}
+            </div>
+        </div>
+    {% endif %}
 </div>
 
 
@@ -3146,12 +3156,100 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+// document.addEventListener("DOMContentLoaded", function () {
+
+//     document.querySelectorAll(".admin-notification").forEach(notification => {
+
+//         setTimeout(() => {
+//             notification.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+//             notification.style.opacity = "0";
+//             notification.style.transform = "translateX(30px)";
+
+//             setTimeout(() => notification.remove(), 400);
+
+//         }, 4000);
+
+//     });
+
+// });
+
+// document.addEventListener("DOMContentLoaded", function () {
+
+//     document.querySelectorAll(
+//         "#notificationContainer .admin-notification"
+//     ).forEach(notification => {
+
+//         setTimeout(() => {
+//             notification.style.transition =
+//                 "opacity 0.4s ease, transform 0.4s ease";
+
+//             notification.style.opacity = "0";
+//             notification.style.transform = "translateX(30px)";
+
+//             setTimeout(() => {
+//                 notification.remove();
+//             }, 400);
+
+//         }, 4000);
+
+//     });
+
+// });
+
+
 document.addEventListener("DOMContentLoaded", function () {
 
-    document.querySelectorAll(".admin-notification").forEach(notification => {
+    const container = document.getElementById("notificationContainer");
+
+    if (!container) return;
+
+    // Move toast outside all dashboard wrappers
+    document.body.appendChild(container);
+
+    // Force fixed viewport positioning
+    Object.assign(container.style, {
+        position: "fixed",
+        top: "auto",
+        left: "auto",
+        right: "20px",
+        bottom: "20px",
+        width: "min(380px, calc(100vw - 30px))",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-end",
+        gap: "12px",
+        zIndex: "2147483647",
+        pointerEvents: "none",
+        margin: "0",
+        transform: "none"
+    });
+
+    // Mobile positioning
+    function positionToast() {
+        if (window.innerWidth <= 480) {
+            container.style.right = "10px";
+            container.style.bottom = "10px";
+            container.style.width = "calc(100vw - 20px)";
+        } else {
+            container.style.right = "20px";
+            container.style.bottom = "20px";
+            container.style.width = "min(380px, calc(100vw - 30px))";
+        }
+    }
+
+    positionToast();
+    window.addEventListener("resize", positionToast);
+
+    // Automatically hide toast after 4 seconds
+    container.querySelectorAll(".admin-notification").forEach(notification => {
+
+        notification.style.pointerEvents = "auto";
 
         setTimeout(() => {
-            notification.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+
+            notification.style.transition =
+                "opacity 0.4s ease, transform 0.4s ease";
+
             notification.style.opacity = "0";
             notification.style.transform = "translateX(30px)";
 
@@ -3162,6 +3260,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
 </script>
 
 <script>

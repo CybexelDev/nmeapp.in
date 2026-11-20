@@ -117,7 +117,17 @@ urlpatterns = [
         views.newsletter_subscribe,
         name='newsletter_subscribe'
     ),
+    path(
+        'admin-newsletter/',
+        views.admin_newsletter,
+        name='admin_newsletter'
+    ),
 
+    path(
+        'delete-newsletter/<int:pk>/',
+        views.delete_newsletter,
+        name='delete_newsletter'
+    ),
     # path('admin_register/', views.admin_register, name='admin_register'),
 
     # re_path(r'^.*$', views.home, name='catch_all'),
