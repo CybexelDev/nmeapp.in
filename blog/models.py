@@ -7,7 +7,7 @@ from django.core.validators import (
 )
 from django.core.exceptions import ValidationError
 from django.utils.html import strip_tags
-
+from django.core.validators import EmailValidator
 
 def validate_plain_text(value):
     if not value:
@@ -228,3 +228,15 @@ class AdminNotification(models.Model):
         return self.title
 
 
+class Newsletter(models.Model):
+    email = models.EmailField(
+        unique=True,
+        validators=[EmailValidator()]
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.email
+
+    class Meta:
+        ordering = ['-created_at']

@@ -674,12 +674,192 @@ footer {
     border-top-right-radius: 20px !important;
 }
 
+#newsletter-popup.show {
+    display: flex;
+}
+
+#newsletter-popup.show #newsletter-popup-box {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Newsletter popup overlay */
+#newsletter-popup {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 999999 !important;
+    display: none !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(0, 0, 0, 0.55) !important;
+    backdrop-filter: blur(5px);
+    padding: 16px !important;
+}
+
+/* Show popup */
+#newsletter-popup.show {
+    display: flex !important;
+}
+
+/* Popup content */
+#newsletter-popup-box {
+    position: relative;
+    z-index: 1000000;
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+}
+#newsletter-popup button[onclick="closeNewsletterPopup()"]:last-child {
+    padding: 8px 22px !important;
+    font-size: 13px !important;
+    min-height: auto !important;
+    width: auto !important;
+    border-radius: 999px;
+}
+
   </style>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const newsletterInput = document.querySelector(".newsletter-input");
+    const newsletterButton = document.querySelector(".newsletter-button");
+
+    if (!newsletterInput || !newsletterButton) return;
+
+    newsletterButton.addEventListener("click", async function () {
+        const email = newsletterInput.value.trim();
+
+        if (!email) {
+            showNewsletterPopup(
+                "Email Required",
+                "Please enter your email address.",
+                false
+            );
+            newsletterInput.focus();
+            return;
+        }
+
+        if (!newsletterInput.checkValidity()) {
+            showNewsletterPopup(
+                "Invalid Email",
+                "Please enter a valid email address.",
+                false
+            );
+            newsletterInput.focus();
+            return;
+        }
+
+        newsletterButton.disabled = true;
+
+        try {
+            const response = await fetch("{% url 'newsletter_subscribe' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": "{{ csrf_token }}",
+                    "X-Requested-With": "XMLHttpRequest"
+                },
+                body: new URLSearchParams({
+                    email: email
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+
+                showNewsletterPopup(
+                    "Thank You!",
+                    data.message || "You have successfully subscribed to our newsletter.",
+                    true
+                );
+
+                newsletterInput.value = "";
+
+            } else {
+
+                const errorMessage =
+                    data.errors?.email?.[0] ||
+                    data.message ||
+                    "Something went wrong. Please try again.";
+
+                showNewsletterPopup(
+                    "Subscription Failed",
+                    errorMessage,
+                    false
+                );
+            }
+
+        } catch (error) {
+            console.error("Newsletter Error:", error);
+
+            showNewsletterPopup(
+                "Something Went Wrong",
+                "Unable to subscribe right now. Please try again later.",
+                false
+            );
+
+        } finally {
+            newsletterButton.disabled = false;
+        }
+    });
+});
+</script>
 </head>
 
 <body class="bg-[#f3f4f6]">
   {% block content %}
   {% endblock %}
+
+
+
+  <div id="newsletter-popup"
+     class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+
+    <div id="newsletter-popup-box"
+         class="relative w-full max-w-[420px] rounded-3xl bg-white p-8 sm:p-10 text-center shadow-2xl scale-90 opacity-0 transition-all duration-300">
+
+        <button type="button"
+                onclick="closeNewsletterPopup()"
+                class="absolute right-4 top-4 text-gray-400 hover:text-gray-700 text-2xl">
+            &times;
+        </button>
+
+        <div id="newsletter-popup-icon"
+             class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-blue-50 text-[#3b55ff]">
+
+            <svg id="newsletter-success-icon"
+                 class="h-10 w-10"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2.5"
+                 viewBox="0 0 24 24">
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M5 13l4 4L19 7"/>
+            </svg>
+
+        </div>
+
+        <h2 id="newsletter-popup-title"
+            class="mb-3 text-2xl sm:text-3xl font-bold text-gray-900">
+            Thank You!
+        </h2>
+
+        <p id="newsletter-popup-message"
+           class="mb-7 text-sm sm:text-base leading-relaxed text-gray-500">
+            You have successfully subscribed to our newsletter.
+        </p>
+
+        <button type="button"
+                onclick="closeNewsletterPopup()"
+                class="w-full rounded-full bg-gradient-to-r from-[#5b6cff] to-[#3b4bff] px-8 py-3.5 font-semibold text-white shadow-lg transition hover:opacity-90 active:scale-95">
+            Okay
+        </button>
+
+    </div>
+</div>
 
   <section class="w-full max-w-[1440px] mx-auto mt-12 sm:mt-16 lg:mt-24 px-3 sm:px-5 lg:px-6 pb-4">
 
@@ -694,6 +874,7 @@ footer {
         <p class="mx-auto mt-4 max-w-xl text-sm sm:text-base font-medium leading-relaxed text-black">
           Subscribe to our newsletter so we can update you with services and offers.
         </p>
+        
         <div class="mx-auto mt-7 sm:mt-9 flex w-full max-w-[600px] flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center sm:gap-4">
 
           <label class="flex min-h-[50px] sm:min-h-[54px] w-full min-w-0 flex-1 items-center gap-3 rounded-full bg-white px-4 sm:px-6 py-3 shadow-[0_4px_8px_rgba(0,0,0,0.08)]">
@@ -707,7 +888,7 @@ footer {
 
             <input
               type="email"
-              name="newsletter_email"
+              name="email"
               placeholder="Enter your email"
               aria-label="Email address"
               autocomplete="email"
@@ -934,6 +1115,73 @@ footer {
       </footer>
     </div>
   </section>
+
+  <script>
+function showNewsletterPopup(title, message, success = true) {
+    const popup = document.getElementById("newsletter-popup");
+
+    if (!popup) return;
+
+    const popupTitle = document.getElementById("newsletter-popup-title");
+    const popupMessage = document.getElementById("newsletter-popup-message");
+    const popupIcon = document.getElementById("newsletter-popup-icon");
+
+    if (!popupTitle || !popupMessage || !popupIcon) return;
+
+    popupTitle.textContent = title;
+    popupMessage.textContent = message;
+
+    if (success) {
+        popupIcon.className =
+            "mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-[#3b55ff]";
+
+        popupIcon.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="h-8 w-8"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor"
+                 stroke-width="2">
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M5 13l4 4L19 7" />
+            </svg>
+        `;
+    } else {
+        popupIcon.className =
+            "mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-red-50 text-red-500";
+
+        popupIcon.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="h-8 w-8"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor"
+                 stroke-width="2">
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        `;
+    }
+
+    popup.classList.remove("hidden");
+    popup.classList.add("show");
+
+    document.body.style.overflow = "hidden";
+}
+
+function closeNewsletterPopup() {
+    const popup = document.getElementById("newsletter-popup");
+
+    if (!popup) return;
+
+    popup.classList.remove("show");
+    popup.classList.add("hidden");
+
+    document.body.style.overflow = "";
+}
+</script>
 
   <script src="{% static 'js/script.js' %}"></script>
 

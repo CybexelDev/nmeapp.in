@@ -201,16 +201,18 @@
     }
 }
 
-@media (min-width: 1361px) {
-    .related-blog-title {
-        width: calc(100% - 32px);
-        max-width: 100%;
-        margin-left: 560px;
-        margin-right: auto;
-        padding-left: clamp(24px, 3vw, 40px);
-        padding-right: clamp(24px, 3vw, 40px);
-        box-sizing: border-box;
-    }
+.related-blog-title {
+    width: 100%;
+    max-width: 100%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.related-blog-title h2 {
+    width: 100%;
+    text-align: center !important;
 }
 </style>
 
@@ -283,11 +285,11 @@
 
     <!-- RELATED BLOG TITLE -->
     <div class="related-blog-title w-full px-4 sm:px-6 md:px-8
-                lg:px-12 xl:px-16 2xl:px-28 mt-10 md:mt-14 mb-6">
+            lg:px-12 xl:px-16 2xl:px-28 mt-10 md:mt-14 mb-6">
         <h2 class="font-poppins font-semibold
                 text-[24px] sm:text-[28px] md:text-[32px] lg:text-[36px]
-                text-black text-center md:text-left">
-            Latest Blogs
+                text-black text-center">
+            Trending Blogs
         </h2>
     </div>
 

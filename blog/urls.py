@@ -112,6 +112,12 @@ urlpatterns = [
         name="mark_admin_notification_read"
     ),
 
+    path(
+        'newsletter-subscribe/',
+        views.newsletter_subscribe,
+        name='newsletter_subscribe'
+    ),
+
     # path('admin_register/', views.admin_register, name='admin_register'),
 
     # re_path(r'^.*$', views.home, name='catch_all'),

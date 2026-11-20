@@ -37,3 +37,19 @@ class ContactForm(forms.ModelForm):
             raise ValidationError("Message can only include letters, numbers, spaces, dots, and hyphens.")
         return message
     
+
+class NewsletterForm(forms.ModelForm):
+
+    class Meta:
+        model = Newsletter
+        fields = ['email']
+
+    def clean_email(self):
+        email = self.cleaned_data['email'].strip().lower()
+
+        if Newsletter.objects.filter(email=email).exists():
+            raise forms.ValidationError(
+                "This email is already subscribed."
+            )
+
+        return email

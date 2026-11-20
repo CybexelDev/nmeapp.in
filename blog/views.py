@@ -15,7 +15,7 @@ from django.contrib import messages
 from datetime import datetime
 from django.contrib import messages as django_messages
 from django.http import JsonResponse
-from .forms import ContactForm
+from .forms import *
 import re
 from django.views.decorators.http import require_POST
 from .models import Enquiry
@@ -26,6 +26,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.db.models import Count
 from django.db.models.functions import ExtractMonth
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -1127,3 +1128,31 @@ def message_enquiry_detail(request, id):
             "enquiry": enquiry
         }
     )
+
+
+
+def newsletter_subscribe(request):
+
+    if request.method == 'POST':
+
+        form = NewsletterForm(request.POST)
+
+        if form.is_valid():
+
+            form.save()
+
+            return JsonResponse({
+                'success': True,
+                'message': 'Thank you for subscribing to our newsletter!'
+            })
+
+        return JsonResponse({
+            'success': False,
+            'errors': form.errors
+        }, status=400)
+
+    return JsonResponse({
+        'success': False,
+        'message': 'Invalid request method.'
+    }, status=405)
+
