@@ -460,352 +460,194 @@
 }
 
 
-/* =========================================
-   NEWSLETTER RESPONSIVE LAYOUT
-========================================= */
 
-/* Description width */
-section > div > div > p {
-    width: 100%;
-    max-width: 600px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    text-align: center;
-    box-sizing: border-box;
-}
-
-/* Newsletter wrapper */
-section > div > div > div:has(.newsletter-input) {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: center !important;
-
-    width: 100% !important;
-    max-width: 600px !important;
-
-    margin-left: auto !important;
-    margin-right: auto !important;
-
-    gap: 10px !important;
-}
-
-/* Email field - 80% */
-section > div > div > div:has(.newsletter-input) label {
-    display: flex !important;
-    align-items: center !important;
-
-    flex: 0 0 80% !important;
-    width: 80% !important;
-    min-width: 0 !important;
-
-    min-height: 44px !important;
-    padding: 0 15px !important;
-    gap: 9px !important;
-
-    box-sizing: border-box !important;
-}
-
-/* Email icon */
-section > div > div > div:has(.newsletter-input) label img {
-    width: 18px !important;
-    height: 18px !important;
-    flex-shrink: 0 !important;
-}
-
-/* Email input */
-.newsletter-input {
-    flex: 1 1 auto !important;
-    width: 100% !important;
-    min-width: 0 !important;
-
-    height: 100% !important;
-    padding: 0 !important;
-
-    border: none !important;
-    outline: none !important;
-    background: transparent !important;
-
-    font-family: 'Manrope', sans-serif !important;
-    font-size: 12px !important;
-
-    box-sizing: border-box !important;
-}
-
-.newsletter-input::placeholder {
-    color: #999 !important;
-    opacity: 1 !important;
-    font-size: 12px !important;
-}
-
-/* Subscribe button - 20% */
-.newsletter-button {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-
-    flex: 1 1 20% !important;
-    width: 20% !important;
-    min-width: 0 !important;
-
-    min-height: 36px !important;
-    height: 36px !important;
-
-    padding: 0 8px !important;
-
-    border-radius: 999px !important;
-
-    font-family: 'Manrope', sans-serif !important;
-    font-size: 11px !important;
-    font-weight: 700 !important;
-
-    white-space: nowrap !important;
-    line-height: 1 !important;
-
-    box-sizing: border-box !important;
-}
 
 /* =========================================
-   TABLET AND DESKTOP
+   NEWSLETTER TOAST DISPLAY FIX
 ========================================= */
 
-@media (min-width: 768px) {
-
-    section > div > div > div:has(.newsletter-input) {
-        flex-direction: row !important;
-        max-width: 600px !important;
-    }
-
-    section > div > div > div:has(.newsletter-input) label {
-        flex: 0 0 80% !important;
-        width: 80% !important;
-        min-height: 44px !important;
-    }
-
-    .newsletter-button {
-        flex: 0 0 20% !important;
-        width: 20% !important;
-        height: 43px !important;
-        min-height: 43px !important;
-    }
-}
-
-/* =========================================
-   MOBILE - LINE BY LINE
-========================================= */
-
-@media (max-width: 767px) {
-
-    section > div > div > p {
-        max-width: 600px !important;
-        text-align: center !important;
-    }
-
-    section > div > div > div:has(.newsletter-input) {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-
-        width: 100% !important;
-        max-width: 600px !important;
-
-        gap: 10px !important;
-    }
-
-    /* Input takes more space */
-    section > div > div > div:has(.newsletter-input) label {
-        flex: none !important;
-        width: 100% !important;
-        max-width: 100% !important;
-
-        min-height: 42px !important;
-        padding: 0 14px !important;
-    }
-
-    /* Button stays compact and centered */
-    .newsletter-button {
-        flex: none !important;
-
-        width: 20% !important;
-        min-width: 105px !important;
-        max-width: 130px !important;
-
-        height: 43px !important;
-        min-height: 43px !important;
-
-        padding: 0 10px !important;
-        font-size: 10px !important;
-
-        align-self: center !important;
-    }
-
-    .newsletter-input,
-    .newsletter-input::placeholder {
-        font-size: 11px !important;
-    }
-}
-
-/* =========================================
-   EXTRA SMALL MOBILE
-========================================= */
-
-@media (max-width: 380px) {
-
-    section > div > div > div:has(.newsletter-input) {
-        gap: 9px !important;
-    }
-
-    section > div > div > div:has(.newsletter-input) label {
-        min-height: 39px !important;
-    }
-
-    .newsletter-button {
-        width: 30% !important;
-        min-width: 100px !important;
-        max-width: 120px !important;
-
-        height: 43px !important;
-        min-height: 43px !important;
-    }
-}
-footer {
-    border-top-left-radius: 20px !important;
-    border-top-right-radius: 20px !important;
+#newsletter-popup {
+    display: none !important;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 #newsletter-popup.show {
+    display: flex !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+#newsletter-popup.hide-alert {
+    display: flex !important;
+    visibility: visible !important;
+    pointer-events: none !important;
+}
+
+/* TOAST CONTENT */
+.newsletter-toast-content {
+    flex: 1;
+    min-width: 0;
+}
+
+#newsletter-popup-title {
+    margin: 0 0 4px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #242044;
+}
+
+#newsletter-popup-message {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+/* ICON */
+#newsletter-popup-icon {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
     display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#newsletter-popup.show #newsletter-popup-box {
-    transform: scale(1);
-    opacity: 1;
+#newsletter-popup-icon svg {
+    width: 23px;
+    height: 23px;
 }
 
-/* Newsletter popup overlay */
+/* CLOSE */
+#newsletter-popup-close {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: transparent;
+    color: #777;
+    font-size: 25px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+#newsletter-popup-close:hover {
+    color: #6d28d9;
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+    #newsletter-popup {
+        width: calc(100% - 24px) !important;
+        max-width: none !important;
+    }
+
+    #newsletter-popup-box {
+        gap: 10px !important;
+        padding: 13px !important;
+    }
+
+    #newsletter-popup-title {
+        font-size: 14px;
+    }
+
+    #newsletter-popup-message {
+        font-size: 12px;
+    }
+
+    #newsletter-popup-icon {
+        width: 36px;
+        height: 36px;
+    }
+}
+/* =========================================
+   NEWSLETTER TOAST PURPLE GRADIENT BORDER
+========================================= */
+
 #newsletter-popup {
     position: fixed !important;
-    inset: 0 !important;
-    z-index: 999999 !important;
-    display: none !important;
-    align-items: center !important;
-    justify-content: center !important;
-    background: rgba(0, 0, 0, 0.55) !important;
-    backdrop-filter: blur(5px);
-    padding: 16px !important;
+    top: 110px !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+
+    transform: translateX(-50%) !important;
+
+    width: calc(100% - 32px) !important;
+    max-width: 460px !important;
+
+    padding: 2px !important;
+    border-radius: 22px !important;
+
+    background: linear-gradient(
+        135deg,
+        #8b5cf6,
+        #c084fc,
+        #6d28d9,
+        #a855f7,
+        #8b5cf6
+    ) !important;
+
+    background-size: 300% 300% !important;
+
+    animation: newsletterGradient 5s ease infinite !important;
+
+    box-shadow:
+        0 8px 30px rgba(109, 40, 217, 0.20),
+        0 0 15px rgba(168, 85, 247, 0.15) !important;
 }
 
-/* Show popup */
-#newsletter-popup.show {
-    display: flex !important;
-}
-
-/* Popup content */
+/* WHITE INNER CONTENT */
 #newsletter-popup-box {
-    position: relative;
-    z-index: 1000000;
-    width: 100%;
-    max-width: 420px;
-    background: #ffffff;
+    width: 100% !important;
+    min-width: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+
+    padding: 15px 16px !important;
+
+    background: #ffffff !important;
+    border-radius: 20px !important;
 }
-#newsletter-popup button[onclick="closeNewsletterPopup()"]:last-child {
-    padding: 8px 22px !important;
-    font-size: 13px !important;
-    min-height: auto !important;
-    width: auto !important;
-    border-radius: 999px;
+
+/* GRADIENT ANIMATION */
+@keyframes newsletterGradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+    #newsletter-popup {
+        top: 90px !important;
+        width: calc(100% - 24px) !important;
+        max-width: 460px !important;
+        border-radius: 18px !important;
+    }
+
+    #newsletter-popup-box {
+        padding: 12px !important;
+        gap: 10px !important;
+        border-radius: 16px !important;
+    }
 }
 
   </style>
 
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const newsletterInput = document.querySelector(".newsletter-input");
-    const newsletterButton = document.querySelector(".newsletter-button");
-
-    if (!newsletterInput || !newsletterButton) return;
-
-    newsletterButton.addEventListener("click", async function () {
-        const email = newsletterInput.value.trim();
-
-        if (!email) {
-            showNewsletterPopup(
-                "Email Required",
-                "Please enter your email address.",
-                false
-            );
-            newsletterInput.focus();
-            return;
-        }
-
-        if (!newsletterInput.checkValidity()) {
-            showNewsletterPopup(
-                "Invalid Email",
-                "Please enter a valid email address.",
-                false
-            );
-            newsletterInput.focus();
-            return;
-        }
-
-        newsletterButton.disabled = true;
-
-        try {
-            const response = await fetch("{% url 'newsletter_subscribe' %}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "X-CSRFToken": "{{ csrf_token }}",
-                    "X-Requested-With": "XMLHttpRequest"
-                },
-                body: new URLSearchParams({
-                    email: email
-                })
-            });
-
-            const data = await response.json();
-
-            if (response.ok && data.success) {
-
-                showNewsletterPopup(
-                    "Thank You!",
-                    data.message || "You have successfully subscribed to our newsletter.",
-                    true
-                );
-
-                newsletterInput.value = "";
-
-            } else {
-
-                const errorMessage =
-                    data.errors?.email?.[0] ||
-                    data.message ||
-                    "Something went wrong. Please try again.";
-
-                showNewsletterPopup(
-                    "Subscription Failed",
-                    errorMessage,
-                    false
-                );
-            }
-
-        } catch (error) {
-            console.error("Newsletter Error:", error);
-
-            showNewsletterPopup(
-                "Something Went Wrong",
-                "Unable to subscribe right now. Please try again later.",
-                false
-            );
-
-        } finally {
-            newsletterButton.disabled = false;
-        }
-    });
-});
-</script>
 </head>
 
 <body class="bg-[#f3f4f6]">
@@ -814,52 +656,44 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-  <div id="newsletter-popup"
-     class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+  
+<!-- NEWSLETTER TOAST -->
 
-    <div id="newsletter-popup-box"
-         class="relative w-full max-w-[420px] rounded-3xl bg-white p-8 sm:p-10 text-center shadow-2xl scale-90 opacity-0 transition-all duration-300">
 
-        <button type="button"
-                onclick="closeNewsletterPopup()"
-                class="absolute right-4 top-4 text-gray-400 hover:text-gray-700 text-2xl">
-            &times;
-        </button>
+<!-- NEWSLETTER TOAST -->
+<div id="newsletter-popup" role="status" aria-live="polite" aria-atomic="true">
 
-        <div id="newsletter-popup-icon"
-             class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-blue-50 text-[#3b55ff]">
+    <div id="newsletter-popup-box">
 
-            <svg id="newsletter-success-icon"
-                 class="h-10 w-10"
-                 fill="none"
-                 stroke="currentColor"
-                 stroke-width="2.5"
-                 viewBox="0 0 24 24">
-                <path stroke-linecap="round"
-                      stroke-linejoin="round"
+        <!-- SUCCESS / ERROR ICON -->
+        <div id="newsletter-popup-icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5"
+                 viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
                       d="M5 13l4 4L19 7"/>
             </svg>
-
         </div>
 
-        <h2 id="newsletter-popup-title"
-            class="mb-3 text-2xl sm:text-3xl font-bold text-gray-900">
-            Thank You!
-        </h2>
+        <!-- MESSAGE -->
+        <div class="newsletter-toast-content">
+            <h3 id="newsletter-popup-title">Thank You!</h3>
+            <p id="newsletter-popup-message">
+                You have successfully subscribed to our newsletter.
+            </p>
+        </div>
 
-        <p id="newsletter-popup-message"
-           class="mb-7 text-sm sm:text-base leading-relaxed text-gray-500">
-            You have successfully subscribed to our newsletter.
-        </p>
-
+        <!-- CLOSE BUTTON -->
         <button type="button"
+                id="newsletter-popup-close"
                 onclick="closeNewsletterPopup()"
-                class="w-full rounded-full bg-gradient-to-r from-[#5b6cff] to-[#3b4bff] px-8 py-3.5 font-semibold text-white shadow-lg transition hover:opacity-90 active:scale-95">
-            Okay
+                aria-label="Close notification">
+            &times;
         </button>
 
     </div>
 </div>
+
+
 
   <section class="w-full max-w-[1440px] mx-auto mt-12 sm:mt-16 lg:mt-24 px-3 sm:px-5 lg:px-6 pb-4">
 
@@ -1116,72 +950,230 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
   </section>
 
-  <script>
+  
+<script>
+/* =========================================
+   NEWSLETTER TOAST VARIABLES
+========================================= */
+
+let newsletterToastTimer = null;
+let newsletterToastCloseTimer = null;
+
+
+/* =========================================
+   NEWSLETTER SUBSCRIPTION
+========================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const newsletterInput = document.querySelector(".newsletter-input");
+    const newsletterButton = document.querySelector(".newsletter-button");
+
+    if (!newsletterInput || !newsletterButton) {
+        console.error("Newsletter input or button not found.");
+        return;
+    }
+
+    newsletterButton.addEventListener("click", async function () {
+
+        const email = newsletterInput.value.trim();
+
+        // EMPTY EMAIL VALIDATION
+        if (!email) {
+            showNewsletterPopup(
+                "Email Required",
+                "Please enter your email address.",
+                false
+            );
+
+            newsletterInput.focus();
+            return;
+        }
+
+        // INVALID EMAIL VALIDATION
+        if (!newsletterInput.checkValidity()) {
+            showNewsletterPopup(
+                "Invalid Email",
+                "Please enter a valid email address.",
+                false
+            );
+
+            newsletterInput.focus();
+            return;
+        }
+
+        newsletterButton.disabled = true;
+
+        try {
+
+            const response = await fetch(
+                "{% url 'newsletter_subscribe' %}",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "X-CSRFToken": "{{ csrf_token }}",
+                        "X-Requested-With": "XMLHttpRequest"
+                    },
+                    body: new URLSearchParams({
+                        email: email
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            // SUCCESS RESPONSE
+            if (response.ok && data.success) {
+
+                showNewsletterPopup(
+                    "Thank You!",
+                    data.message ||
+                    "You have successfully subscribed to our newsletter.",
+                    true
+                );
+
+                newsletterInput.value = "";
+
+            } else {
+
+                // ERROR RESPONSE
+                const errorMessage =
+                    data.errors?.email?.[0] ||
+                    data.message ||
+                    "Something went wrong. Please try again.";
+
+                showNewsletterPopup(
+                    "Subscription Failed",
+                    errorMessage,
+                    false
+                );
+            }
+
+        } catch (error) {
+
+            console.error("Newsletter Error:", error);
+
+            showNewsletterPopup(
+                "Something Went Wrong",
+                "Unable to subscribe right now. Please try again later.",
+                false
+            );
+
+        } finally {
+
+            newsletterButton.disabled = false;
+
+        }
+
+    });
+
+});
+
+
+/* =========================================
+   SHOW NEWSLETTER TOAST
+========================================= */
+
 function showNewsletterPopup(title, message, success = true) {
+
     const popup = document.getElementById("newsletter-popup");
-
-    if (!popup) return;
-
     const popupTitle = document.getElementById("newsletter-popup-title");
     const popupMessage = document.getElementById("newsletter-popup-message");
     const popupIcon = document.getElementById("newsletter-popup-icon");
 
-    if (!popupTitle || !popupMessage || !popupIcon) return;
+    if (!popup || !popupTitle || !popupMessage || !popupIcon) {
+        console.error("Newsletter toast HTML elements are missing.");
+        return;
+    }
 
+    clearTimeout(newsletterToastTimer);
+    clearTimeout(newsletterToastCloseTimer);
+
+    // SET MESSAGE
     popupTitle.textContent = title;
     popupMessage.textContent = message;
 
+    // SUCCESS / ERROR ICON
     if (success) {
-        popupIcon.className =
-            "mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-[#3b55ff]";
+
+        popupIcon.style.background =
+            "linear-gradient(135deg, #dcfce7, #d1fae5)";
+
+        popupIcon.style.color = "#16a34a";
 
         popupIcon.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="h-8 w-8"
-                 fill="none"
-                 viewBox="0 0 24 24"
+            <svg fill="none"
                  stroke="currentColor"
-                 stroke-width="2">
+                 stroke-width="2.5"
+                 viewBox="0 0 24 24"
+                 aria-hidden="true">
                 <path stroke-linecap="round"
                       stroke-linejoin="round"
-                      d="M5 13l4 4L19 7" />
+                      d="M5 13l4 4L19 7"/>
             </svg>
         `;
+
     } else {
-        popupIcon.className =
-            "mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-red-50 text-red-500";
+
+        popupIcon.style.background =
+            "linear-gradient(135deg, #fee2e2, #ffe4e6)";
+
+        popupIcon.style.color = "#dc2626";
 
         popupIcon.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="h-8 w-8"
-                 fill="none"
-                 viewBox="0 0 24 24"
+            <svg fill="none"
                  stroke="currentColor"
-                 stroke-width="2">
+                 stroke-width="2.5"
+                 viewBox="0 0 24 24"
+                 aria-hidden="true">
                 <path stroke-linecap="round"
                       stroke-linejoin="round"
-                      d="M6 18L18 6M6 6l12 12" />
+                      d="M6 18L18 6M6 6l12 12"/>
             </svg>
         `;
     }
 
-    popup.classList.remove("hidden");
+    // RESET OLD ANIMATION
+    popup.classList.remove("show", "hide-alert");
+
+    // RESTART ANIMATION
+    void popup.offsetWidth;
+
+    // DISPLAY TOAST
     popup.classList.add("show");
 
-    document.body.style.overflow = "hidden";
+    // AUTOMATICALLY CLOSE AFTER 4 SECONDS
+    newsletterToastTimer = setTimeout(function () {
+        closeNewsletterPopup();
+    }, 4000);
+
 }
 
+
+/* =========================================
+   CLOSE NEWSLETTER TOAST
+========================================= */
+
 function closeNewsletterPopup() {
+
     const popup = document.getElementById("newsletter-popup");
 
     if (!popup) return;
 
-    popup.classList.remove("show");
-    popup.classList.add("hidden");
+    clearTimeout(newsletterToastTimer);
+    clearTimeout(newsletterToastCloseTimer);
 
-    document.body.style.overflow = "";
+    popup.classList.remove("show");
+    popup.classList.add("hide-alert");
+
+    newsletterToastCloseTimer = setTimeout(function () {
+        popup.classList.remove("hide-alert");
+    }, 350);
+
 }
 </script>
+
 
   <script src="{% static 'js/script.js' %}"></script>
 
