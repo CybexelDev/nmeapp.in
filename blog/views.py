@@ -87,9 +87,15 @@ def message(request):
             errors["business_category"] = [
                 "Business category must contain at least 2 characters."
             ]
+
         elif "<" in submitted_values["business_category"] or ">" in submitted_values["business_category"]:
             errors["business_category"] = [
                 "HTML tags and scripts are not allowed."
+            ]
+
+        elif not any(char.isalpha() for char in submitted_values["business_category"]):
+            errors["business_category"] = [
+                "Business category cannot contain only numbers."
             ]
 
         # Subject validation
@@ -325,6 +331,7 @@ def contact_submit(request):
                 {
                     "submitted_values": submitted_values,
                     "field_errors": field_errors,
+                    "scroll_to_form": True,
                 }
             )
 

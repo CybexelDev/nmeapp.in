@@ -57,7 +57,7 @@ def validate_enquiry_name(value):
 
 
 def validate_enquiry_phone(value):
-    if not re.fullmatch(r'^\+?[0-9]{10,13}$', value):
+    if not re.fullmatch(r'\+?[0-9]{10,13}', value):
         raise ValidationError(
             "Enter a valid phone number with 10 to 13 digits."
         )
